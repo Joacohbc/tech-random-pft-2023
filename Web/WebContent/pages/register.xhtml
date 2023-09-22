@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet name="primeflex.min.css" library="css" />
+</h:head>
+<body>
+	<h:form>
+		<p:messages showDetail="true" showIcon="false" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
+
+		<p:panel header="Informacion del Usuario">
+			<p:panelGrid columns="6" styleClass="ui-noborder">
+				<p:outputLabel for="@next">Documento:</p:outputLabel>
+				<p:inputText placeholder="" value="#{register.usuario.documento}">
+					<p:ajax />
+				</p:inputText>
+
+				<p:outputLabel for="@next">Nombres:</p:outputLabel>
+				<p:inputText placeholder="" value="#{register.usuario.nombres}">
+					<p:ajax />
+				</p:inputText>
+
+				<p:outputLabel for="@next">Apellidos:</p:outputLabel>
+				<p:inputText placeholder="" value="#{register.usuario.apellidos}">
+					<p:ajax />
+				</p:inputText>
+
+				<p:outputLabel for="@next">Email personal:</p:outputLabel>
+				<p:inputText placeholder="" type="email"
+					value="#{register.usuario.emailPersonal}">
+					<p:ajax />
+				</p:inputText>
+
+				<p:outputLabel for="@next">Email UTEC:</p:outputLabel>
+				<p:inputText placeholder="" type="email"
+					value="#{register.usuario.emailUtec}">
+					<p:ajax />
+				</p:inputText>
+
+				<p:outputLabel for="@next">Telefono:</p:outputLabel>
+				<p:inputText placeholder="" value="#{register.usuario.telefono}">
+					<p:ajax />
+				</p:inputText>
+
+				<p:outputLabel for="@next">Nacimiento:</p:outputLabel>
+				<p:datePicker showIcon="true" placeholder="" pattern="dd/MM/yyyy"
+					value="#{register.usuario.fecNacimiento}">
+					<p:ajax />
+				</p:datePicker>
+
+
+				<p:outputLabel for="@next">Contraseña:</p:outputLabel>
+				<p:password value="#{register.usuario.contrasena}" placeholder=""
+					feedback="true" promptLabel="Ingresa tu contraseña"
+					weakLabel="Débil" goodLabel="Buena" strongLabel="Fuerte">
+					<p:ajax />
+				</p:password>
+
+				<p:outputLabel for="@next">Departamento:</p:outputLabel>
+				<p:selectOneMenu value="#{register.usuario.departamento}">
+					<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true" />
+					<f:selectItems value="#{enumBean.departamentos}" var="departamento"
+						itemValue="#{departamento}" itemLabel="#{departamento}"></f:selectItems>
+				</p:selectOneMenu>
+
+				<p:outputLabel for="@next">Localidad:</p:outputLabel>
+				<p:inputText value="#{register.usuario.localidad}">
+					<p:ajax />
+				</p:inputText>
+
+				<p:outputLabel for="@next">Genero:</p:outputLabel>
+				<p:selectOneMenu value="#{register.usuario.genero}">
+					<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true" />
+					<f:selectItems value="#{enumBean.generos}" var="genero"
+						itemValue="#{genero}" itemLabel="#{genero}"></f:selectItems>
+				</p:selectOneMenu>
+			</p:panelGrid>
+		</p:panel>
+
+		<p:accordionPanel>
+			<p:tab title="Tutor">
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:outputLabel>Area</p:outputLabel>
+					<p:inputText placeholder="Area" value="#{register.area}">
+						<p:ajax />
+					</p:inputText>
+					<p:outputLabel>Tipo de Tutor:</p:outputLabel>
+					<p:selectOneMenu value="#{register.tipoTutor}">
+						<p:ajax update="@this" process="@this" />
+						<f:selectItem itemLabel="Seleccione uno" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{enumBean.tipoTutores}" var="tipoTutor"
+							itemValue="#{tipoTutor}" itemLabel="#{tipoTutor}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:commandButton value="Crear" action="#{register.crearTutor()}" />
+				</p:panelGrid>
+			</p:tab>
+
+			<p:tab title="Estudiante">
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:outputLabel>Generacion</p:outputLabel>
+					<p:inputNumber placeholder="2023" decimalPlaces="0"
+						value="#{register.generacion}">
+						<p:ajax />
+					</p:inputNumber>
+					<p:commandButton value="Crear" action="#{register.crearEstudiante()}" />
+				</p:panelGrid>
+			</p:tab>
+
+			<p:tab title="Analista">
+				<p>No es necesario ingresar mas información</p>
+				<p:commandButton value="Crear" action="#{register.crearAnalista()}"></p:commandButton>
+			</p:tab>
+		</p:accordionPanel>
+	</h:form>
+
+</body>
+
+</html>

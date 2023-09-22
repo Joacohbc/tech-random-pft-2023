@@ -1,0 +1,18 @@
+<ui:composition template="/layouts/default.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<ui:define name="content">
+		<f:event type="preRenderView" listener="#{temporalBean.checkUser}" />
+	
+		<p style="display: flex; justify-content: center; align-items: center; font-size: 2rem;font-family: 'Poppins', sans-serif;color: black;">Página de ITR en Mantenimiento</p>
+	
+		<p:panelGrid columns="1" style="display: flex; justify-content: center; align-items: center; height: 550px;">
+   			<h:graphicImage name="images/mantenimiento1.png" style="border: none;"/>
+		</p:panelGrid>
+	</ui:define>
+</ui:composition>

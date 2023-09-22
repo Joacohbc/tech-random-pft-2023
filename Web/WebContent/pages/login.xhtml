@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet name="primeflex.min.css" library="css" />
+</h:head>
+
+<h:body>
+	<div class="flex justify-content-center align-items-center flex-column">
+		<div>
+			<p:graphicImage name="images/utec_logo.png" width="300px" />
+		</div>
+		<div>
+			<h:form>
+				<p:messages id="messages" showDetail="true" showIcon="false">
+					<p:autoUpdate />
+				</p:messages>
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:outputLabel value="Nombre de Usuario:"></p:outputLabel>
+					<p:inputText value="#{loginBean.nombreUsuario}">
+						<p:ajax />
+					</p:inputText>
+
+					<p:outputLabel value="Contraseña:"></p:outputLabel>
+					<p:password value="#{loginBean.contrasenia}">
+						<p:ajax />
+					</p:password>
+
+					<p:outputLabel value="Rol"></p:outputLabel>
+					<p:selectOneMenu value="#{loginBean.rol}">
+						<f:selectItems value="#{enumBean.roles}" var="rol"
+							itemValue="#{rol}" itemLabel="#{rol}"></f:selectItems>
+					</p:selectOneMenu>
+
+					<p:commandButton action="#{loginBean.login()}" value="Login"></p:commandButton>
+				</p:panelGrid>
+				<p:commandLink value="¿No estas registrado?" action="#{loginBean.register()}"/>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>
