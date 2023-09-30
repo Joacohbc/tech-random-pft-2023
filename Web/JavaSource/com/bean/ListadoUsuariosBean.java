@@ -31,7 +31,7 @@ import validation.ValidationObject;
 
 @Named("listadoUsuariosBean")
 @ViewScoped
-public class ListadoUsuarios implements Serializable, AuthRenderedControl{
+public class ListadoUsuariosBean implements Serializable, AuthRenderedControl{
 
 	@EJB
 	private UsuarioBean bean;

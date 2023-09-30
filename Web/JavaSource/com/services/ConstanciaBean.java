@@ -1,19 +1,14 @@
 package com.services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.mail.BodyPart;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMultipart;
 
 import com.daos.ConstanciaDAO;
 import com.entities.AccionConstancia;
@@ -23,6 +18,14 @@ import com.exceptions.DAOException;
 import com.exceptions.InvalidEntityException;
 import com.exceptions.NotFoundEntityException;
 import com.exceptions.ServiceException;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import validation.ValidacionesConstancia;
 import validation.ValidationObject;
@@ -64,6 +67,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 			if (dao.findUnique(entity) != null)
 				throw new InvalidEntityException("Ya existe una Contancia con esos atributos");
 
+			
 			return dao.insert(entity);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -75,8 +79,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 			throws ServiceException, NotFoundEntityException, InvalidEntityException {
 		try {
 			ServicesUtils.checkNull(entity, "Al actualizar una Constancia, esta no puede ser nula");
-			ServicesUtils.checkNull(entity.getIdConstancia(),
-					"Al actualizar una Constancia, esta debe tener un ID asignado");
+			ServicesUtils.checkNull(entity.getIdConstancia(), "Al actualizar una Constancia, esta debe tener un ID asignado");
 
 			Constancia actual = findById(entity.getIdConstancia());
 			if (actual == null)
@@ -240,5 +243,62 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 		return dao.sacarConstanciaByIdEstudiante(id);
 	}
 	
+	
+	public byte[] generarPlantilla(String tituloText, String parrafoTexto, String parrafo2Texto, Integer espacio, byte[] plantilla) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+			// Creo el documento
+			Document documento = new Document();
+
+			// Incio el Writter (Que se encarga de crear el PDF)
+			PdfWriter writer = PdfWriter.getInstance(documento, baos);
+
+			documento.open();
+
+			// Agrego el Titulo
+			Paragraph titulo = new Paragraph(tituloText);
+			titulo.setAlignment(1);
+			documento.add(titulo);
+
+			// Agrego el espaciado entr el Titulo y el contenido
+			documento.add(Chunk.NEWLINE);
+			documento.add(Chunk.NEWLINE);
+			documento.add(Chunk.NEWLINE);
+
+			// Creo la imagen en base a la plantilla
+			Image image = Image.getInstance(plantilla);
+			image.scaleAbsoluteHeight(PageSize.A4.getHeight());
+			image.scaleAbsoluteWidth(PageSize.A4.getWidth());
+			image.setAbsolutePosition(0, 0);
+
+			// Agrego la Imagen al documento
+			writer.getDirectContentUnder().addImage(image);
+
+			// Genero el primer parrafo
+			Paragraph parrafo1 = new Paragraph(parrafoTexto);
+			parrafo1.setAlignment(Element.ALIGN_JUSTIFIED);
+			documento.add(parrafo1);
+
+			// Agrego la el espaciado entre el primer parrafo y el segundo
+			for (int i = 0; i < espacio; i++) {
+				documento.add(Chunk.NEWLINE);
+			}
+
+			// Genero el segundo parrafo
+			Paragraph parrafo2 = new Paragraph(parrafo2Texto);
+			parrafo1.setAlignment(Element.ALIGN_JUSTIFIED);
+			documento.add(parrafo2);
+
+			// Genero el archivo
+			documento.close();
+
+			return baos.toByteArray();
+
+		} catch (IOException | DocumentException e) {
+			throw new ServiceException(e);
+
+		}
+	}
 	
 }

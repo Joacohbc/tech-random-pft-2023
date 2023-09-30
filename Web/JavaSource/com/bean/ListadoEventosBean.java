@@ -23,8 +23,7 @@ import com.services.UsuarioBean;
 
 @Named("listadoEventosBean")
 @ViewScoped
-
-public class ListadoEventos implements Serializable, AuthRenderedControl {
+public class ListadoEventosBean implements Serializable, AuthRenderedControl {
 
 	@EJB
 	private EventoBean eventoBean;
