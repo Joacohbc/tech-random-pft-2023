@@ -12,8 +12,9 @@
 
 		<h:form id="form" enctype="multipart/form-data">
 			<div class="grid">
-				<p:panel class="col-6">
-					<div class="flex justify-content-center flex-column cl">
+				<p:panel class="col-6 mt-4"
+					header="Creación de Plantilla de Constancia">
+					<div class="flex justify-content-center flex-column ">
 						<h5>Titulo</h5>
 						<p:inputText value="#{mantenimientoConstanciaBean.titulo}" />
 
@@ -30,13 +31,13 @@
 						<p:fileUpload value="#{mantenimientoConstanciaBean.file}"
 							mode="simple" skinSimple="true" />
 
-						<p:commandButton value="Submit" ajax="false"
+						<p:commandButton value="Subir plantilla de documento" ajax="false"
 							action="#{mantenimientoConstanciaBean.upload}"
 							styleClass="mt-3 ui-button-outlined block" />
 
 						<p:separator />
 
-						<p:commandButton value="Download" ajax="false"
+						<p:commandButton value="Descargar Plantilla" ajax="false"
 							onclick="PrimeFaces.monitorDownload(start, stop);"
 							icon="pi pi-arrow-down" styleClass="mr-2"
 							disabled="#{mantenimientoConstanciaBean.fileDownloaded == null}">
@@ -46,18 +47,16 @@
 					</div>
 				</p:panel>
 
-				<div class="col-6">
-					<h5>Instrucciones de uso</h5>
-					<ui:repeat value="#{mantenimientoConstanciaBean.infoParseada}"
-						var="entry">
-						<h5>#{entry.key}</h5>
+				<p:panel class="col-6 mt-4" header="Instrucciones de uso">
+					<ui:repeat value="#{mantenimientoConstanciaBean.infoParseada}" var="entry">
+						<h3>#{entry.key}</h3>
 						<ul>
 							<ui:repeat value="#{entry.value}" var="item">
 								<li>#{item}</li>
 							</ui:repeat>
 						</ul>
 					</ui:repeat>
-				</div>
+				</p:panel>
 			</div>
 		</h:form>
 
