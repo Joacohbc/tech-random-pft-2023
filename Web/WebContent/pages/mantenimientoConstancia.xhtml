@@ -12,48 +12,55 @@
 
 		<h:form id="form" enctype="multipart/form-data">
 			<div class="grid">
-			<p:panel class="col-6">
-				<div class="flex justify-content-center flex-column cl">
-					<h5>Titulo</h5>
-					<p:inputText value="#{mantenimientoConstanciaBean.titulo}" />
+				<p:panel class="col-6">
+					<div class="flex justify-content-center flex-column cl">
+						<h5>Titulo</h5>
+						<p:inputText value="#{mantenimientoConstanciaBean.titulo}" />
 
-					<h5>Parrafo 1</h5>
-					<p:inputTextarea rows="6" cols="40"
-						value="#{mantenimientoConstanciaBean.parrafo1}" />
+						<h5>Parrafo 1</h5>
+						<p:inputTextarea rows="6" cols="40"
+							value="#{mantenimientoConstanciaBean.parrafo1}" />
 
-					<h5>Parrafo 2</h5>
-					<p:inputTextarea rows="6" cols="40"
-						value="#{mantenimientoConstanciaBean.parrafo2}" />
+						<h5>Parrafo 2</h5>
+						<p:inputTextarea rows="6" cols="40"
+							value="#{mantenimientoConstanciaBean.parrafo2}" />
 
-					<h5>Plantilla del Documento</h5>
+						<h5>Plantilla del Documento</h5>
 
-					<p:fileUpload value="#{mantenimientoConstanciaBean.file}"
-						mode="simple" skinSimple="true" />
+						<p:fileUpload value="#{mantenimientoConstanciaBean.file}"
+							mode="simple" skinSimple="true" />
 
-					<p:commandButton value="Submit" ajax="false"
-						action="#{mantenimientoConstanciaBean.upload}"
-						styleClass="mt-3 ui-button-outlined block" />
+						<p:commandButton value="Submit" ajax="false"
+							action="#{mantenimientoConstanciaBean.upload}"
+							styleClass="mt-3 ui-button-outlined block" />
 
-					<p:separator />
+						<p:separator />
 
-					<p:commandButton value="Download" ajax="false"
-						onclick="PrimeFaces.monitorDownload(start, stop);"
-						icon="pi pi-arrow-down" styleClass="mr-2"
-						disabled="#{mantenimientoConstanciaBean.fileDownloaded == null}">
-						<p:fileDownload
-							value="#{mantenimientoConstanciaBean.fileDownloaded}" />
-					</p:commandButton>
+						<p:commandButton value="Download" ajax="false"
+							onclick="PrimeFaces.monitorDownload(start, stop);"
+							icon="pi pi-arrow-down" styleClass="mr-2"
+							disabled="#{mantenimientoConstanciaBean.fileDownloaded == null}">
+							<p:fileDownload
+								value="#{mantenimientoConstanciaBean.fileDownloaded}" />
+						</p:commandButton>
+					</div>
+				</p:panel>
+
+				<div class="col-6">
+					<h5>Instrucciones de uso</h5>
+					<ui:repeat value="#{mantenimientoConstanciaBean.infoParseada}"
+						var="entry">
+						<h5>#{entry.key}</h5>
+						<ul>
+							<ui:repeat value="#{entry.value}" var="item">
+								<li>#{item}</li>
+							</ui:repeat>
+						</ul>
+					</ui:repeat>
 				</div>
-			</p:panel>
-			
-			<div class="col-6">
-				#{mantenimientoConstanciaBean.info}
-			</div>
 			</div>
 		</h:form>
 
 	</ui:define>
-
-
 
 </ui:composition>

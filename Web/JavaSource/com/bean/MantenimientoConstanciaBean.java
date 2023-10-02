@@ -3,6 +3,10 @@ package com.bean;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -52,18 +56,40 @@ public class MantenimientoConstanciaBean implements Serializable, AuthRenderedCo
     
     public String getInfo() {
     	return "Para parametrizar la plantilla puede utilizar las siguientes expresiones\n"
-    			+ "					Datos del Estudiante:\n"
-    			+ "					- Nombre/s del Estudiante: &amp;nombre&amp;\n"
-    			+ "					- Apellidos del Estudiante: &amp;apellido&amp;\n"
-    			+ "					- Documento del estudiante: &amp;documento&amp;\n"
-    			+ "					- Generacion del Estudiante: &amp;generacion&amp;\n"
-    			+ "					\n"
-    			+ "					Datos del Evento:\n"
-    			+ "					- Nombre del Evento: &amp;evento&amp;\n"
-    			+ "					- Fecha de Inicio del Evento: &amp;fechainicio&amp;\n"
-    			+ "					- Fecha de Fin del Evento: &amp;fechafin&amp;\n"
-    			+ "					- Modalidad del Evento: &amp;modalidad&amp;\n"
-    			+ "					- Localización del Evento: &amp;lugar&amp;\"";
+		+ "					Datos del Estudiante:\n"
+		+ "					- Nombre/s del Estudiante: &amp;nombre&amp;\n"
+		+ "					- Apellidos del Estudiante: &amp;apellido&amp;\n"
+		+ "					- Documento del estudiante: &amp;documento&amp;\n"
+		+ "					- Generacion del Estudiante: &amp;generacion&amp;\n"
+		+ "					\n"
+		+ "					Datos del Evento:\n"
+		+ "					- Nombre del Evento: &amp;evento&amp;\n"
+		+ "					- Fecha de Inicio del Evento: &amp;fechainicio&amp;\n"
+		+ "					- Fecha de Fin del Evento: &amp;fechafin&amp;\n"
+		+ "					- Modalidad del Evento: &amp;modalidad&amp;\n"
+		+ "					- Localización del Evento: &amp;lugar&amp;\"";
+
+    }
+    public Map<String, List<String>> getInfoParseada() {
+        Map<String, List<String>> infoParseada = new HashMap<>();
+        
+        // Add headers and their associated items to the map
+        List<String> datosEstudiante = new ArrayList<>();
+        datosEstudiante.add("- Nombre/s del Estudiante: &nombre&");
+        datosEstudiante.add("- Apellidos del Estudiante: &apellido&");
+        datosEstudiante.add("- Documento del estudiante: &documento&");
+        datosEstudiante.add("- Generacion del Estudiante: &generacion&");
+        infoParseada.put("Datos del Estudiante", datosEstudiante);
+        
+        List<String> datosEvento = new ArrayList<>();
+        datosEvento.add("- Nombre del Evento: &evento&");
+        datosEvento.add("- Fecha de Inicio del Evento: &fechainicio&");
+        datosEvento.add("- Fecha de Fin del Evento: &fechafin&");
+        datosEvento.add("- Modalidad del Evento: &modalidad&");
+        datosEvento.add("- Localización del Evento: &lugar&");
+        infoParseada.put("Datos del Evento", datosEvento);
+        
+        return infoParseada;
     }
     
 	@Override
