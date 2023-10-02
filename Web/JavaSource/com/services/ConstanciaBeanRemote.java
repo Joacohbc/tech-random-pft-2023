@@ -20,6 +20,5 @@ public interface ConstanciaBeanRemote  {
 	Constancia updateEstado(Long id, EstadoSolicitudes estado, AccionConstancia accion) throws ServiceException, NotFoundEntityException, InvalidEntityException;
 	Constancia eliminarConstancia(Long id) throws ServiceException, NotFoundEntityException;
 	byte[] descargarConstancia(Long id) throws ServiceException, NotFoundEntityException, InvalidEntityException;
-	Constancia updateEstado(Long id, EstadoSolicitudes estado, AccionConstancia accion, byte[] archivo) throws ServiceException, NotFoundEntityException, InvalidEntityException;
 	List<Constancia> sacarConstanciaByIdEstudiante(Long id);
 }

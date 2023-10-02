@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,6 +21,7 @@ import org.primefaces.model.file.UploadedFile;
 import com.auth.AuthRenderedControl;
 import com.entities.enums.Rol;
 import com.services.ConstanciaBean;
+import com.services.TipoConstanciaBean;
 
 
 @Named("mantenimientoConstanciaBean")
@@ -29,7 +29,11 @@ import com.services.ConstanciaBean;
 public class MantenimientoConstanciaBean implements Serializable, AuthRenderedControl {
 
 	@EJB
-	private ConstanciaBean bean;
+	private TipoConstanciaBean bean;
+	
+	@EJB
+	private ConstanciaBean bean2;
+	
 	
 	@Inject
 	private AuthJWTBean auth;
@@ -58,20 +62,19 @@ public class MantenimientoConstanciaBean implements Serializable, AuthRenderedCo
     public Map<String, List<String>> getInfoParseada() {
         Map<String, List<String>> infoParseada = new HashMap<>();
         
-        // Add headers and their associated items to the map
         List<String> datosEstudiante = new ArrayList<>();
-        datosEstudiante.add("- Nombre/s del Estudiante: &nombre&");
-        datosEstudiante.add("- Apellidos del Estudiante: &apellido&");
-        datosEstudiante.add("- Documento del estudiante: &documento&");
-        datosEstudiante.add("- Generacion del Estudiante: &generacion&");
+        datosEstudiante.add("Nombre/s del Estudiante: &nombre&");
+        datosEstudiante.add("Apellidos del Estudiante: &apellido&");
+        datosEstudiante.add("Documento del estudiante: &documento&");
+        datosEstudiante.add("Generacion del Estudiante: &generacion&");
         infoParseada.put("Datos del Estudiante", datosEstudiante);
         
         List<String> datosEvento = new ArrayList<>();
-        datosEvento.add("- Nombre del Evento: &evento&");
-        datosEvento.add("- Fecha de Inicio del Evento: &fechainicio&");
-        datosEvento.add("- Fecha de Fin del Evento: &fechafin&");
-        datosEvento.add("- Modalidad del Evento: &modalidad&");
-        datosEvento.add("- Localización del Evento: &lugar&");
+        datosEvento.add("Nombre del Evento: &evento&");
+        datosEvento.add("Fecha de Inicio del Evento: &fechainicio&");
+        datosEvento.add("Fecha de Fin del Evento: &fechafin&");
+        datosEvento.add("Modalidad del Evento: &modalidad&");
+        datosEvento.add("Localización del Evento: &lugar&");
         infoParseada.put("Datos del Evento", datosEvento);
         
         return infoParseada;
