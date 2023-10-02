@@ -2,6 +2,7 @@ package com.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,15 +19,15 @@ import com.exceptions.DAOException;
 import com.exceptions.InvalidEntityException;
 import com.exceptions.NotFoundEntityException;
 import com.exceptions.ServiceException;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PRStream;
+import com.itextpdf.text.pdf.PdfDictionary;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfObject;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
+import validation.Formatos;
 import validation.ValidacionesConstancia;
 import validation.ValidationObject;
 
@@ -140,7 +141,11 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 			// Cambio el estado de la constancia
 			if(estadoNuevo == EstadoSolicitudes.FINALIZADO) 
 				throw new InvalidEntityException("Cuando se actualiza el estado de la constancia a Finalizado se debe agregar el archivo descargable para el estudiante");
-
+			
+			// Si se finaliza la constancia agrego la constnacia ya firmada para que el estudiante pueda generarla
+			if(estadoNuevo == EstadoSolicitudes.FINALIZADO) {
+				actual.setArchivo(cargarPlantilla(id));
+			}
 			actual.setEstado(estadoNuevo);
 			actual = dao.update(actual);
 
@@ -148,49 +153,6 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 					actual.getTipoConstancia().getTipo(), 
 					actual.getEvento().getTitulo(),
 					actual.getEstado().toString(),
-					estadoNuevo.toString());
-				         
-			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estando en su Constancia", cuerpo);
-			return actual;
-			
-			// Se cacha ServiceException porque se utiliza el acBean.addAccionConstancia()
-		} catch (DAOException | ServiceException e) {
-			throw new ServiceException(e);
-		} catch (MessagingException e) {
-			throw new ServiceException("La constancia se actualizo exitosamente pero no se pudo notificar al estudiante");
-		}
-	}
-
-
-	@Override
-	public Constancia updateEstado(Long id, EstadoSolicitudes estadoNuevo, AccionConstancia accion, byte[] archivo)
-			throws ServiceException, NotFoundEntityException, InvalidEntityException {
-		try {
-			ServicesUtils.checkNull(id, "Al actualizar una Constancia, esta debe tener un ID asignado");
-
-			Constancia actual = findById(id);
-			if (actual == null)
-				throw new NotFoundEntityException("No existe una constancia con el ID: " + id);
-
-			if (actual.getEstado() == EstadoSolicitudes.FINALIZADO)
-				throw new InvalidEntityException("No se puede modificar una constancia que ya esta finalizada");
-			
-			if(archivo == null)
-				throw new InvalidEntityException("Cuando se carga el la constancia al Estudiante el archivo no puede ser vacio");
-
-			// Agrego la accion constancia a la Constancia
-			acBean.addAccionConstancia(accion, actual);
-			
-			// Cambio el estado de la constancia y cargo el Estado
-			EstadoSolicitudes estadoActual = actual.getEstado();
-			actual.setEstado(estadoNuevo);
-			actual.setArchivo(archivo);
-			actual = dao.update(actual);
-			
-			String cuerpo = String.format("La Constancia de tipo \"%s\" al evento \"%s\" fue modificada de \"%s\" a \"%s\". Visite la aplicacion para mas informacion", 
-					actual.getTipoConstancia().getTipo(), 
-					actual.getEvento().getTitulo(),
-					estadoActual.toString(),
 					estadoNuevo.toString());
 				         
 			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estando en su Constancia", cuerpo);
@@ -239,66 +201,45 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 		}
 	}
 	
+	public byte[] cargarPlantilla(Long idConstancia) {
+		try {
+			Constancia cons = dao.findById(idConstancia);
+
+			PdfReader reader = new PdfReader(cons.getTipoConstancia().getPlantilla());
+
+			PdfDictionary dict = reader.getPageN(1);
+			PdfObject object = dict.getDirectObject(PdfName.CONTENTS);
+			if (object instanceof PRStream) {
+				PRStream stream = (PRStream) object;
+				byte[] data = PdfReader.getStreamBytes(stream);
+				String replacedData = new String(data).
+						replace("&nombre&", cons.getEstudiante().getNombres()).
+						replace("&apellido&", cons.getEstudiante().getApellidos()).
+						replace("&documento&", cons.getEstudiante().getDocumento()).
+						replace("&generacion&", cons.getEstudiante().getGeneracion().toString()).
+						replace("&evento&", cons.getEvento().getTitulo()).
+						replace("&fechainicio&", Formatos.ToFormatedString(cons.getEvento().getFechaInicio())).
+						replace("&fechafin&", Formatos.ToFormatedString(cons.getEvento().getFechaFin())).
+						replace("&modalidad&", cons.getEvento().getModalidad().toString()).
+						replace("&lugar&", cons.getEvento().getLocalizacion());
+				
+				stream.setData(replacedData.getBytes(StandardCharsets.ISO_8859_1));
+			}
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			PdfStamper stamper = new PdfStamper(reader, baos);
+			stamper.close();
+			reader.close();
+			
+			return baos.toByteArray();
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		} catch (DocumentException | IOException e) {
+			throw new ServiceException(e);
+		} 
+	}
+ 	
 	public List<Constancia> sacarConstanciaByIdEstudiante(Long id){
 		return dao.sacarConstanciaByIdEstudiante(id);
 	}
-	
-	
-	public byte[] generarPlantilla(String tituloText, String parrafoTexto, String parrafo2Texto, Integer espacio, byte[] plantilla) {
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-			// Creo el documento
-			Document documento = new Document();
-
-			// Incio el Writter (Que se encarga de crear el PDF)
-			PdfWriter writer = PdfWriter.getInstance(documento, baos);
-
-			documento.open();
-
-			// Agrego el Titulo
-			Paragraph titulo = new Paragraph(tituloText);
-			titulo.setAlignment(1);
-			documento.add(titulo);
-
-			// Agrego el espaciado entr el Titulo y el contenido
-			documento.add(Chunk.NEWLINE);
-			documento.add(Chunk.NEWLINE);
-			documento.add(Chunk.NEWLINE);
-
-			// Creo la imagen en base a la plantilla
-			Image image = Image.getInstance(plantilla);
-			image.scaleAbsoluteHeight(PageSize.A4.getHeight());
-			image.scaleAbsoluteWidth(PageSize.A4.getWidth());
-			image.setAbsolutePosition(0, 0);
-
-			// Agrego la Imagen al documento
-			writer.getDirectContentUnder().addImage(image);
-
-			// Genero el primer parrafo
-			Paragraph parrafo1 = new Paragraph(parrafoTexto);
-			parrafo1.setAlignment(Element.ALIGN_JUSTIFIED);
-			documento.add(parrafo1);
-
-			// Agrego la el espaciado entre el primer parrafo y el segundo
-			for (int i = 0; i < espacio; i++) {
-				documento.add(Chunk.NEWLINE);
-			}
-
-			// Genero el segundo parrafo
-			Paragraph parrafo2 = new Paragraph(parrafo2Texto);
-			parrafo1.setAlignment(Element.ALIGN_JUSTIFIED);
-			documento.add(parrafo2);
-
-			// Genero el archivo
-			documento.close();
-
-			return baos.toByteArray();
-
-		} catch (IOException | DocumentException e) {
-			throw new ServiceException(e);
-
-		}
-	}
-	
 }
