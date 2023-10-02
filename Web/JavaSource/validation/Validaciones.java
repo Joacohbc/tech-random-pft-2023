@@ -140,7 +140,26 @@ public final class Validaciones {
 		if (!ValidarNoVacio(s))
 			return false;
 
-		return Pattern.matches("[0-9](\\.)[0-9][0-9][0-9](\\.)[0-9][0-9][0-9](-)[0-9]", s)
-				|| Pattern.matches("[0-9][0-9][0-9](\\.)[0-9][0-9][0-9](-)[0-9]", s);
+		return (Pattern.matches("[0-9](\\.)[0-9][0-9][0-9](\\.)[0-9][0-9][0-9](-)[0-9]", s)
+				|| Pattern.matches("[0-9][0-9][0-9](\\.)[0-9][0-9][0-9](-)[0-9]", s))&& ValidarDigitoVerificadorCedulaUruguaya(s);
+	}
+	public static boolean ValidarDigitoVerificadorCedulaUruguaya(String s) {
+        /*if (s.length() != 9) {
+            return false;
+        }*/
+
+        String digitos = s.replaceAll("[^0-9]", "").substring(0, 7); // Estraigo los digitos 1.234.567
+        String digitoVerificadorIngresado = s.replaceAll("[^0-9]", "").substring(7,8);
+        int[] factoresCalculo = {2, 9, 8, 7, 6, 3, 4};
+
+        int suma = 0;
+        for (int i = 0; i < digitos.length(); i++) {
+            int digit = Character.getNumericValue(digitos.charAt(i));
+            suma += digit * factoresCalculo[i];
+        }
+
+        int modulo = suma % 10;
+        int digitoVerificadorCaluclado = (10 - modulo) % 10;
+        return Integer.parseInt(digitoVerificadorIngresado) == digitoVerificadorCaluclado;
 	}
 }
