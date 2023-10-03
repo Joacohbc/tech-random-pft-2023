@@ -3,6 +3,7 @@ package com.bean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+import com.entities.Itr;
 import com.entities.enums.Departamento;
 import com.entities.enums.EstadoUsuario;
 import com.entities.enums.Genero;
@@ -41,5 +42,6 @@ public class EnumJSF {
 	public EstadoUsuario[] getEstadoUsuario() {
 		return EstadoUsuario.values();
 	}
+	
 	
 }

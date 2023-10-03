@@ -81,6 +81,13 @@
 					<f:selectItems value="#{enumBean.generos}" var="genero"
 						itemValue="#{genero}" itemLabel="#{genero}"></f:selectItems>
 				</p:selectOneMenu>
+				
+				<p:outputLabel for="@next">ITR:</p:outputLabel>
+				<p:selectOneMenu value="#{register.itrId}">
+					<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true" />
+					<f:selectItems value="#{register.listadoItr}" var="itr"
+						itemValue="#{itr.idItr}" itemLabel="#{itr}"></f:selectItems>
+				</p:selectOneMenu>
 			</p:panelGrid>
 		</p:panel>
 

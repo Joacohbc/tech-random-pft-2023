@@ -2,14 +2,16 @@ package com.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
+
 import com.entities.Analista;
 import com.entities.Estudiante;
 import com.entities.Itr;
@@ -18,6 +20,8 @@ import com.entities.Usuario;
 import com.entities.enums.EstadoUsuario;
 import com.entities.enums.TipoTutor;
 import com.exceptions.InvalidEntityException;
+
+import com.services.ItrBean;
 import com.services.UsuarioBean;
 
 import validation.ValidacionesUsuario.TipoUsuarioDocumento;
@@ -28,6 +32,9 @@ public class RegistroBean implements Serializable {
 	
 		@EJB
 		private UsuarioBean bean;
+		
+		@EJB
+		private ItrBean itrBean;
 
 		// Datos del usuario
 		private Usuario usuario;
@@ -39,10 +46,19 @@ public class RegistroBean implements Serializable {
 		// Datos del estudiante
 		private Integer generacion;
 		
+		private List<Itr> listadoItr;
+		
+		private Long itrId;
+		
 		@PostConstruct
 		public void init() {
 			usuario = new Usuario();
+			this.listadoItr = new ArrayList<>();
+			listadoItr.addAll(itrBean.findAll());
+
 		}
+		
+			
 		
 		public void crearAnalista() {
 			Analista a = new Analista();
@@ -62,11 +78,9 @@ public class RegistroBean implements Serializable {
 			a.setEstado(true);
 			a.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
 
-			Itr itr = new Itr();
-			itr.setIdItr(1l);
 			
-			//Implementar para que se seleccione el ITR.
-			a.setItr(itr);
+			a.setItr(itrBean.findById(itrId));
+			
 			
 			try {
 				bean.register(a, TipoUsuarioDocumento.URUGUAYO);				
@@ -102,9 +116,9 @@ public class RegistroBean implements Serializable {
 			e.setEstado(true);
 			e.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
 			
-			Itr itr = new Itr();
-			itr.setIdItr(1l);
-			e.setItr(itr);
+			e.setItr(itrBean.findById(itrId));
+			
+			
 			
 			try {
 				bean.register(e, TipoUsuarioDocumento.URUGUAYO);
@@ -142,9 +156,7 @@ public class RegistroBean implements Serializable {
 			t.setEstado(true);
 			t.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
 			
-			Itr itr = new Itr();
-			itr.setIdItr(1l);
-			t.setItr(itr);
+			t.setItr(itrBean.findById(itrId));
 			
 			try {
 				bean.register(t, TipoUsuarioDocumento.URUGUAYO);
@@ -195,5 +207,22 @@ public class RegistroBean implements Serializable {
 		public void setGeneracion(Integer generacion) {
 			this.generacion = generacion;
 		}
+
+		public List<Itr> getListadoItr() {
+			return listadoItr;
+		}
+
+		public void setListadoItr(List<Itr> listadoItr) {
+			this.listadoItr = listadoItr;
+		}
+
+		public Long getItrId() {
+			return itrId;
+		}
+
+		public void setItrId(Long itrId) {
+			this.itrId = itrId;
+		}
+		
 		
 	}
