@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var nav: NavigationBarView
-    private  lateinit var testLinkRegistro: TextView
+    private lateinit var testLinkRegistro: TextView
 
 
 
@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
 
         var vista= Intent(this, Login::class.java)
         startActivity(vista)
-
-
 
 
 

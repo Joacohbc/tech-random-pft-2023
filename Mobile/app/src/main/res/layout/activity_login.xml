@@ -5,15 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="20dp"
     tools:context=".Login">
 
     <ImageView
         android:id="@+id/utec_logo"
         android:layout_width="210dp"
-        android:layout_height="150dp"
+        android:layout_height="140dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:src="@drawable/utec_app_logo" />
+        android:src="@drawable/utec_app_logo"/>
 
 
     <EditText
@@ -42,8 +45,7 @@
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="120dp"
         android:fontFamily="@font/opensans_medium"
         android:foregroundTint="#00C7FF"
         android:gravity="center"
@@ -53,15 +55,12 @@
 
     <Button
         android:id="@+id/testLinkRegistro"
-        android:background="@color/cardview_shadow_end_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/opensans_medium"
-        android:gravity="center"
-
         android:text="¿No estás registrado? Registrate aquí"
-        android:textColor="@color/celeste_utec" />
-
+        android:textColor="@color/celeste_utec"
+        android:background="@color/cardview_light_background"/>
 
 
 </LinearLayout>

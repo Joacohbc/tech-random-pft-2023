@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Registro">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="60dp">
 
 
     <TextView
@@ -14,6 +21,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Registro de Estudiante"
+        android:fontFamily="@font/opensans_bold"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
@@ -24,6 +32,8 @@
         android:id="@+id/documento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/opensans_medium"
+        android:layout_marginVertical="10dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:textSize="15dp"
@@ -33,6 +43,8 @@
         android:id="@+id/nombres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:fontFamily="@font/opensans_medium"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:textSize="15dp"
@@ -42,7 +54,9 @@
         android:id="@+id/apellidos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
         android:layout_gravity="center"
+        android:fontFamily="@font/opensans_medium"
         android:layout_marginTop="20dp"
         android:textSize="15dp"
         android:hint="Apellidos" />
@@ -50,7 +64,9 @@
         android:id="@+id/emailper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
         android:layout_gravity="center"
+        android:fontFamily="@font/opensans_medium"
         android:layout_marginTop="20dp"
         android:textSize="15dp"
         android:inputType="textEmailAddress"
@@ -61,7 +77,9 @@
         android:id="@+id/emailutec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/opensans_medium"
         android:layout_gravity="center"
+        android:layout_marginVertical="10dp"
         android:layout_marginTop="20dp"
         android:inputType="textEmailAddress"
         android:textSize="15dp"
@@ -74,7 +92,9 @@
         android:id="@+id/telefono"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/opensans_medium"
         android:layout_gravity="center"
+        android:layout_marginVertical="10dp"
         android:layout_marginTop="20dp"
         android:textSize="15dp"
         android:hint="Telefono"
@@ -86,6 +106,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:fontFamily="@font/opensans_medium"
+        android:layout_marginVertical="10dp"
         android:layout_marginTop="20dp"
         android:hint="Fecha de Nacimiento"
         android:inputType="date"
@@ -96,34 +118,86 @@
     <EditText
         android:id="@+id/editTextContraseña"
         android:layout_width="match_parent"
+        android:fontFamily="@font/opensans_medium"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
+        android:layout_marginVertical="10dp"
         android:hint="Contraseña"
         android:layout_marginTop="20dp"
         android:textSize="15dp"
         android:inputType="textPassword"
         android:drawableStart="@drawable/ico_pass"/>
 
-  <AutoCompleteTextView
-      android:id="@+id/genero"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="Seleccione su género"
-      android:textSize="15dp"
-    />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-    <Button
+            <AutoCompleteTextView
+                android:id="@+id/genero"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/opensans_medium"
+                android:layout_marginVertical="10dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:hint="Género"
+                android:textSize="15dp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <AutoCompleteTextView
+            android:id="@+id/departamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_medium"
+            android:layout_marginVertical="10dp"
+            android:layout_gravity="center"
+            android:hint="Departamento"
+            android:textSize="15dp"
+            />
+
+        <EditText
+            android:id="@+id/localidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:fontFamily="@font/opensans_medium"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="15dp"
+            android:hint="Localidad" />
+
+
+        <AutoCompleteTextView
+            android:id="@+id/itr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_medium"
+            android:layout_marginVertical="10dp"
+            android:layout_gravity="center"
+            android:hint="ITR"
+            android:textSize="15dp"
+            />
+
+        <Button
         android:id="@+id/loginregistro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginVertical="10dp"
         android:background="#00C7FF"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@font/opensans_medium"
         android:gravity="center"
         android:text="Registro"
         android:textSize="15dp"
         app:iconTint="@color/celeste_utec" />
 
 
-</LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
