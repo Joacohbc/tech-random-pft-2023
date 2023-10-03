@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+    <ImageView
+        android:id="@+id/utec_logo"
+        android:layout_width="210dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/utec_app_logo" />
+
+
+    <EditText
+        android:id="@+id/editTextCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Correo electrónico"
+        android:fontFamily="@font/opensans_medium"
+        android:layout_marginTop="90dp"
+        android:inputType="textEmailAddress"
+        android:drawableStart="@drawable/ico_arroba"/>
+
+
+    <EditText
+        android:id="@+id/editTextContraseña"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:drawableStart="@drawable/ico_pass"
+        android:fontFamily="@font/opensans_medium"
+        android:hint="Contraseña"
+        android:inputType="textPassword" />
+
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/opensans_medium"
+        android:foregroundTint="#00C7FF"
+        android:gravity="center"
+        android:text="Login"
+        app:iconTint="@color/celeste_utec" />
+
+
+    <Button
+        android:id="@+id/testLinkRegistro"
+        android:background="@color/cardview_shadow_end_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/opensans_medium"
+        android:gravity="center"
+
+        android:text="¿No estás registrado? Registrate aquí"
+        android:textColor="@color/celeste_utec" />
+
+
+
+</LinearLayout>
