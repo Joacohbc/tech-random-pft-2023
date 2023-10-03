@@ -16,9 +16,15 @@
 					</c:if>
 
 					<c:if test="#{authBean.esAnalista()}">
+						<p:submenu label="Constancias" icon="pi pi-fw pi-user">
+							<p:menuitem value="Listado" icon="pi pi-fw pi-search" outcome="listadoUsuarios.xhtml"/>
+						</p:submenu>
 						<p:submenu label="Mantenimiento" icon="pi pi-fw pi-cog">
 							<p:menuitem value="De ITR" icon="pi pi-fw pi-building" outcome="mantenimientoItr.xhtml"/>
-							<p:menuitem value="De Constancias" icon="pi pi-fw pi-file-pdf" outcome="mantenimientoConstancia.xhtml"/>
+							<p:submenu label="De Plantilla" icon="pi pi-fw pi-file-pdf">
+								<p:menuitem value="Agregar" icon="pi pi-fw pi-plus-circle" outcome="mantenimientoConstanciaCrear.xhtml"/>
+								<p:menuitem value="Listado" icon="pi pi-fw pi-search" outcome="mantenimientoConstanciaListado.xhtml"/>
+							</p:submenu>
 						</p:submenu>
 					</c:if>
 

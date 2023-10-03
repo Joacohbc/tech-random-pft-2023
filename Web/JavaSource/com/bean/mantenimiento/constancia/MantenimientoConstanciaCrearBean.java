@@ -1,4 +1,4 @@
-package com.bean;
+package com.bean.mantenimiento.constancia;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,15 +19,17 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.file.UploadedFile;
 
 import com.auth.AuthRenderedControl;
+import com.bean.AuthJWTBean;
+import com.bean.JSFUtils;
 import com.entities.TipoConstancia;
 import com.entities.enums.Rol;
 import com.services.ConstanciaBean;
 import com.services.TipoConstanciaBean;
 
 
-@Named("mantenimientoConstanciaBean")
+@Named("mantenimientoConstanciaCrearBean")
 @ViewScoped
-public class MantenimientoConstanciaBean implements Serializable, AuthRenderedControl {
+public class MantenimientoConstanciaCrearBean implements Serializable, AuthRenderedControl {
 
 	@EJB
 	private TipoConstanciaBean bean;
