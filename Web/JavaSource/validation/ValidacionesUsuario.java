@@ -208,7 +208,7 @@ public class ValidacionesUsuario {
 
 	public static ValidationObject validarDocumentoUruguayo(String documento) {
 		return Validaciones.ValidarCedulaUruguaya(documento) ? ValidationObject.VALID
-				: new ValidationObject("La cedula uruguaya debe contener los puntos, guiones y el digito verificador");
+				: new ValidationObject("La cedula uruguaya debe contener los puntos, guiones y el digito verificador valido");
 	}
 
 	public static ValidationObject validarDocumentoNoUruguayo(String documento) {

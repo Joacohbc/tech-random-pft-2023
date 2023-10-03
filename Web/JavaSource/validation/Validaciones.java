@@ -141,15 +141,13 @@ public final class Validaciones {
 			return false;
 
 		return (Pattern.matches("[0-9](\\.)[0-9][0-9][0-9](\\.)[0-9][0-9][0-9](-)[0-9]", s)
-				|| Pattern.matches("[0-9][0-9][0-9](\\.)[0-9][0-9][0-9](-)[0-9]", s))&& ValidarDigitoVerificadorCedulaUruguaya(s);
+				|| Pattern.matches("[0-9][0-9][0-9](\\.)[0-9][0-9][0-9](-)[0-9]", s)) && ValidarDigitoVerificadorCedulaUruguaya(s);
 	}
+	
 	public static boolean ValidarDigitoVerificadorCedulaUruguaya(String s) {
-        /*if (s.length() != 9) {
-            return false;
-        }*/
-
         String digitos = s.replaceAll("[^0-9]", "").substring(0, 7); // Estraigo los digitos 1.234.567
         String digitoVerificadorIngresado = s.replaceAll("[^0-9]", "").substring(7,8);
+
         int[] factoresCalculo = {2, 9, 8, 7, 6, 3, 4};
 
         int suma = 0;

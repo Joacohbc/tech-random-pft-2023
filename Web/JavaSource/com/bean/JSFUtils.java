@@ -12,6 +12,11 @@ public class JSFUtils {
                 addMessage(null, new FacesMessage(severity, summary, detail));
     }
     
+    public static void addMessage(FacesMessage.Severity severity, String detail) {
+        FacesContext.getCurrentInstance().
+                addMessage(null, new FacesMessage(severity, "", detail));
+    }
+    
     public static void redirect(String route) throws IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.redirect(externalContext.getRequestContextPath() + "/pages/" +route);

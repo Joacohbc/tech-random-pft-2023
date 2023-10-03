@@ -19,6 +19,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.file.UploadedFile;
 
 import com.auth.AuthRenderedControl;
+import com.entities.TipoConstancia;
 import com.entities.enums.Rol;
 import com.services.ConstanciaBean;
 import com.services.TipoConstanciaBean;
@@ -41,24 +42,46 @@ public class MantenimientoConstanciaBean implements Serializable, AuthRenderedCo
 	private String titulo;
 	private String parrafo1;
 	private String parrafo2;
-	
     private UploadedFile file;
     private StreamedContent fileDownloaded;
-
+    private byte[] plantilla;
+    
     public void upload() {
         if (file == null) return;
         
-    	ByteArrayInputStream constancia = new ByteArrayInputStream(bean.generarPlantilla(titulo, parrafo1, parrafo2, 1, file.getContent()));
-    	fileDownloaded = DefaultStreamedContent.builder()
-    	        .name("constancia.pdf")
-    	        .contentType("application/pdf")
-    	        .stream(() -> constancia)
-    	        .build(); 
-    	
-        JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo ", file.getFileName() + " se subio con exito");
+    	try {
+    		plantilla = bean.generarPlantilla(titulo, parrafo1, parrafo2, 1, file.getContent());
+        	fileDownloaded = DefaultStreamedContent.builder()
+        	        .name("constancia.pdf")
+        	        .contentType("application/pdf")
+        	        .stream(() -> new ByteArrayInputStream(plantilla))
+        	        .build(); 
+        	
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + file.getFileName() + " se subio con exito");
+    	} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al cargar el archivo");
+		}
     }
     
- 
+    public void alta() {
+    	if(plantilla == null) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Cargue la plantilla y verifique que sea correcta antes de darla de alta");
+			return;
+    	}
+    	
+    	try {
+        	TipoConstancia tp = new TipoConstancia();
+        	tp.setEstado(true);
+        	tp.setPlantilla(plantilla);
+        	tp.setTipo(titulo);
+        	bean.insert(tp);
+        	
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se creo con exito la nueva plantilla de constancia: " + tp.getTipo()); 
+    	} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
+    }
+  
     public Map<String, List<String>> getInfoParseada() {
         Map<String, List<String>> infoParseada = new HashMap<>();
         

@@ -29,20 +29,26 @@
 						<h5>Plantilla del Documento</h5>
 
 						<p:fileUpload value="#{mantenimientoConstanciaBean.file}"
-							mode="simple" skinSimple="true" />
+							mode="simple" skinSimple="true"  allowTypes="/(\.|\/)(jpe?g|png)$/"
+                      		validateContentType="true" accept=".jpg,.jpeg,.png"/>
 
 						<p:commandButton value="Subir plantilla de documento" ajax="false"
 							action="#{mantenimientoConstanciaBean.upload}"
 							styleClass="mt-3 ui-button-outlined block" />
-
 						<p:separator />
 
 						<p:commandButton value="Descargar Plantilla" ajax="false"
 							onclick="PrimeFaces.monitorDownload(start, stop);"
-							icon="pi pi-arrow-down" styleClass="mr-2"
+							icon="pi pi-arrow-down" 
 							disabled="#{mantenimientoConstanciaBean.fileDownloaded == null}">
 							<p:fileDownload
 								value="#{mantenimientoConstanciaBean.fileDownloaded}" />
+						</p:commandButton>
+						
+						<p:commandButton value="Dar de alta la plantilla" 
+							icon="pi pi-plus-circle" styleClass="mt-2"
+							onclick="PF('altaTipoConstanciaDialog').show()"
+							disabled="#{mantenimientoConstanciaBean.fileDownloaded == null}">
 						</p:commandButton>
 					</div>
 				</p:panel>
@@ -58,6 +64,18 @@
 					</ui:repeat>
 				</p:panel>
 			</div>
+			
+			<p:confirmDialog widgetVar="altaTipoConstanciaDialog" showEffect="fade"
+				width="300" message="¿Quieres dar de alta de esta plantilla de constancia?"
+				header="Confirm" severity="warn">
+				<p:commandButton value="Si" icon="pi pi-check"
+					actionListener="#{mantenimientoConstanciaBean.alta}"
+					oncomplete="PF('altaTipoConstanciaDialog').hide()" />
+					
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('altaTipoConstanciaDialog').hide()" />
+			</p:confirmDialog>
 		</h:form>
 
 	</ui:define>
