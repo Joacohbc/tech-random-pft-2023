@@ -17,12 +17,12 @@ class Login : AppCompatActivity() {
 
 
 
-        testLinkRegistro.setOnClickListener {
+       /* testLinkRegistro.setOnClickListener {
             var registro= Intent(this, Registro::class.java)
             startActivity(registro)
         }
 
-
+*/
 
     }
 }

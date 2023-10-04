@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="celeste_utec">#00c7ff</color>
+    <color name="celeste_utec">#66CCFF</color>
     <color name="fondo_oscuro">#343a40</color>
     <color name="letra_fondooscuro">#f8f9fa</color>
+    <color name="otro_celeste">#007bff</color>
+    <color name="negro">#2a2828</color>
+    <color name="blanco">#fcfcfc</color>
 
 </resources>

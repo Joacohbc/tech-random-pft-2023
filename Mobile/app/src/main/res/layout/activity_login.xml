@@ -2,21 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:background="@drawable/utec_foto"
     android:paddingHorizontal="20dp"
     android:paddingVertical="20dp"
     tools:context=".Login">
+
+
 
     <ImageView
         android:id="@+id/utec_logo"
         android:layout_width="210dp"
         android:layout_height="140dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/utec_app_logo"/>
+        android:layout_marginTop="40dp"
+        android:src="@drawable/utec_app_logonobg"
+        />
 
 
     <EditText
@@ -24,10 +28,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Correo electrónico"
-        android:fontFamily="@font/opensans_medium"
+        android:background="@color/blanco"
+        android:fontFamily="@font/opensans_semibold"
+        android:textColorHint="@color/negro"
         android:layout_marginTop="90dp"
+        android:paddingVertical="20dp"
+        android:textSize="20sp"
         android:inputType="textEmailAddress"
-        android:drawableStart="@drawable/ico_arroba"/>
+        android:drawableStart="@drawable/ico_arroba"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        />
 
 
     <EditText
@@ -35,32 +45,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:paddingVertical="20dp"
         android:drawableStart="@drawable/ico_pass"
-        android:fontFamily="@font/opensans_medium"
+        android:fontFamily="@font/opensans_semibold"
+        android:textColorHint="@color/negro"
+        android:background="@color/blanco"
+        android:textSize="20sp"
         android:hint="Contraseña"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+    />
 
 
     <Button
         android:id="@+id/loginBtn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:fontFamily="@font/opensans_medium"
-        android:foregroundTint="#00C7FF"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/celeste_utec"
+        android:fontFamily="@font/opensans_semibold"
+        android:textColor="@color/letra_fondooscuro"
         android:gravity="center"
+        android:paddingVertical="10dp"
+        android:textSize="20sp"
         android:text="Login"
-        app:iconTint="@color/celeste_utec" />
+        />
 
 
     <Button
         android:id="@+id/testLinkRegistro"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/opensans_medium"
+        android:layout_height="match_parent"
+        android:background="?android:attr/panelBackground"
+        android:fontFamily="@font/opensans_semibold"
+        android:paddingVertical="10dp"
         android:text="¿No estás registrado? Registrate aquí"
-        android:textColor="@color/celeste_utec"
-        android:background="@color/cardview_light_background"/>
+        android:textSize="20sp"
+        android:textColor="@color/blanco" />
 
 
 </LinearLayout>
