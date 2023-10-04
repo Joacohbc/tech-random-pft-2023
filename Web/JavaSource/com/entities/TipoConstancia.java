@@ -30,7 +30,6 @@ public class TipoConstancia implements Serializable {
 
 	// TODO: La bi-direccionaldiad es incesaria? No necesito saber cuales
 	// constancias se hicieron con que plantilla
-	
 	@OneToMany(mappedBy = "tipoConstancia")
 	private List<Constancia> constancias;
 

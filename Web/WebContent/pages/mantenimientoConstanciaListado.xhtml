@@ -6,270 +6,135 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="content">
-		<f:event type="preRenderView" listener="#{listadoUsuariosBean.checkUser}" />
-	
+		<f:event type="preRenderView"
+			listener="#{mantenimientoConstanciaListadoBean.checkUser}" />
+
 		<h:form id="form">
-			<p:dataTable var="usuario" value="#{listadoUsuariosBean.usuarios}"
-				id="listaUsuarios"
-				emptyMessage="No se encontro ninguno usuario con este criterio"
+			<p:dataTable var="tipoConstancia"
+				value="#{mantenimientoConstanciaListadoBean.tipoConstancias}"
+				id="listaTipoConstancias"
+				emptyMessage="No se encontro ninguna plantilla de constancia con este criterio"
 				resizableColumns="true" liveResize="true" showGridlines="true"
-				rowKey="#{usuario.documento}" paginator="true" rows="20"
+				rowKey="#{tipoConstancias.tipo}" paginator="true" rows="20"
 				rowSelectMode="add" paginatorPosition="bottom"
 				tableStyle="width:auto"
-				selection="#{listadoUsuariosBean.usuariosSeleccionados}">								
+				selection="#{mantenimientoConstanciaListadoBean.usuariosSeleccionados}">
+
 				<f:facet name="header">
 					<p:toolbar>
 						<p:toolbarGroup>
-							<span style="font-weight: bold">Lista de Usuarios</span>
-						</p:toolbarGroup>
-						<p:toolbarGroup>
-						
-							<c:if test="#{authBean.esAnalista()}">
-								<p:commandButton id="borrar-usuarios-button"
-									value="#{listadoUsuariosBean.botonBajaMensaje}"
-									icon="pi pi-trash"
-									actionListener="#{listadoUsuariosBean.bajaUsuarios}"
-									styleClass="ui-button-danger"
-									disabled="#{listadoUsuariosBean.usuariosSeleccionados.isEmpty()}"
-									update="@this">
-								</p:commandButton>
-	
-								<p:commandButton id="alta-usuarios-button"
-									value="#{listadoUsuariosBean.botonAltaMensaje}"
-									icon="pi pi-plus"
-									actionListener="#{listadoUsuariosBean.altaUsuarios}"
-									styleClass="ui-button-success"
-									disabled="#{listadoUsuariosBean.usuariosSeleccionados.isEmpty()}"
-									update="@this">
-								</p:commandButton>
-							</c:if>
-							
-							<div>
-								<p:commandButton id="toggler" type="button" value="Columns"
-									icon="pi pi-align-justify" />
-								<p:columnToggler datasource="listaUsuarios" trigger="toggler">
-									<p:ajax />
-								</p:columnToggler>
-							</div>
+							<span style="font-weight: bold">Lista de Plantilla de constancias</span>
 						</p:toolbarGroup>
 					</p:toolbar>
 				</f:facet>
 
-				<c:if test="#{authBean.esAnalista()}">
-					<p:ajax event="rowSelect" update=":form:listaUsuarios:borrar-usuarios-button" />
-					<p:ajax event="rowUnselect" update=":form:listaUsuarios:borrar-usuarios-button" />
-					<p:ajax event="rowSelectCheckbox" update=":form:listaUsuarios:borrar-usuarios-button" />
-					<p:ajax event="rowUnselectCheckbox" update=":form:listaUsuarios:borrar-usuarios-button" />
-					<p:ajax event="toggleSelect" update=":form:listaUsuarios:borrar-usuarios-button" />
-					
-					<p:ajax event="rowSelect" update=":form:listaUsuarios:alta-usuarios-button" />
-					<p:ajax event="rowUnselect" update=":form:listaUsuarios:alta-usuarios-button" />
-					<p:ajax event="rowSelectCheckbox" update=":form:listaUsuarios:alta-usuarios-button" />
-					<p:ajax event="rowUnselectCheckbox" update=":form:listaUsuarios:alta-usuarios-button" />
-					<p:ajax event="toggleSelect" update=":form:listaUsuarios:alta-usuarios-button" />
-				</c:if>
-
-				<p:column toggleable="false" resizable="false"
-					selectionMode="multiple" exportable="false"></p:column>
-
-				<p:column headerText="Documento" sortBy="#{usuario.documento}"
-					filterBy="#{usuario.documento}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.documento}" />
+				<p:column headerText="Tipo de Constancia">
+					<h:outputText value="#{tipoConstancia.tipo}" />
 				</p:column>
 
-				<p:column headerText="Nombres" sortBy="#{usuario.nombres}"
-					filterBy="#{usuario.nombres}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.nombres}" />
+				<p:column headerText="Plantilla">
+					<p:commandButton value="Descargar Plantilla" ajax="false"
+						onclick="PrimeFaces.monitorDownload(start, stop);"
+						icon="pi pi-arrow-down"
+						disabled="#{tipoConstancia.plantilla == null}">
+						<p:fileDownload value="#{tipoConstancia.plantilla}" />
+					</p:commandButton>
 				</p:column>
 
-				<p:column headerText="Apellidos" sortBy="#{usuario.apellidos}"
-					filterBy="#{usuario.apellidos}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.apellidos}" />
-				</p:column>
-
-				<p:column headerText="Email Utec" sortBy="#{usuario.emailUtec}"
-					filterBy="#{usuario.emailUtec}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.emailUtec}" />
-				</p:column>
-
-				<p:column headerText="Nombre Usuario"
-					sortBy="#{usuario.nombreUsuario}"
-					filterBy="#{usuario.nombreUsuario}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.nombreUsuario}" />
-				</p:column>
-
-				<p:column headerText="Genero" sortBy="#{usuario.genero}"
-					filterBy="#{usuario.genero}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.genero.toString()}" />
-				</p:column>
-
-				<p:column headerText="Departamento" sortBy="#{usuario.departamento}"
-					filterBy="#{usuario.departamento}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.departamento.toString()}" />
-				</p:column>
-
-				<p:column headerText="Estado Usuario"
-					sortBy="#{usuario.estadoUsuario}"
-					filterBy="#{usuario.estadoUsuario}" filterMatchMode="contains">
-					
+				<p:column headerText="¿Eliminada?" toggleable="false"
+					resizable="false" sortBy="#{tipoConstancia.estado}">
 					<div class="justify-content-center flex">
-						<p:badge value='#{usuario.estadoUsuario.toString()}'
-							severity='#{usuario.estadoUsuario == "VALIDADO" ? "success" : 
-										 usuario.estadoUsuario == "SIN_VALIDAR" ? "warning" 
-										 : "danger"}'
-							styleClass="mr-2"></p:badge>
-					</div>
-
-				</p:column>
-				
-				<p:column headerText="Edad"
-					sortBy="#{usuario.edad}"
-					filterBy="#{usuario.edad}" filterMatchMode="exact">
-					<h:outputText value="#{usuario.edad}" />
-				</p:column>
-				
-
-				<p:column headerText="Rol" sortBy="#{usuario.class.simpleName}"
-					filterBy="#{usuario.class.simpleName}" filterMatchMode="contains">
-					<h:outputText value="#{usuario.getClass().getSimpleName()}" />
-				</p:column>
-
-				<p:column headerText="¿Eliminado?" toggleable="false"
-					resizable="false" sortBy="#{usuario.estado}">
-					<div class="justify-content-center flex">
-						<p:badge value='#{usuario.estado ? "ALTA" : "BAJA"}'
-							severity='#{usuario.estado ? "success" : "danger"}'
+						<p:badge value='#{tipoConstancia.estado ? "ALTA" : "BAJA"}'
+							severity='#{tipoConstancia.estado ? "success" : "danger"}'
 							styleClass="mr-2"></p:badge>
 					</div>
 				</p:column>
 
-				<c:if test="#{authBean.esAnalista()}">
-					<p:column toggleable="false" headerText="Acciones">
-						<p:commandButton icon="pi pi-pencil"
-							update=":dialogs:alta-usuario-content"
-							oncomplete="PF('editarUsuarioDialog').show()"
-							styleClass="edit-button rounded-button ui-button-success"
-							process="@this">
-							<f:setPropertyActionListener value="#{usuario}"
-								target="#{listadoUsuariosBean.usuarioSeleccionado}" />
-							<p:resetInput target=":dialogs:alta-usuario-content" />
-						</p:commandButton>
+				<p:column headerText="Acciones">
+					<p:commandButton icon="pi pi-pencil"
+						update=":dialogs:alta-tipoConstancia-content"
+						oncomplete="PF('editarTipoConstanciaDialog').show()"
+						styleClass="edit-button rounded-button ui-button-success"
+						process="@this">
+						<f:setPropertyActionListener value="#{tipoConstancia}"
+							target="#{mantenimientoConstanciaListadoBean.tipoConstanciaSeleccionada}" />
+						<p:resetInput target=":dialogs:alta-tipoConstancia-content" />
+					</p:commandButton>
 
-						<p:commandButton class="ui-button-warning rounded-button"
-							icon='pi #{usuario.estado ? "pi-trash" : "pi-plus"}'
-							oncomplete='PF("#{usuario.estado ? "bajaUsuarioDialog" : "altaUsuarioDialog"}").show()'>
-							<f:setPropertyActionListener value="#{usuario}"
-								target="#{listadoUsuariosBean.usuarioSeleccionado}" />
-						</p:commandButton>
-					</p:column>
-				</c:if>
+					<p:commandButton class="ui-button-warning rounded-button"
+						icon='pi #{tipoConstancia.estado ? "pi-trash" : "pi-plus"}'
+						oncomplete='PF("#{tipoConstancia.estado ? "bajaTipoConstanciaDialog" : "altaTipoConstanciaDialog"}").show()'>
+						<f:setPropertyActionListener value="#{tipoConstancia}"
+							target="#{mantenimientoConstanciaListadoBean.tipoConstanciaSeleccionada}" />
+					</p:commandButton>
+				</p:column>
 			</p:dataTable>
 		</h:form>
 
-		<c:if test="#{authBean.esAnalista()}">
-			<h:form id="dialogs">
-				<p:dialog header="Informacion de Usuario" showEffect="fade"
-					modal="true" widgetVar="editarUsuarioDialog" responsive="true">
-					<p:outputPanel id="alta-usuario-content" class="ui-fluid grid">
-						<p:outputPanel
-							rendered="#{not empty listadoUsuariosBean.usuarioSeleccionado}">
-							<p:panelGrid columns="4" styleClass="ui-noborder">
-								<h:outputLabel value="Nombres:" />
-								<p:inputText
-									value="#{listadoUsuariosBean.usuarioSeleccionado.nombres}" />
+		<h:form id="dialogs">
+			<p:dialog header="Informacion del tipo de Constancia"
+				showEffect="fade" modal="true"
+				widgetVar="editarTipoConstanciaDialog" responsive="true">
+				<p:outputPanel id="alta-tipoConstancia-content"
+					class="ui-fluid grid">
+					<p:outputPanel
+						rendered="#{not empty mantenimientoConstanciaListadoBean.tipoConstanciaSeleccionada}">
+						<p:panelGrid columns="2" styleClass="ui-noborder">
 
-								<h:outputLabel value="Apellidos:" />
-								<p:inputText
-									value="#{listadoUsuariosBean.usuarioSeleccionado.apellidos}" />
+							<h:outputLabel value="Tipo:" />
+							<p:inputText
+								value="#{mantenimientoConstanciaListadoBean.tipoConstanciaSeleccionada.tipo}" />
 
-								<h:outputLabel value="Documento:" />
-								<p:inputText
-									value="#{listadoUsuariosBean.usuarioSeleccionado.documento}" />
+							<h:outputLabel value="Nueva Plantilla:" />
+							<p:fileUpload mode="simple" skinSimple="true" auto="true"
+								process="@this"
+								listener="#{mantenimientoConstanciaListadoBean.handleFileUpload}" />
 
-								<h:outputLabel value="E-mail Personal:" />
-								<p:inputText
-									value="#{listadoUsuariosBean.usuarioSeleccionado.emailPersonal}" />
-
-								<h:outputLabel value="E-mail Utec:" />
-								<p:inputText
-									value="#{listadoUsuariosBean.usuarioSeleccionado.emailUtec}"
-									readonly="true" />
-
-								<h:outputLabel value="Telefono:" />
-								<p:inputText
-									value="#{listadoUsuariosBean.usuarioSeleccionado.telefono}" />
-
-								<h:outputLabel value="Localidad:" />
-								<p:inputText
-									value="#{listadoUsuariosBean.usuarioSeleccionado.localidad}" />
-
-								<h:outputLabel value="Fecha de Nacimiento:" />
-								<p:datePicker
-									value="#{listadoUsuariosBean.usuarioSeleccionado.fecNacimiento}"
-									monthNavigator="true"  />
-
-								<p:outputLabel value="Departamento:"></p:outputLabel>
-								<p:selectOneMenu
-									value="#{listadoUsuariosBean.usuarioSeleccionado.departamento}">
-									<f:selectItems value="#{enumBean.departamentos}"
-										var="departamentos" itemValue="#{departamentos}"
-										itemLabel="#{departamentos}"></f:selectItems>
-								</p:selectOneMenu>
-
-								<p:outputLabel value="Genero:"></p:outputLabel>
-								<p:selectOneMenu
-									value="#{listadoUsuariosBean.usuarioSeleccionado.genero}">
-									<f:selectItems value="#{enumBean.generos}" var="genero"
-										itemValue="#{genero}" itemLabel="#{genero}"></f:selectItems>
-								</p:selectOneMenu>
-								
-								<p:outputLabel value="Estado:"></p:outputLabel>								
-								<p:selectOneMenu
-									value="#{listadoUsuariosBean.usuarioSeleccionado.estadoUsuario}">
-									<f:selectItems value="#{enumBean.estadoUsuario}" var="estadoUsuario"
-										itemValue="#{estadoUsuario}" itemLabel="#{estadoUsuario}"></f:selectItems>
-								</p:selectOneMenu>		
-																																																	
-							</p:panelGrid>
-						</p:outputPanel>
+						</p:panelGrid>
 					</p:outputPanel>
+				</p:outputPanel>
 
-					<f:facet name="footer">
-						<p:commandButton value="Guardar" icon="pi pi-check"
-							actionListener="#{listadoUsuariosBean.editarUsuario}"
-							update="alta-usuario-content"
-							process="alta-usuario-content @this"/>
-							
-						<p:commandButton value="Cancel" icon="pi pi-times"
-							onclick="PF('editarUsuarioDialog').hide()"
-							class="ui-button-secondary" type="button" />
-					</f:facet>
-				</p:dialog>
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-check"
+						actionListener="#{mantenimientoConstanciaListadoBean.editar}"
+						update="alta-tipoConstancia-content"
+						process="alta-tipoConstancia-content @this" />
 
-				<p:confirmDialog widgetVar="bajaUsuarioDialog" showEffect="fade"
-					width="300" message="¿Quieres dar de baja al Usuario?"
-					header="Confirm" severity="warn">
-					<p:commandButton value="Si" icon="pi pi-check"
-						actionListener="#{listadoUsuariosBean.bajaUsuario}"
-						process="@this" update=":form:listaUsuarios:borrar-usuarios-button"
-						oncomplete="PF('bajaUsuarioDialog').hide()" />
-					<p:commandButton value="No" type="button"
-						styleClass="ui-button-secondary" icon="pi pi-times"
-						onclick="PF('bajaUsuarioDialog').hide()" />
-				</p:confirmDialog>
+					<p:commandButton value="Cancel" icon="pi pi-times"
+						onclick="PF('editarTipoConstanciaDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
 
-				<p:confirmDialog widgetVar="altaUsuarioDialog" showEffect="fade"
-					width="300" message="¿Quieres dar de alta al Usuario?"
-					header="Confirm" severity="warn">
-					<p:commandButton value="Si" icon="pi pi-check"
-						actionListener="#{listadoUsuariosBean.altaUsuario}"
-						process="@this" oncomplete="PF('altaUsuarioDialog').hide()" />
-					<p:commandButton value="No" type="button"
-						styleClass="ui-button-secondary" icon="pi pi-times"
-						onclick="PF('altaUsuarioDialog').hide()" />
-				</p:confirmDialog>
-			</h:form>
-		</c:if>
+			<p:confirmDialog widgetVar="bajaTipoConstanciaDialog"
+				showEffect="fade" width="300"
+				message="¿Quieres dar de baja el Tipo de Constancia?"
+				header="Confirm" severity="warn">
+				
+				<p:commandButton value="Si" icon="pi pi-check"
+					actionListener="#{mantenimientoConstanciaListadoBean.baja}"
+					update="alta-tipoConstancia-content"
+					process="alta-tipoConstancia-content @this" />
 
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('bajaTipoConstanciaDialog').hide()" />
+			</p:confirmDialog>
+
+			<p:confirmDialog widgetVar="altaTipoConstanciaDialog"
+				showEffect="fade" width="300"
+				message="¿Quieres dar de alta el Tipo de Constancia?"
+				header="Confirm" severity="warn">
+				
+				<p:commandButton value="Si" icon="pi pi-check"
+					actionListener="#{mantenimientoConstanciaListadoBean.alta}"
+					update="alta-tipoConstancia-content"
+					process="alta-tipoConstancia-content @this" />
+				
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('altaTipoConstanciaDialog').hide()" />
+			</p:confirmDialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
