@@ -18,69 +18,60 @@
 					rowSelectMode="add" paginatorPosition="bottom"
 					rowKey="#{evento.idEvento}" paginator="true" rows="20"
 					selectionMode="single">
+					
 					<f:facet name="header">
                 Eventos Disponibles
             	</f:facet>
-					<p:column headerText="Titulo">
+            	
+            	
+					<p:column headerText="Titulo" sortBy="#{evento.titulo}"
+						filterBy="#{evento.titulo}" filterMatchMode="contains">
 						<h:outputText value="#{evento.titulo}" />
 					</p:column>
-					<p:column headerText="Fecha de Inicio">
+
+
+					<p:column headerText="Fecha de Inicio" sortBy="#{evento.fechaInicio}"
+						filterBy="#{evento.fechaInicio}" filterMatchMode="contains">
 						<h:outputText value="#{evento.fechaInicio}" />
 					</p:column>
-					<p:column headerText="Fecha De Fin">
+					
+					
+					
+					<p:column headerText="Fecha De Fin"  sortBy="#{evento.fechaFin}"
+						filterBy="#{evento.fechaFin}" filterMatchMode="contains">
 						<h:outputText value="#{evento.fechaFin}" />
 					</p:column>
-					<p:column headerText="Modalidad">
+					
+					
+					
+					<p:column headerText="Modalidad" sortBy="#{evento.modalidad}"
+						filterBy="#{evento.modalidad}" filterMatchMode="contains">
 						<h:outputText value="#{evento.modalidad}" />
 					</p:column>
-					<p:column headerText="Localizacion">
+					
+					
+					<p:column headerText="Localizacion" sortBy="#{evento.localizacion}"
+						filterBy="#{evento.localizacion}" filterMatchMode="contains">
 						<h:outputText value="#{evento.localizacion}" />
 					</p:column>
+					
+					
 					<p:column headerText="Tipo de Constancia">
-						<h:outputText value="#{evento.localizacion}" />
+						<p:selectOneMenu value="#{listadoEventosBean.tiposDeConstancias}">
+							<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true"
+								itemValue="" />
+							<f:selectItems value="#{listadoEventosBean.tiposDeConstancias}" />
+						</p:selectOneMenu>
 					</p:column>
+					
+					
+					<p:column>
+						<p:commandButton type="button" value="Solicitar" actionListener="#{listadoEventosBean.crearSolicitud}"  />
+					</p:column>
+					
+					
 				</p:dataTable>
 
-
-				<p:dialog header="Product Info" widgetVar="productDialog"
-					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-					<p:outputPanel id="productDetail" style="text-align:center;">
-						<p:column
-							rendered="#{not empty dtContextMenuView.selectedProduct}">
-							<div class="product">
-								<div class="product-grid-item border-0" style="margin-bottom: 0">
-									<div class="product-grid-item-top">
-										<div>
-											<i class="pi pi-tag product-category-icon" /> <span
-												class="product-category">#{dtContextMenuView.selectedProduct.category}</span>
-										</div>
-										<span
-											class="product-badge status-#{dtContextMenuView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dtContextMenuView.selectedProduct.inventoryStatus.text}</span>
-									</div>
-									<div class="product-grid-item-content">
-										<p:graphicImage
-											name="demo/images/product/#{dtContextMenuView.selectedProduct.image}" />
-										<div class="product-name">#{dtContextMenuView.selectedProduct.name}</div>
-										<div class="product-description">#{dtContextMenuView.selectedProduct.description}</div>
-										<p:rating readonly="true"
-											value="#{dtContextMenuView.selectedProduct.rating}" />
-									</div>
-									<div class="product-grid-item-bottom">
-										<h:outputText
-											value="#{dtContextMenuView.selectedProduct.price}"
-											styleClass="product-price">
-											<f:convertNumber currencySymbol="$" type="currency" />
-										</h:outputText>
-										<p:commandButton type="button" value="Add To Cart"
-											icon="pi pi-shopping-cart"
-											disabled="#{dtContextMenuView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
-										</p:commandButton>
-									</div>
-								</div>
-							</div>
-						</p:column>
-					</p:outputPanel>
-				</p:dialog>
 			</h:form>
 		</div>
 
