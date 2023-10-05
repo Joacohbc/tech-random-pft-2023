@@ -1,15 +1,16 @@
 package com.dto;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonWrapper {
+public class JsonDTO implements Serializable {
 	private Map<String, Object> json = new HashMap<>();
 	
-	public JsonWrapper put(String key, Object value) {
+	public JsonDTO put(String key, Object value) {
 		json.put(key, value);
 		return this;
 	}

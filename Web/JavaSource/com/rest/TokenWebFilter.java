@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.auth.TokenManagmentBean;
 import com.auth.TokenWrapper;
 import com.auth.UserDetails;
-import com.dto.JsonWrapper;
+import com.dto.JsonDTO;
 
 @WebFilter(urlPatterns = "/api/auth/*")
 public class TokenWebFilter implements Filter {
@@ -38,7 +38,7 @@ public class TokenWebFilter implements Filter {
 				
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 			RESTUtils.responseJSON((HttpServletResponse) response, HttpServletResponse.SC_FORBIDDEN,
-					new JsonWrapper()
+					new JsonDTO()
 						.put("error", "No token provided")
 						.toJSONString());
 			return;
@@ -48,7 +48,7 @@ public class TokenWebFilter implements Filter {
 		UserDetails ud = jwtBean.getTokenInfo(token);
 		if (ud == null) {
 			RESTUtils.responseJSON((HttpServletResponse) response, HttpServletResponse.SC_BAD_REQUEST,
-					new JsonWrapper()
+					new JsonDTO()
 						.put("error", "invalid token")
 						.toJSONString());
 			return;

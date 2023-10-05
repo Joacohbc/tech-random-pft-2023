@@ -19,8 +19,6 @@ public class UsuarioMapper {
         usuarioDTO.setLocalidad(usuario.getLocalidad());
         usuarioDTO.setTelefono(usuario.getTelefono());
         usuarioDTO.setEstadoUsuario(usuario.getEstadoUsuario());
-
-        // Assuming there's a separate mapper for Itr
         usuarioDTO.setItr(ItrMapper.toItrDTO(usuario.getItr()));
 
         return usuarioDTO;
@@ -41,7 +39,10 @@ public class UsuarioMapper {
         usuario.setLocalidad(usuarioDTO.getLocalidad());
         usuario.setTelefono(usuarioDTO.getTelefono());
         usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuario());
-
+        
+        // La contrasenia solo es hacia la Entidad, nunca al DTO
+        usuario.setContrasena(usuarioDTO.getContrasenia());
+        
         // Assuming there's a separate mapper for Itr
         usuario.setItr(ItrMapper.toItr(usuarioDTO.getItr()));
 

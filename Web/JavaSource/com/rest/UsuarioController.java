@@ -6,16 +6,17 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.auth.TokenWrapper;
-import com.dto.JsonWrapper;
+import com.dto.JsonDTO;
 import com.dto.UsuarioMapper;
 import com.entities.Usuario;
 import com.services.UsuarioBean;
 
 @Path("/users")
-@Produces({ "application/json" })
+@Produces({ MediaType.APPLICATION_JSON })
 public class UsuarioController {
 
 	@Context

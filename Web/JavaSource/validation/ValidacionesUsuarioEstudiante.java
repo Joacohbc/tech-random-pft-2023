@@ -25,7 +25,7 @@ public class ValidacionesUsuarioEstudiante {
 		if (!valid.isValid())
 			return valid;
 
-		valid = validarGeneracion(estudiante.getGeneracion().toString());
+		valid = validarGeneracion(String.valueOf(estudiante.getGeneracion()));
 		if (!valid.isValid())
 			return valid;
 
@@ -41,7 +41,7 @@ public class ValidacionesUsuarioEstudiante {
 		if (!valid.isValid())
 			return valid;
 
-		valid = validarGeneracion(estudiante.getGeneracion().toString());
+		valid = validarGeneracion(String.valueOf(estudiante.getGeneracion()));
 		if (!valid.isValid())
 			return valid;
 

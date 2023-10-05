@@ -23,6 +23,7 @@ public class UsuarioDTO implements Serializable {
 	private String nombres;
 	private String apellidos;
 	private Genero genero;
+	private String contrasenia;
 	
 	@JsonDeserialize(using = LocalDateDeserializer.class)  
 	@JsonSerialize(using = LocalDateSerializer.class)
@@ -143,5 +144,13 @@ public class UsuarioDTO implements Serializable {
 
 	public void setItr(ItrDTO itr) {
 		this.itr = itr;
+	}
+
+	public String getContrasenia() {
+		return contrasenia;
+	}
+
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
 	}
 }
