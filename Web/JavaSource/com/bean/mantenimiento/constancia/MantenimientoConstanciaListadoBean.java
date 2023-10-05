@@ -37,9 +37,9 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 	@EJB
 	private TipoConstanciaBean bean;
 	
-	private List<TipoConstanciaDTO> tipoConstancias;
-	private List<TipoConstanciaDTO> tipoConstanciasSelecionados = new ArrayList<>();
-	private TipoConstanciaDTO tipoConstanciaSeleccionada;
+	private List<TipoConstanciaJSF> tipoConstancias;
+	private List<TipoConstanciaJSF> tipoConstanciasSelecionados = new ArrayList<>();
+	private TipoConstanciaJSF tipoConstanciaSeleccionada;
 	private byte[] nuevaPlantilla;
 	
 	public void alta() {
@@ -104,7 +104,7 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 	@PostConstruct
 	private void init() {
 		this.tipoConstancias = new ArrayList<>();
-		bean.findAll().stream().forEach(t -> tipoConstancias.add(new TipoConstanciaDTO(t)));
+		bean.findAll().stream().forEach(t -> tipoConstancias.add(new TipoConstanciaJSF(t)));
 	}
 	
 	@Override
@@ -114,34 +114,34 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 		}
 	}
 
-	public List<TipoConstanciaDTO> getTipoConstancias() {
+	public List<TipoConstanciaJSF> getTipoConstancias() {
 		return tipoConstancias;
 	}
 
-	public void setTipoConstancias(List<TipoConstanciaDTO> tipoConstancias) {
+	public void setTipoConstancias(List<TipoConstanciaJSF> tipoConstancias) {
 		this.tipoConstancias = tipoConstancias;
 	}
 
-	public List<TipoConstanciaDTO> getTipoConstanciasSelecionados() {
+	public List<TipoConstanciaJSF> getTipoConstanciasSelecionados() {
 		return tipoConstanciasSelecionados;
 	}
 
-	public void setTipoConstanciasSelecionados(List<TipoConstanciaDTO> tipoConstanciasSelecionados) {
+	public void setTipoConstanciasSelecionados(List<TipoConstanciaJSF> tipoConstanciasSelecionados) {
 		this.tipoConstanciasSelecionados = tipoConstanciasSelecionados;
 	}
 	
-	public TipoConstanciaDTO getTipoConstanciaSeleccionada() {
+	public TipoConstanciaJSF getTipoConstanciaSeleccionada() {
 		return tipoConstanciaSeleccionada;
 	}
 
-	public void setTipoConstanciaSeleccionada(TipoConstanciaDTO tipoConstanciaSeleccionada) {
+	public void setTipoConstanciaSeleccionada(TipoConstanciaJSF tipoConstanciaSeleccionada) {
 		this.tipoConstanciaSeleccionada = tipoConstanciaSeleccionada;
 	}
 
 	// Esta clase auxiliar tiene como objetivo poder usar Tipo de Constancia y cargar el archivo de la plantilla
 	// dentro de un StreamedContent y asi poder descargar el archivo en cada caso, dentro del PostConstruct se mappean
 	// todos los TipoConstancia a TipoConstanciaDTO
-    public class TipoConstanciaDTO {
+    public class TipoConstanciaJSF {
     	private Long idTipoConstancia;
     	private Boolean estado;
     	private StreamedContent plantilla;
@@ -172,11 +172,11 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 			this.tipo = tipo;
 		}
 		
-		public TipoConstanciaDTO() {
+		public TipoConstanciaJSF() {
 			super();
 		}
 		
-		public TipoConstanciaDTO(TipoConstancia t) {
+		public TipoConstanciaJSF(TipoConstancia t) {
 			super();
 			this.estado = t.getEstado();
 			this.plantilla = DefaultStreamedContent.builder()
