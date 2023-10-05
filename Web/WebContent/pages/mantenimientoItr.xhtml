@@ -7,12 +7,178 @@
 
 
 	<ui:define name="content">
-		<f:event type="preRenderView" listener="#{temporalBean.checkUser}" />
+		<f:event type="preRenderView" listener="#{mantenimientoItr.checkUser}" />
 	
-		<p style="display: flex; justify-content: center; align-items: center; font-size: 2rem;font-family: 'Poppins', sans-serif;color: black;">Página de ITR en Mantenimiento</p>
+		<h:form id="form">
+			<p:dataTable var="itr" value="#{mantenimientoItr.itrs}"
+				id="listaItrs"
+				emptyMessage="No se encontro ningun Itr con este criterio"
+				resizableColumns="true" liveResize="true" showGridlines="true"
+				rowKey="#{itr.nombre}" paginator="true" rows="20"
+				rowSelectMode="add" paginatorPosition="bottom"
+				tableStyle="width:auto"
+				selection="#{mantenimientoItr.itrSeleccionados}">								
+				<f:facet name="header">
+					<p:toolbar>
+						<p:toolbarGroup>
+							<span style="font-weight: bold">Lista de Itrs</span>
+						</p:toolbarGroup>
+						<p:toolbarGroup>
+						
+							<c:if test="#{authBean.esAnalista()}">
+								<p:commandButton id="borrar-itrs-button"
+									value="#{mantenimientoItr.botonBajaMensaje}"
+									icon="pi pi-trash"
+									actionListener="#{mantenimientoItr.bajaItrs}"
+									styleClass="ui-button-danger"
+									disabled="#{mantenimientoItr.itrSeleccionados.isEmpty()}"
+									update="@this">
+								</p:commandButton>
 	
-		<p:panelGrid columns="1" style="display: flex; justify-content: center; align-items: center; height: 550px;">
-   			<h:graphicImage name="images/mantenimiento1.png" style="border: none;"/>
-		</p:panelGrid>
+								<p:commandButton id="alta-itrs-button"
+									value="#{mantenimientoItr.botonAltaMensaje}"
+									icon="pi pi-plus"
+									actionListener="#{mantenimientoItr.altaItrs}"
+									styleClass="ui-button-success"
+									disabled="#{mantenimientoItr.itrSeleccionados.isEmpty()}"
+									update="@this">
+								</p:commandButton>
+							</c:if>
+							
+							<div>
+								<p:commandButton id="toggler" type="button" value="Columns"
+									icon="pi pi-align-justify" />
+								<p:columnToggler datasource="listaItrs" trigger="toggler">
+									<p:ajax />
+								</p:columnToggler>
+							</div>
+						</p:toolbarGroup>
+					</p:toolbar>
+				</f:facet>
+
+				<c:if test="#{authBean.esAnalista()}">
+					<p:ajax event="rowSelect" update=":form:listaItrs:borrar-itrs-button" />
+					<p:ajax event="rowUnselect" update=":form:listaItrs:borrar-itrs-button" />
+					<p:ajax event="rowSelectCheckbox" update=":form:listaItrs:borrar-itrs-button" />
+					<p:ajax event="rowUnselectCheckbox" update=":form:listaItrs:borrar-itrs-button" />
+					<p:ajax event="toggleSelect" update=":form:listaItrs:borrar-itrs-button" />
+					
+					<p:ajax event="rowSelect" update=":form:listaItrs:alta-itrs-button" />
+					<p:ajax event="rowUnselect" update=":form:listaItrs:alta-itrs-button" />
+					<p:ajax event="rowSelectCheckbox" update=":form:listaItrs:alta-itrs-button" />
+					<p:ajax event="rowUnselectCheckbox" update=":form:listaItrs:alta-itrs-button" />
+					<p:ajax event="toggleSelect" update=":form:listaItrs:alta-itrs-button" />
+				</c:if>
+
+				<p:column toggleable="false" resizable="false"
+					selectionMode="multiple" exportable="false"></p:column>
+
+				<p:column headerText="Nombre itr"
+					sortBy="#{itr.nombre}"
+					filterBy="#{itr.nombre}" filterMatchMode="contains">
+					<h:outputText value="#{itr.nombre}" />
+				</p:column>
+
+
+				<p:column headerText="Departamento" sortBy="#{itr.departamento}"
+					filterBy="#{itr.departamento}" filterMatchMode="contains">
+					<h:outputText value="#{itr.departamento.toString()}" />
+				</p:column>
+
+				
+
+				<p:column headerText="¿Eliminado?" toggleable="false"
+					resizable="false" sortBy="#{itr.estado}">
+					<div class="justify-content-center flex">
+						<p:badge value='#{itr.estado ? "ALTA" : "BAJA"}'
+							severity='#{itr.estado ? "success" : "danger"}'
+							styleClass="mr-2"></p:badge>
+					</div>
+				</p:column>
+
+				
+				<p:column toggleable="false" headerText="Acciones">
+					<p:commandButton icon="pi pi-pencil"
+						update=":dialogs:alta-itr-content"
+						oncomplete="PF('editarItrDialog').show()"
+						styleClass="edit-button rounded-button ui-button-success"
+						process="@this">
+						<f:setPropertyActionListener value="#{itr}"
+							target="#{mantenimientoItr.itrSeleccionado}" />
+						<p:resetInput target=":dialogs:alta-itr-content" />
+					</p:commandButton>
+
+					<p:commandButton class="ui-button-warning rounded-button"
+						icon='pi #{itr.estado ? "pi-trash" : "pi-plus"}'
+						oncomplete='PF("#{itr.estado ? "bajaitrDialog" : "altaitrDialog"}").show()'>
+						<f:setPropertyActionListener value="#{itr}"
+							target="#{mantenimientoItr.itrSeleccionado}" />
+					</p:commandButton>
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+
+		<c:if test="#{authBean.esAnalista()}">
+			<h:form id="dialogs">
+				<p:dialog header="Informacion de Itr" showEffect="fade"
+					modal="true" widgetVar="editarItrDialog" responsive="true">
+					<p:outputPanel id="alta-itr-content" class="ui-fluid grid">
+						<p:outputPanel
+							rendered="#{not empty mantenimientoItr.itrSeleccionado}">
+							<p:panelGrid columns="4" styleClass="ui-noborder">
+								<h:outputLabel value="Nombre:" />
+								<p:inputText
+									value="#{mantenimientoItr.itrSeleccionado.nombre}" />
+
+								<p:outputLabel value="Departamento:"></p:outputLabel>
+								<p:selectOneMenu
+									value="#{mantenimientoItr.itrSeleccionado.departamento}">
+									<f:selectItems value="#{enumBean.departamentos}"
+										var="departamentos" itemValue="#{departamentos}"
+										itemLabel="#{departamentos}"></f:selectItems>
+								</p:selectOneMenu>
+																																																	
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Guardar" icon="pi pi-check"
+							actionListener="#{mantenimientoItr.editaritr}"
+							update="alta-itr-content"
+							process="alta-itr-content @this"/>
+							
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('editarItrDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="bajaitrDialog" showEffect="fade"
+					width="300" message="¿Quieres dar de baja al itr?"
+					header="Confirm" severity="warn">
+					<p:commandButton value="Si" icon="pi pi-check"
+						actionListener="#{mantenimientoItr.bajaitr}"
+						process="@this" update=":form:listaItrs:borrar-itrs-button"
+						oncomplete="PF('bajaitrDialog').hide()" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('bajaitrDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog widgetVar="altaitrDialog" showEffect="fade"
+					width="300" message="¿Quieres dar de alta al itr?"
+					header="Confirm" severity="warn">
+					<p:commandButton value="Si" icon="pi pi-check"
+						actionListener="#{mantenimientoItr.altaitr}"
+						process="@this" oncomplete="PF('altaitrDialog').hide()" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('altaitrDialog').hide()" />
+				</p:confirmDialog>
+			</h:form>
+		</c:if>
+
 	</ui:define>
 </ui:composition>
