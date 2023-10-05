@@ -41,6 +41,7 @@ public class ListadoEventosBean implements Serializable, AuthRenderedControl {
 	@EJB
 	private TipoConstanciaBean tipoConstanciaBean;
 	
+	
 	@EJB
 	private UsuarioBean beanUsuario;
 
@@ -52,7 +53,7 @@ public class ListadoEventosBean implements Serializable, AuthRenderedControl {
 	private List<Evento> eventos;
 	private Evento eventoSeleccionado;
 	private List<TipoConstancia> tiposDeConstancias;
-	private TipoConstancia tiposDeConstancia;
+	private Long tiposDeConstanciaId;
 
 	@PostConstruct
 	public void init() {
@@ -78,13 +79,9 @@ public class ListadoEventosBean implements Serializable, AuthRenderedControl {
         Estudiante est = beanUsuario.findById(Estudiante.class,auth.getIdUsuario());
         c.setEstudiante(est);    
         c.setEvento(eventoSeleccionado);
-        
-        c.setTipoConstancia(tiposDeConstancia);
-        c.setDetalle("EL ESTUDIANTE: " +est.getNombres() + "Solicita la cosntacia para el evento: "+eventoSeleccionado.getTitulo());
-        
+        c.setTipoConstancia(tipoConstanciaBean.findById(tiposDeConstanciaId));
+        c.setDetalle("Detalle");
         constanciaBean.solicitar(c);
-
-
 	}
 	
 
@@ -113,12 +110,12 @@ public class ListadoEventosBean implements Serializable, AuthRenderedControl {
 		this.tiposDeConstancias = tiposDeConstancias;
 	}
 	
-	public TipoConstancia getTiposDeConstancia() {
-		return tiposDeConstancia;
+	public Long getTiposDeConstanciaId() {
+		return tiposDeConstanciaId;
 	}
 
-	public void setTiposDeConstancia(TipoConstancia tiposDeConstancia) {
-		this.tiposDeConstancia = tiposDeConstancia;
+	public void setTiposDeConstanciaId(Long tiposDeConstanciaId) {
+		this.tiposDeConstanciaId = tiposDeConstanciaId;
 	}
 
 	@Override

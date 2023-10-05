@@ -18,60 +18,73 @@
 					rowSelectMode="add" paginatorPosition="bottom"
 					rowKey="#{evento.idEvento}" paginator="true" rows="20"
 					selectionMode="single">
-					
+
 					<f:facet name="header">
-                Eventos Disponibles
-            	</f:facet>
-            	
-            	
+               			 Eventos Disponibles
+						<p:selectOneMenu
+							value="#{listadoEventosBean.tiposDeConstanciaId}">
+							<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true"
+								itemValue="" />
+							<f:selectItems value="#{listadoEventosBean.tiposDeConstancias}"
+								var="tipoConstancia" itemLabel="#{tipoConstancia.tipo}"
+								itemValue="#{tipoConstancia.idTipoConstancia}" />
+						</p:selectOneMenu>
+					</f:facet>
+
+
 					<p:column headerText="Titulo" sortBy="#{evento.titulo}"
 						filterBy="#{evento.titulo}" filterMatchMode="contains">
 						<h:outputText value="#{evento.titulo}" />
 					</p:column>
 
 
-					<p:column headerText="Fecha de Inicio" sortBy="#{evento.fechaInicio}"
-						filterBy="#{evento.fechaInicio}" filterMatchMode="contains">
+					<p:column headerText="Fecha de Inicio"
+						sortBy="#{evento.fechaInicio}" filterBy="#{evento.fechaInicio}"
+						filterMatchMode="contains">
 						<h:outputText value="#{evento.fechaInicio}" />
 					</p:column>
-					
-					
-					
-					<p:column headerText="Fecha De Fin"  sortBy="#{evento.fechaFin}"
+
+
+
+					<p:column headerText="Fecha De Fin" sortBy="#{evento.fechaFin}"
 						filterBy="#{evento.fechaFin}" filterMatchMode="contains">
 						<h:outputText value="#{evento.fechaFin}" />
 					</p:column>
-					
-					
-					
+
 					<p:column headerText="Modalidad" sortBy="#{evento.modalidad}"
 						filterBy="#{evento.modalidad}" filterMatchMode="contains">
 						<h:outputText value="#{evento.modalidad}" />
 					</p:column>
-					
-					
+
+
 					<p:column headerText="Localizacion" sortBy="#{evento.localizacion}"
 						filterBy="#{evento.localizacion}" filterMatchMode="contains">
 						<h:outputText value="#{evento.localizacion}" />
 					</p:column>
-					
-					
-					<p:column headerText="Tipo de Constancia">
-						<p:selectOneMenu value="#{listadoEventosBean.tiposDeConstancias}">
-							<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true"
-								itemValue="" />
-							<f:selectItems value="#{listadoEventosBean.tiposDeConstancias}" />
-						</p:selectOneMenu>
-					</p:column>
-					
-					
+
 					<p:column>
-						<p:commandButton type="button" value="Solicitar" actionListener="#{listadoEventosBean.crearSolicitud}"  />
+						<p:commandButton value="Solicitar"
+							onclick="PF('altaConstanciaDialog').show()">
+							<f:setPropertyActionListener value="#{evento}"
+								target="#{listadoEventosBean.eventoSeleccionado}" />
+						</p:commandButton>
 					</p:column>
-					
-					
+
+
 				</p:dataTable>
 
+				<p:confirmDialog widgetVar="altaConstanciaDialog" showEffect="fade"
+					width="300"
+					message="¿Quieres soliciutar una constancia para el evento?"
+					header="Confirm" severity="warn">
+					<p:commandButton value="Si" icon="pi pi-check"
+						actionListener="#{listadoEventosBean.crearSolicitud}"
+						oncomplete="PF('altaConstanciaDialog').hide()" />
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('altaConstanciaDialog').hide()" />
+				</p:confirmDialog>
 			</h:form>
 		</div>
 

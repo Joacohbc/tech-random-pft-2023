@@ -46,6 +46,7 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 		try {
 			TipoConstancia constancia = tipoConstanciaSeleccionada.toEntity();
 			bean.reactivar(constancia.getIdTipoConstancia());
+			tipoConstanciaSeleccionada.setEstado(true);
 			
 			PrimeFaces.current().executeScript("PF('altaTipoConstanciaDialog').hide()");
 			PrimeFaces.current().ajax().update("form:listaTipoConstancias");
@@ -60,6 +61,7 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 		try {
 			TipoConstancia constancia = tipoConstanciaSeleccionada.toEntity();
 			bean.eliminar(constancia.getIdTipoConstancia());
+			tipoConstanciaSeleccionada.setEstado(false);
 			
 			PrimeFaces.current().executeScript("PF('bajaTipoConstanciaDialog').hide()");
 			PrimeFaces.current().ajax().update("form:listaTipoConstancias");
@@ -88,6 +90,10 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, e.getMessage());
 		}
+	}
+	
+	public void nueva() {
+		
 	}
 	
     public void handleFileUpload(FileUploadEvent event) {
