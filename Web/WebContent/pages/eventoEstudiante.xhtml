@@ -20,7 +20,7 @@
 					selectionMode="single">
 
 					<f:facet name="header">
-               			 Eventos Disponibles
+						Tipo de Constancia a Solicitar: 
 						<p:selectOneMenu
 							value="#{listadoEventosBean.tiposDeConstanciaId}">
 							<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true"
@@ -44,8 +44,6 @@
 						<h:outputText value="#{evento.fechaInicio}" />
 					</p:column>
 
-
-
 					<p:column headerText="Fecha De Fin" sortBy="#{evento.fechaFin}"
 						filterBy="#{evento.fechaFin}" filterMatchMode="contains">
 						<h:outputText value="#{evento.fechaFin}" />
@@ -62,15 +60,13 @@
 						<h:outputText value="#{evento.localizacion}" />
 					</p:column>
 
-					<p:column>
+					<p:column headerText="Acciones">
 						<p:commandButton value="Solicitar"
 							onclick="PF('altaConstanciaDialog').show()">
 							<f:setPropertyActionListener value="#{evento}"
 								target="#{listadoEventosBean.eventoSeleccionado}" />
 						</p:commandButton>
 					</p:column>
-
-
 				</p:dataTable>
 
 				<p:confirmDialog widgetVar="altaConstanciaDialog" showEffect="fade"
