@@ -46,7 +46,7 @@ public class ListadoUsuariosBean implements Serializable, AuthRenderedControl {
 
 	private List<Usuario> usuarios;
 	private List<Usuario> usuariosSeleccionados = new ArrayList<>();
-	private Usuario usuarioSeleccionado;2
+	private Usuario usuarioSeleccionado;
 	private List<Itr> listadoItr;
 
 	@PostConstruct

@@ -137,15 +137,12 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 
 			// Agrego la accion constancia a la Constancia
 			acBean.addAccionConstancia(accion, actual);
-
-			// Cambio el estado de la constancia
-			if(estadoNuevo == EstadoSolicitudes.FINALIZADO) 
-				throw new InvalidEntityException("Cuando se actualiza el estado de la constancia a Finalizado se debe agregar el archivo descargable para el estudiante");
 			
-			// Si se finaliza la constancia agrego la constnacia ya firmada para que el estudiante pueda generarla
+			// Si se finaliza la constancia agrego la constancia ya firmada para que el estudiante pueda generarla
 			if(estadoNuevo == EstadoSolicitudes.FINALIZADO) {
 				actual.setArchivo(cargarPlantilla(id));
 			}
+			
 			actual.setEstado(estadoNuevo);
 			actual = dao.update(actual);
 
@@ -201,7 +198,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 		}
 	}
 	
-	public byte[] cargarPlantilla(Long idConstancia) {
+	private byte[] cargarPlantilla(Long idConstancia) {
 		try {
 			Constancia cons = dao.findById(idConstancia);
 
