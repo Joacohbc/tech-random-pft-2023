@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ProyectoFinalTecnicatura</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="genero">
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>Binario</item>
+    </string-array>
 </resources>

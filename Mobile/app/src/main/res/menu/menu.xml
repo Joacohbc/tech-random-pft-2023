@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/ico_home"
+
+        />
+
+    <item
+        android:id="@+id/perfil"
+        android:title="Perfil"
+        android:icon="@drawable/ico_perfil"/>
+
+
+    <item
+        android:id="@+id/constancias"
+        android:title="Constancias"
+        android:icon="@drawable/ico_constancia" />
+
+</menu>
