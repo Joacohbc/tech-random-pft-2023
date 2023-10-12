@@ -20,9 +20,11 @@ import org.primefaces.PrimeFaces;
 import com.auth.AuthRenderedControl;
 import com.entities.Analista;
 import com.entities.Estudiante;
+import com.entities.Itr;
 import com.entities.Tutor;
 import com.entities.Usuario;
 import com.entities.enums.Rol;
+import com.services.ItrBean;
 import com.services.UsuarioBean;
 
 import validation.ValidacionesUsuario;
@@ -31,17 +33,21 @@ import validation.ValidationObject;
 
 @Named("listadoUsuariosBean")
 @ViewScoped
-public class ListadoUsuariosBean implements Serializable, AuthRenderedControl{
+public class ListadoUsuariosBean implements Serializable, AuthRenderedControl {
 
 	@EJB
 	private UsuarioBean bean;
+
+	@EJB
+	private ItrBean itrBean;
 
 	@Inject
 	private AuthJWTBean auth;
 
 	private List<Usuario> usuarios;
 	private List<Usuario> usuariosSeleccionados = new ArrayList<>();
-	private Usuario usuarioSeleccionado;
+	private Usuario usuarioSeleccionado;2
+	private List<Itr> listadoItr;
 
 	@PostConstruct
 	public void init() {
@@ -49,6 +55,8 @@ public class ListadoUsuariosBean implements Serializable, AuthRenderedControl{
 		usuarios.addAll(bean.findAll(Estudiante.class));
 		usuarios.addAll(bean.findAll(Analista.class));
 		usuarios.addAll(bean.findAll(Tutor.class));
+
+		this.listadoItr = itrBean.findAll();
 	}
 
 	private void updateEstado(Usuario usuario, Boolean estado) {
@@ -152,7 +160,7 @@ public class ListadoUsuariosBean implements Serializable, AuthRenderedControl{
 		try {
 			if (!auth.esAnalista())
 				return;
-			
+
 			ValidationObject error = ValidacionesUsuario.ValidarUsuarioSinContrasenia(usuarioSeleccionado,
 					TipoUsuarioDocumento.URUGUAYO);
 			if (!error.isValid()) {
@@ -172,12 +180,13 @@ public class ListadoUsuariosBean implements Serializable, AuthRenderedControl{
 			PrimeFaces.current().ajax().update("form:listaUsuarios");
 		} catch (Exception e) {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
-		
+
 		} finally {
-			// Esto es para que no se rompa el JSF del front end cuando se modifica un campo y no se guarda en la BD
+			// Esto es para que no se rompa el JSF del front end cuando se modifica un campo
+			// y no se guarda en la BD
 			Usuario bd = bean.findById(usuarioSeleccionado.getClass(), usuarioSeleccionado.getIdUsuario());
 			for (int i = 0; i < usuarios.size(); i++) {
-				if(usuarios.get(i).getIdUsuario() == usuarioSeleccionado.getIdUsuario()) {
+				if (usuarios.get(i).getIdUsuario() == usuarioSeleccionado.getIdUsuario()) {
 					usuarios.set(i, bd);
 					break;
 				}
@@ -189,7 +198,7 @@ public class ListadoUsuariosBean implements Serializable, AuthRenderedControl{
 	public List<Usuario> getUsuarios() {
 		return usuarios;
 	}
-	
+
 	public List<Usuario> getUsuariosSeleccionados() {
 		return usuariosSeleccionados;
 	}
@@ -212,8 +221,16 @@ public class ListadoUsuariosBean implements Serializable, AuthRenderedControl{
 
 	@Override
 	public void checkUser() throws IOException {
-		if(!auth.es(Rol.ANALISTA, Rol.TUTOR)) {
-	        JSFUtils.redirect("/noAuth.xhtml");
+		if (!auth.es(Rol.ANALISTA, Rol.TUTOR)) {
+			JSFUtils.redirect("/noAuth.xhtml");
 		}
+	}
+
+	public List<Itr> getListadoItr() {
+		return listadoItr;
+	}
+
+	public void setListadoItr(List<Itr> listadoItr) {
+		this.listadoItr = listadoItr;
 	}
 }

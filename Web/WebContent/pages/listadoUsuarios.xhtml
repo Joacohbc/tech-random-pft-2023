@@ -107,7 +107,12 @@
 					filterBy="#{usuario.departamento}" filterMatchMode="contains">
 					<h:outputText value="#{usuario.departamento.toString()}" />
 				</p:column>
-
+				
+				<p:column headerText="ITR" sortBy="#{usuario.itr}"
+					filterBy="#{usuario.departamento}" filterMatchMode="contains">
+					<h:outputText value="#{usuario.itr.nombre}" />
+				</p:column>
+				
 				<p:column headerText="Estado Usuario"
 					sortBy="#{usuario.estadoUsuario}"
 					filterBy="#{usuario.estadoUsuario}" filterMatchMode="contains">
@@ -215,7 +220,14 @@
 										var="departamentos" itemValue="#{departamentos}"
 										itemLabel="#{departamentos}"></f:selectItems>
 								</p:selectOneMenu>
-
+								
+								<p:outputLabel value="ITR:"></p:outputLabel>
+								<p:selectOneMenu value="#{listadoUsuariosBean.usuarioSeleccionado.itr.idItr}">
+									<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true" />
+									<f:selectItems value="#{listadoUsuariosBean.listadoItr}" var="itr"
+										itemValue="#{itr.idItr}" itemLabel="#{itr.nombre}"></f:selectItems>
+								</p:selectOneMenu>
+								
 								<p:outputLabel value="Genero:"></p:outputLabel>
 								<p:selectOneMenu
 									value="#{listadoUsuariosBean.usuarioSeleccionado.genero}">
