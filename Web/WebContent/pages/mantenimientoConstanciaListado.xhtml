@@ -87,7 +87,7 @@
 
 							<h:outputLabel value="Nueva Plantilla:" />
 							<p:fileUpload mode="simple" skinSimple="true" auto="true"
-								process="@this"
+								process="@this" allowTypes="/(\.|\/)(pdf)$/" accept=".pdf"
 								listener="#{mantenimientoConstanciaListadoBean.handleFileUpload}" />
 
 						</p:panelGrid>

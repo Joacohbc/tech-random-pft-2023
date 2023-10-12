@@ -1,6 +1,5 @@
 package com.bean.mantenimiento.constancia;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.file.UploadedFile;
 
@@ -37,36 +36,55 @@ public class MantenimientoConstanciaCrearBean implements Serializable, AuthRende
 	@EJB
 	private ConstanciaBean bean2;
 	
-	
 	@Inject
 	private AuthJWTBean auth;
 	
 	private String titulo;
 	private String parrafo1;
 	private String parrafo2;
-    private UploadedFile file;
     private StreamedContent fileDownloaded;
-    private byte[] plantilla;
+    private byte[] plantillaDeConstancia;
+    private byte[] plantillaBase;
     
-    public void upload() {
-        if (file == null) return;
-        
+    public void handleFileUpload(FileUploadEvent event) { 
     	try {
-    		plantilla = bean.generarPlantilla(titulo, parrafo1, parrafo2, 1, file.getContent());
-        	fileDownloaded = DefaultStreamedContent.builder()
-        	        .name("constancia.pdf")
-        	        .contentType("application/pdf")
-        	        .stream(() -> new ByteArrayInputStream(plantilla))
-        	        .build(); 
+        	if(!JSFUtils.isImage(event.getFile().getContentType())) {
+        		JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "El archivo para la plantilla debe ser de tipo JPG/PNG/JPEG");
+        		return;
+        	}
         	
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + file.getFileName() + " se subio con exito");
+        	plantillaBase = event.getFile().getContent();
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + event.getFile().getFileName() + " se subio con exito");
     	} catch (Exception e) {
-			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al cargar el archivo");
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al cargar el archivo: " + e.getMessage());
 		}
     }
     
+    public void generarPlantilla() {
+    	try {
+    		
+    		if(titulo.trim().isBlank() && (parrafo1.trim().isBlank() || parrafo2.trim().isBlank())) {
+    			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Debe llenar todos los campos, de titulo o alguno de los parrafos");
+    	    	return;		
+    		}
+    		
+    		if(plantillaBase == null) {	
+    			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Debe cargar una la base antes de generar la plantilla");
+    	    	return;		
+    		}
+    		
+    		plantillaDeConstancia = bean.generarPlantilla(titulo, parrafo1, parrafo2, 1, plantillaBase.clone());
+        	fileDownloaded = JSFUtils.crearPDF(plantillaDeConstancia, titulo);
+        	
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Ya se genero la plantilla, puede dar de la alta o previsualizarla");
+    	} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al generar la plantilla: " + e.getMessage());
+		}
+
+    }
+    
     public void alta() {
-    	if(plantilla == null) {
+    	if(plantillaDeConstancia == null) {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Cargue la plantilla y verifique que sea correcta antes de darla de alta");
 			return;
     	}
@@ -74,7 +92,7 @@ public class MantenimientoConstanciaCrearBean implements Serializable, AuthRende
     	try {
         	TipoConstancia tp = new TipoConstancia();
         	tp.setEstado(true);
-        	tp.setPlantilla(plantilla);
+        	tp.setPlantilla(plantillaDeConstancia);
         	tp.setTipo(titulo);
         	bean.insert(tp);
         	
@@ -134,14 +152,6 @@ public class MantenimientoConstanciaCrearBean implements Serializable, AuthRende
 
 	public void setParrafo2(String parrafo2) {
 		this.parrafo2 = parrafo2;
-	}
-
-	public UploadedFile getFile() {
-		return file;
-	}
-
-	public void setFile(UploadedFile file) {
-		this.file = file;
 	}
 
 	public StreamedContent getFileDownloaded() {

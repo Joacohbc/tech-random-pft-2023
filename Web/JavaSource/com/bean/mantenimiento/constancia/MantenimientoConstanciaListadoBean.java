@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.activation.MimeType;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -13,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.core.MediaType;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
@@ -78,8 +80,11 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 			
 			if(nuevaPlantilla != null) {
 				constancia.setPlantilla(nuevaPlantilla);
+				tipoConstanciaSeleccionada.setPlantilla(JSFUtils.crearPDF(nuevaPlantilla, tipoConstanciaSeleccionada.getTipo()));
 			} else {
-				constancia.setPlantilla(bean.findById(constancia.getIdTipoConstancia()).getPlantilla());
+				final byte[] plantillaVieja = bean.findById(constancia.getIdTipoConstancia()).getPlantilla();
+				constancia.setPlantilla(plantillaVieja);
+				tipoConstanciaSeleccionada.setPlantilla(JSFUtils.crearPDF(plantillaVieja, constancia.getTipo()));
 			}
 			
 			bean.update(constancia);
@@ -97,8 +102,13 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 	}
 	
     public void handleFileUpload(FileUploadEvent event) {
+    	if(!event.getFile().getContentType().equals(JSFUtils.APPLICATION_PDF)) {
+    		JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "El archivo para la plantilla debe ser de tipo PDF");
+    		return;
+    	}
+    	
         nuevaPlantilla = event.getFile().getContent();
-        JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Successful", event.getFile().getFileName() + " is uploaded.");
+    	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + event.getFile().getFileName() + " se subio con exito");
     }
 	
 	@PostConstruct

@@ -28,25 +28,26 @@
 
 						<h5>Plantilla del Documento</h5>
 
-						<p:fileUpload value="#{mantenimientoConstanciaCrearBean.file}"
-							mode="simple" skinSimple="true"  allowTypes="/(\.|\/)(jpe?g|png)$/"
-                      		validateContentType="true" accept=".jpg,.jpeg,.png"/>
-
-						<p:commandButton value="Subir plantilla de documento" ajax="false"
-							action="#{mantenimientoConstanciaCrearBean.upload}"
-							styleClass="mt-3 ui-button-outlined block" />
-							
+						<p:fileUpload mode="simple" skinSimple="true" auto="true"
+							process="@this" allowTypes="/(\.|\/)(jpe?g|png)$/" accept=".jpg,.jpeg,.png"
+							listener="#{mantenimientoConstanciaCrearBean.handleFileUpload}"/>
+						
 						<p:separator />
+						
+						<p:commandButton value="Generar plantilla" 
+							icon="pi pi-bolt" styleClass="mt-2"
+							action="#{mantenimientoConstanciaCrearBean.generarPlantilla}"
+							update="previsualizarPlantilla darAltaPlantilla"/>
 
-						<p:commandButton value="Descargar Plantilla" ajax="false"
+						<p:commandButton id="previsualizarPlantilla" value="Previsualización de la plantilla" ajax="false" 
 							onclick="PrimeFaces.monitorDownload(start, stop);"
-							icon="pi pi-arrow-down" 
+							icon="pi pi-arrow-down" styleClass="mt-2"
 							disabled="#{mantenimientoConstanciaCrearBean.fileDownloaded == null}">
 							<p:fileDownload
 								value="#{mantenimientoConstanciaCrearBean.fileDownloaded}" />
 						</p:commandButton>
 						
-						<p:commandButton value="Dar de alta la plantilla" 
+						<p:commandButton id="darAltaPlantilla" value="Dar de alta la plantilla" 
 							icon="pi pi-plus-circle" styleClass="mt-2"
 							onclick="PF('altaTipoConstanciaDialog').show()"
 							disabled="#{mantenimientoConstanciaCrearBean.fileDownloaded == null}">
