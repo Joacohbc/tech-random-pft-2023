@@ -41,7 +41,10 @@
 							var="departamentos" itemValue="#{departamentos}"
 							itemLabel="#{departamentos}"></f:selectItems>
 					</p:selectOneMenu>
-
+					
+					<p:outputLabel value="ITR:"/>
+					<p:inputText value="#{perfilBean.usuario.itr.nombre}" readonly="true"/>
+					
 					<p:outputLabel value="Genero:"></p:outputLabel>
 					<p:selectOneMenu value="#{perfilBean.usuario.genero}">
 						<f:selectItems value="#{enumBean.generos}" var="genero"
