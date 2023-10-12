@@ -2,7 +2,9 @@ package com.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +30,8 @@ import com.services.TipoConstanciaBean;
 import com.services.TipoConstanciaBeanRemote;
 import com.services.UsuarioBean;
 
+import validation.Formatos;
+
 @Named("listadoEventosBean")
 @ViewScoped
 public class ListadoEventosBean implements Serializable, AuthRenderedControl {
@@ -41,14 +45,11 @@ public class ListadoEventosBean implements Serializable, AuthRenderedControl {
 	@EJB
 	private TipoConstanciaBean tipoConstanciaBean;
 	
-	
 	@EJB
 	private UsuarioBean beanUsuario;
 
 	@Inject
 	private AuthJWTBean auth;
-
-	
 	
 	private List<Evento> eventos;
 	private Evento eventoSeleccionado;
@@ -65,23 +66,31 @@ public class ListadoEventosBean implements Serializable, AuthRenderedControl {
 	}
 
 	public void crearSolicitud() {
-		System.out.println("ENTRA AL METODO");
 		if (!auth.esEstudiante())
 			return;
 		
         if (eventoSeleccionado == null) {
-            // Añade un mensaje de error indicando que ningún evento fue seleccionado
-            FacesContext.getCurrentInstance().addMessage(null, 
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ningún evento fue seleccionado."));
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Ningún evento fue seleccionado.");
             return;
         }
-        Constancia c = new Constancia();
-        Estudiante est = beanUsuario.findById(Estudiante.class,auth.getIdUsuario());
-        c.setEstudiante(est);    
-        c.setEvento(eventoSeleccionado);
-        c.setTipoConstancia(tipoConstanciaBean.findById(tiposDeConstanciaId));
-        c.setDetalle("Detalle");
-        constanciaBean.solicitar(c);
+        
+        if(tiposDeConstanciaId == null) {
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Ningún tipo de constancia fue seleccionado.");
+            return;
+        }
+        
+        try {
+        	Constancia c = new Constancia();
+        	Estudiante est = beanUsuario.findById(Estudiante.class,auth.getIdUsuario());
+        	c.setEstudiante(est);    
+        	c.setEvento(eventoSeleccionado);
+        	c.setTipoConstancia(tipoConstanciaBean.findById(tiposDeConstanciaId));
+        	c.setDetalle("Constancia solicitada: " + Formatos.ToFormatedString(LocalDate.now()));
+        	constanciaBean.solicitar(c);        	
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se realizo la solictud correctamente");
+        } catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error: " + e.getMessage());
+		}
 	}
 	
 

@@ -60,18 +60,18 @@
 						<h:outputText value="#{evento.localizacion}" />
 					</p:column>
 
-					<p:column headerText="Acciones">
+					<p:column headerText="Acciones">				
 						<p:commandButton value="Solicitar"
-							onclick="PF('altaConstanciaDialog').show()">
-							<f:setPropertyActionListener value="#{evento}"
-								target="#{listadoEventosBean.eventoSeleccionado}" />
+						    oncomplete="PF('altaConstanciaDialog').show()">
+						    <f:setPropertyActionListener value="#{evento}"
+						        target="#{listadoEventosBean.eventoSeleccionado}"/>
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-
+		        
 				<p:confirmDialog widgetVar="altaConstanciaDialog" showEffect="fade"
 					width="300"
-					message="¿Quieres soliciutar una constancia para el evento?"
+					message="¿Quieres solicitar una constancia para el evento?"
 					header="Confirm" severity="warn">
 					<p:commandButton value="Si" icon="pi pi-check"
 						actionListener="#{listadoEventosBean.crearSolicitud}"
