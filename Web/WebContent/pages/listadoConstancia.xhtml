@@ -105,14 +105,32 @@
 
 				<p:column headerText="Estado" toggleable="false" sortBy="#{c.estado}"
 					filterBy="#{c.estado}" filterMatchMode="contains">
-					<h:outputText value="#{c.estado}" />
+						<div class="flex justify-content-center">
+							<p:badge value='#{c.estado.toString()}'
+								severity='#{c.estado == "INGRESADO" ? "success" : 
+											 c.estado == "EN_PROCESO" ? "warning" 
+											 : "danger"}'
+								styleClass="mr-2 text-base"/>
+						</div>
 				</p:column>
 														
-				<p:column headerText="Acciones" toggleable="false">
-			        <p:commandButton value='#{c.estado == "INGRESADO" ? "En Proceso" : "Finalizado"}' action="#{emitirConstanciasBean.cambiarEstado}" icon="pi pi-sync" rendered='#{c.estado != "FINALIZADO"}'>
+				<p:column headerText="Actualizar a" toggleable="false">
+			        <p:commandButton value='#{c.estado == "INGRESADO" ? "En Proceso" : "Finalizado"}' 
+			        	action="#{emitirConstanciasBean.cambiarEstado}" 
+			        	icon="pi pi-sync" 
+			        	class="rounded-button mr-2"
+			        	rendered='#{c.estado != "FINALIZADO"}'>
 			            <p:confirm header="Confirmacion" message="¿Esta seguro que quiere actualizar esta contancia?" icon="pi pi-exclamation-triangle"/>
-			            <f:setPropertyActionListener value="#{c}" target="#{emitirConstanciasBean.constanciaSeleccionada}"></f:setPropertyActionListener>
+			            <f:setPropertyActionListener value="#{c}" target="#{emitirConstanciasBean.constanciaSeleccionada}"/>
 			        </p:commandButton>
+			        
+    				<p:commandButton class="ui-button-warning rounded-button"
+						icon='pi pi-trash'
+						action="#{emitirConstanciasBean.eliminarConstancia}"
+						disabled='#{c.estado != "INGRESADO"}'>
+		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar esta contancia?" icon="pi pi-exclamation-triangle"/>
+			            	<f:setPropertyActionListener value="#{c}" target="#{emitirConstanciasBean.constanciaSeleccionada}"/>
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 		</h:form>

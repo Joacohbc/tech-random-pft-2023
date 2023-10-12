@@ -5,12 +5,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.PrimeFaces;
 
 import com.auth.AuthRenderedControl;
 import com.entities.AccionConstancia;
@@ -42,29 +45,26 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 		this.constancias = new ArrayList<>();
 		constancias.addAll(bean.findAll());
 	}
-	
-	public String asginarMetodoDeUpdate(Constancia c) {
-		if(c.getEstado() == EstadoSolicitudes.INGRESADO) {
-			return "aEnProgreso";
-		}
-		
-		if(c.getEstado() == EstadoSolicitudes.EN_PROCESO) {
-			return "aFinalizda";
-		}
-		
-		return "";
-	}
-	
+
 	public void cambiarEstado() {
 		if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.INGRESADO) {
 			updateEstado(constanciaSeleccionada, EstadoSolicitudes.EN_PROCESO);
+			PrimeFaces.current().ajax().update("form:listaConstancias");
 			return;
 		}
 	
 		if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.EN_PROCESO) {
 			updateEstado(constanciaSeleccionada, EstadoSolicitudes.FINALIZADO);
+			PrimeFaces.current().ajax().update("form:listaConstancias");
 			return;
 		}
+		
+	}
+	
+	public void eliminarConstancia() {
+		bean.eliminarConstancia(constanciaSeleccionada.getIdConstancia());
+		constancias.remove(constanciaSeleccionada);
+		PrimeFaces.current().ajax().update("form:listaConstancias");
 	}
 	
 	public void seleccionadasAEnPogreso() {
