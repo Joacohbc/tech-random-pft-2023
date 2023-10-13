@@ -4,9 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import com.entities.AccionConstancia;
 import com.entities.AccionReclamo;
-import com.entities.Constancia;
 import com.entities.Reclamo;
 import com.entities.enums.EstadoReclamo;
 import com.entities.enums.EstadoSolicitudes;
