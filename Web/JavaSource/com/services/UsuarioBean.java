@@ -1,8 +1,7 @@
 package com.services;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -404,13 +403,15 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			throw new NotFoundEntityException("No existe un usuario con el Nombre de Usuario: "+ nombreUsuario);
 		
 		try {			
-			Map<String, Object> claims = new HashMap<String, Object>();
-			claims.put("id", usuario.getIdUsuario());
-			claims.put("nombreUsuario", usuario.getNombreUsuario());
-			claims.put("nombres", usuario.getNombres());
-			claims.put("apellidos", usuario.getApellidos());
+//			Map<String, Object> claims = new HashMap<String, Object>();
+//			claims.put("id", usuario.getIdUsuario());
+//			claims.put("nombreUsuario", usuario.getNombreUsuario());
+//			claims.put("nombres", usuario.getNombres());
+//			claims.put("apellidos", usuario.getApellidos());
+				
+			String temporalToken = tokenBean.generarCustomToken(UUID.randomUUID().toString(), 1000l * 60l * 5l);
+			tokenBean.addToken(temporalToken, usuario.getIdUsuario());
 			
-			String temporalToken = tokenBean.generarCustomToken(claims, usuario.getNombreUsuario(), 1000l * 60l * 10l);
 			String link = "http://localhost:8080/ProyectoInfra/pages/restablecerContrasenia.xhtml?token=" + temporalToken;
 
 			mail.enviarConGMail(usuario.getEmailUtec(), "Contraseña Temporal - CETU" , "Ingrese a este link para restablecer la contraseña (vence en 10 minutos desde la llegada de este mensaje): " + link);
