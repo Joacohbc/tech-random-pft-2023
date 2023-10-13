@@ -1,7 +1,12 @@
 package com.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
+
+import com.entities.enums.EstadoReclamo;
+
 import java.util.Date;
 import java.util.List;
 
@@ -22,11 +27,11 @@ public class Reclamo implements Serializable {
 
 	private String detalle;
 
-	private String estado;
+	private EstadoReclamo estado;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="FECHA_HORA")
-	private Date fechaHora;
+	private LocalDateTime fechaHora;
 
 	//bi-directional many-to-one association to AccionReclamo
 	@OneToMany(mappedBy="reclamo")
@@ -61,20 +66,20 @@ public class Reclamo implements Serializable {
 		this.detalle = detalle;
 	}
 
-	public String getEstado() {
+	public EstadoReclamo getEstado() {
 		return this.estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(EstadoReclamo estado) {
 		this.estado = estado;
 	}
 
-	public Date getFechaHora() {
+	public LocalDateTime getFechaHora() {
 		return this.fechaHora;
 	}
 
-	public void setFechaHora(Date fechaHora) {
-		this.fechaHora = fechaHora;
+	public void setFechaHora(LocalDateTime localDateTime) {
+		this.fechaHora = localDateTime;
 	}
 
 	public List<AccionReclamo> getAccionReclamos() {
