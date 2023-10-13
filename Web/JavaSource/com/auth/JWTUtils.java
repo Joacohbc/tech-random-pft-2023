@@ -26,7 +26,7 @@ public class JWTUtils {
 	private String SECRET_KEY = "SoySuperMegaUltraDificil";
 
 	// for retrieveing any information from token we will need the secret key
-	private Claims getAllClaimsFromToken(String token) throws ExpiredJwtException, UnsupportedJwtException,
+	public Claims getAllClaimsFromToken(String token) throws ExpiredJwtException, UnsupportedJwtException,
 			MalformedJwtException, SignatureException, IllegalArgumentException {
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 	}
@@ -56,10 +56,23 @@ public class JWTUtils {
 				.compact();
 	}
 	
+	public String doGenerateToken(Map<String, Object> claims, String subject, Long duration) {
+		return Jwts.builder().setClaims(claims)
+				.setSubject(subject) 
+				.setIssuedAt(new Date(System.currentTimeMillis())) 
+				.setExpiration(new Date(System.currentTimeMillis() + duration))
+				.signWith(SignatureAlgorithm.HS512, SECRET_KEY) 
+				.compact();
+	}
+	
 	// check if the token has expired
 	public Boolean isTokenExpired(String token) {
-		final Date expiration = getExpirationDateFromToken(token);
-		return expiration.before(new Date());
+		try {
+			final Date expiration = getExpirationDateFromToken(token);
+			return expiration.before(new Date());
+		}catch (ExpiredJwtException e) {
+			return false;
+		}
 	}
 
 

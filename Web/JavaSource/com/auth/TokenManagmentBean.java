@@ -1,10 +1,14 @@
 package com.auth;
 
+import java.util.Map;
+
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 
 import com.entities.enums.Rol;
+
+import io.jsonwebtoken.Claims;
 
 @Singleton
 @LocalBean
@@ -14,6 +18,18 @@ public class TokenManagmentBean {
     
 	@EJB
 	private JWTUtils jwt;
+	
+	public String generarCustomToken(Map<String, Object> claims, String subject, Long duration) {
+		return jwt.doGenerateToken(claims, subject, duration);
+	}
+	
+	public Claims getClaimsFromCustomToken(String token) {
+		try {
+			return jwt.getAllClaimsFromToken(token);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 	
 	public String generarToken(Long idUsuario, Long idRol, String nombreUsuario, Rol rol) {
 		UserDetails userInfo = new UserDetails();
@@ -38,4 +54,5 @@ public class TokenManagmentBean {
 			return null;
 		}
 	}
+
 }

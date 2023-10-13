@@ -1,6 +1,8 @@
 package com.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -8,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.mail.MessagingException;
 import javax.persistence.NoResultException;
 
+import com.auth.TokenManagmentBean;
 import com.daos.UsuariosDAO;
 import com.entities.Analista;
 import com.entities.Estudiante;
@@ -36,6 +39,9 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	@EJB
 	private UsuariosDAO dao;
 
+	@EJB
+	private TokenManagmentBean tokenBean;
+	
 	@EJB
 	private MailBean mail;
 	
@@ -338,6 +344,29 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			return null;
 		}
 	}
+	
+	public void updateContrasenia(Long id, String nueva)
+			throws ServiceException, NotFoundEntityException, InvalidEntityException {
+		try {
+			ServicesUtils.checkNull(id, "Al actualizar un Usuario, su ID no puede ser nulo");
+
+			Usuario actual = dao.findById(Usuario.class, id);
+			if (actual == null)
+				throw new NotFoundEntityException("No existe un usuario con el ID: " + id);
+			
+			ValidationObject valid = ValidacionesUsuario.validarContrasena(nueva);
+			if(!valid.isValid())
+				throw new InvalidEntityException(valid.getErrorMessage());
+			
+			actual.setContrasena(encriptar(nueva));
+			
+			mail.enviarConGMail(actual.getEmailUtec(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailPersonal(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
+			dao.update(actual);
+		} catch (DAOException | MessagingException e) {
+			throw new ServiceException(e);
+		}
+	}
 
 	@Override
 	public void updateContrasenia(Long id, String antigua, String nueva)
@@ -374,15 +403,18 @@ public class UsuarioBean implements UsuarioBeanRemote {
 		if(usuario == null) 
 			throw new NotFoundEntityException("No existe un usuario con el Nombre de Usuario: "+ nombreUsuario);
 		
-		try {
-			String password =  System.currentTimeMillis() + usuario.getContrasena().toLowerCase();
+		try {			
+			Map<String, Object> claims = new HashMap<String, Object>();
+			claims.put("id", usuario.getIdUsuario());
+			claims.put("nombreUsuario", usuario.getNombreUsuario());
+			claims.put("nombres", usuario.getNombres());
+			claims.put("apellidos", usuario.getApellidos());
 			
-			usuario.setContrasena(encriptar(password.trim()));
-			dao.update(usuario);
+			String temporalToken = tokenBean.generarCustomToken(claims, usuario.getNombreUsuario(), 1000l * 60l * 10l);
+			String link = "http://localhost:8080/ProyectoInfra/pages/restablecerContrasenia.xhtml?token=" + temporalToken;
 
-			mail.enviarConGMail(usuario.getEmailUtec(), "Contraseña Temporal - CETU" , password.trim());
-			mail.enviarConGMail(usuario.getEmailPersonal(), "Contraseña Temporal - CETU", password.trim());
-			
+			mail.enviarConGMail(usuario.getEmailUtec(), "Contraseña Temporal - CETU" , "Ingrese a este link para restablecer la contraseña (vence en 10 minutos desde la llegada de este mensaje): " + link);
+			mail.enviarConGMail(usuario.getEmailPersonal(), "Contraseña Temporal - CETU" , "Ingrese a este link para restablecer la contraseña: (vence en 10 minutos desde la llegada de este mensaje)" + link);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		} catch (MessagingException e) {

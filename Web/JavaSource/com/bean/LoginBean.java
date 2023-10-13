@@ -36,6 +36,10 @@ public class LoginBean implements Serializable {
 	
 	public LoginBean() {}
 
+	public void restablecerContrasenia() {
+		user.olvideContrasenia(nombreUsuario);
+	}
+	
 	public void login() {
 		try {
 			auth.borrar();

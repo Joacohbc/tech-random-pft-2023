@@ -11,6 +11,9 @@
 </h:head>
 
 <h:body>
+	<f:event type="preRenderView"
+		listener="#{restablecerContrasenia.check}" />
+			
 	<div class="flex justify-content-center align-items-center flex-column">
 		<div>
 			<p:graphicImage name="images/utec_logo.png" width="300px" />
@@ -21,27 +24,18 @@
 					<p:autoUpdate />
 				</p:messages>
 
+				<h2>Restablecer contraseña del usuario
+					#{restablecerContrasenia.nombreCompleto}
+					(#{restablecerContrasenia.nombreUsuario})</h2>
 				<p:panelGrid columns="2" styleClass="ui-noborder">
-					<p:outputLabel value="Nombre de Usuario:"></p:outputLabel>
-					<p:inputText value="#{loginBean.nombreUsuario}">
-						<p:ajax />
-					</p:inputText>
-
 					<p:outputLabel value="Contraseña:"></p:outputLabel>
-					<p:password value="#{loginBean.contrasenia}">
-						<p:ajax />
-					</p:password>
+					<p:password value="#{restablecerContrasenia.nuevaContrasenia}"/>
 
-					<p:outputLabel value="Rol"></p:outputLabel>
-					<p:selectOneMenu value="#{loginBean.rol}">
-						<f:selectItems value="#{enumBean.roles}" var="rol"
-							itemValue="#{rol}" itemLabel="#{rol}"></f:selectItems>
-					</p:selectOneMenu>
+					<p:outputLabel value="Confirmar Contraseña:"></p:outputLabel>
+					<p:password value="#{restablecerContrasenia.confirmacionContrasenia}"/>
 
-					<p:commandButton action="#{loginBean.login()}" value="Login"></p:commandButton>
-					<p:commandButton action="#{loginBean.restablecerContrasenia()}" value="Restablecer Contraseña"></p:commandButton>				
+					<p:commandButton action="#{restablecerContrasenia.restablecer}" value="Restablecer"/>
 				</p:panelGrid>
-				<p:commandLink value="¿No estas registrado?" action="#{loginBean.register()}"/>
 			</h:form>
 		</div>
 	</div>
