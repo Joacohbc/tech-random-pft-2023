@@ -3,12 +3,14 @@ package com.bean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,46 +40,69 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 
 	private List<Constancia> constancias;
 	private Constancia constanciaSeleccionada;
-	private List<Constancia> constanciasSeleccionadas = new ArrayList<Constancia>();
+	private List<Constancia> constanciasSeleccionadas = new ArrayList<>();
+	private Boolean mostrarContanciasFinalizadas = false;
 	
 	@PostConstruct
 	private void init() {
 		this.constancias = new ArrayList<>();
-		constancias.addAll(bean.findAll());
-	}
-
-	public void cambiarEstado() {
-		if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.INGRESADO) {
-			updateEstado(constanciaSeleccionada, EstadoSolicitudes.EN_PROCESO);
-			PrimeFaces.current().ajax().update("form:listaConstancias");
-			return;
-		}
-	
-		if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.EN_PROCESO) {
-			updateEstado(constanciaSeleccionada, EstadoSolicitudes.FINALIZADO);
-			PrimeFaces.current().ajax().update("form:listaConstancias");
-			return;
-		}
-		
+		constancias.addAll(bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).toList());
 	}
 	
-	public void eliminarConstancia() {
-		bean.eliminarConstancia(constanciaSeleccionada.getIdConstancia());
-		constancias.remove(constanciaSeleccionada);
+	public void toggleContanciasFinalizadas(AjaxBehaviorEvent event) {
+        if (!(event.getComponent() instanceof UIInput)) return;
+        
+		if(mostrarContanciasFinalizadas) {
+			constancias = bean.findAll();
+		} else {
+			constancias = bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).toList();
+		}
 		PrimeFaces.current().ajax().update("form:listaConstancias");
 	}
 	
-	public void seleccionadasAEnPogreso() {
-		constanciasSeleccionadas.stream().forEach(t -> {
-			updateEstado(t, EstadoSolicitudes.EN_PROCESO);
-		});
+	public void cambiarEstado() {
+		try {
+			if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.INGRESADO) {
+				updateEstado(constanciaSeleccionada, EstadoSolicitudes.EN_PROCESO);
+				PrimeFaces.current().ajax().update("form:listaConstancias");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se cambio el estado de la constancia exitosamente");
+				return;
+			}
+		
+			if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.EN_PROCESO) {
+				updateEstado(constanciaSeleccionada, EstadoSolicitudes.FINALIZADO);
+				PrimeFaces.current().ajax().update("form:listaConstancias");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se finalizó la constancia con éxito y se generó la constancia para el estudiante exitosamente");
+				return;
+			}
+		} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
 	}
 	
-	public void seleccionadasAFinalizado() {
-		constanciasSeleccionadas.stream().forEach(t -> {
-			updateEstado(t, EstadoSolicitudes.FINALIZADO);
-		});
+	public void eliminarConstancia() {
+		try {
+			bean.eliminarConstancia(constanciaSeleccionada.getIdConstancia());
+			constancias.remove(constanciaSeleccionada);
+			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó la constancia con éxito exitosamente");
+			
+			PrimeFaces.current().ajax().update("form:listaConstancias");
+		} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
 	}
+	
+//	public void seleccionadasAEnPogreso() {
+//		constanciasSeleccionadas.stream().forEach(t -> {
+//			updateEstado(t, EstadoSolicitudes.EN_PROCESO);
+//		});
+//	}
+//	
+//	public void seleccionadasAFinalizado() {
+//		constanciasSeleccionadas.stream().forEach(t -> {
+//			updateEstado(t, EstadoSolicitudes.FINALIZADO);
+//		});
+//	}
 	
 	private void updateEstado(Constancia c, EstadoSolicitudes estado) {
 		updateEstado(c, estado, "Se actualizo el estado a: " + estado.toString());
@@ -140,5 +165,15 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 
 	public void setConstanciasSeleccionadas(List<Constancia> constanciasSeleccionadas) {
 		this.constanciasSeleccionadas = constanciasSeleccionadas;
+	}
+
+
+	public Boolean getMostrarContanciasFinalizadas() {
+		return mostrarContanciasFinalizadas;
+	}
+
+
+	public void setMostrarContanciasFinalizadas(Boolean mostrarContanciasFinalizadas) {
+		this.mostrarContanciasFinalizadas = mostrarContanciasFinalizadas;
 	}
 }

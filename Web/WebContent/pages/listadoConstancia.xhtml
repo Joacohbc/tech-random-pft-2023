@@ -22,27 +22,13 @@
 				<f:facet name="header">
 					<p:toolbar>
 						<p:toolbarGroup>
-							<span style="font-weight: bold">Lista de Constancias</span>
+							<p:outputLabel value="Mostrar contancias ya finalizadas" styleClass="mr-2"/>
+					        <p:toggleSwitch value="#{emitirConstanciasBean.mostrarContanciasFinalizadas}">
+								<p:ajax listener="#{emitirConstanciasBean.toggleContanciasFinalizadas}"/>
+					        </p:toggleSwitch>
 						</p:toolbarGroup>
+						
 						<p:toolbarGroup>
-							<p:commandButton id="borrar-constancias-button"
-								value="#{emitirConstanciasBean.botonBajaMensaje}"
-								icon="pi pi-trash"
-								actionListener="#{emitirConstanciasBean.bajaUsuarios}"
-								styleClass="ui-button-danger"
-								disabled="#{emitirConstanciasBean.constanciasSeleccionadas.isEmpty()}"
-								update="@this">
-							</p:commandButton>
-
-							<p:commandButton id="alta-constancias-button"
-								value="#{emitirConstanciasBean.botonAltaMensaje}"
-								icon="pi pi-plus"
-								actionListener="#{emitirConstanciasBean.altaUsuarios}"
-								styleClass="ui-button-success"
-								disabled="#{emitirConstanciasBean.constanciasSeleccionadas.isEmpty()}"
-								update="@this">
-							</p:commandButton>
-							
 							<div>
 								<p:commandButton id="toggler" type="button" value="Columns"
 									icon="pi pi-align-justify" />
@@ -53,18 +39,6 @@
 						</p:toolbarGroup>
 					</p:toolbar>
 				</f:facet>
-				
-				<p:ajax event="rowSelect" update=":form:listaConstancias:borrar-constancias-button" />
-				<p:ajax event="rowUnselect" update=":form:listaConstancias:borrar-constancias-button" />
-				<p:ajax event="rowSelectCheckbox" update=":form:listaConstancias:borrar-constancias-button" />
-				<p:ajax event="rowUnselectCheckbox" update=":form:listaConstancias:borrar-constancias-button" />
-				<p:ajax event="toggleSelect" update=":form:listaConstancias:borrar-constancias-button" />
-				
-				<p:ajax event="rowSelect" update=":form:listaConstancias:alta-constancias-button" />
-				<p:ajax event="rowUnselect" update=":form:listaConstancias:alta-constancias-button" />
-				<p:ajax event="rowSelectCheckbox" update=":form:listaConstancias:alta-constancias-button" />
-				<p:ajax event="rowUnselectCheckbox" update=":form:listaConstancias:alta-constancias-button" />
-				<p:ajax event="toggleSelect" update=":form:listaConstancias:alta-constancias-button" />
 				
 				<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
 
@@ -114,7 +88,7 @@
 						</div>
 				</p:column>
 														
-				<p:column headerText="Actualizar a" toggleable="false">
+				<p:column headerText="Acciones" toggleable="false">
 			        <p:commandButton value='#{c.estado == "INGRESADO" ? "En Proceso" : "Finalizado"}' 
 			        	action="#{emitirConstanciasBean.cambiarEstado}" 
 			        	icon="pi pi-sync" 
