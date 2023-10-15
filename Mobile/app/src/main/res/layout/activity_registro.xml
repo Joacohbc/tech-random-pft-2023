@@ -11,7 +11,7 @@
         android:focusableInTouchMode="true"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingHorizontal="30dp"
+        android:paddingHorizontal="40dp"
         android:paddingVertical="60dp">
 
 
@@ -148,7 +148,11 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
         <AutoCompleteTextView
             android:id="@+id/departamento"
@@ -160,6 +164,8 @@
             android:hint="Departamento"
             android:textSize="15dp"
             />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <EditText
             android:id="@+id/localidad"
@@ -173,6 +179,12 @@
             android:hint="Localidad" />
 
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
         <AutoCompleteTextView
             android:id="@+id/itr"
             android:layout_width="match_parent"
@@ -184,6 +196,8 @@
             android:textSize="15dp"
             />
 
+
+        </com.google.android.material.textfield.TextInputLayout>
         <Button
         android:id="@+id/loginregistro"
         android:layout_width="match_parent"
@@ -196,6 +210,19 @@
         android:text="Registro"
         android:textSize="15dp"
         app:iconTint="@color/celeste_utec" />
+
+        <Button
+            android:id="@+id/linkvolver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/panelBackground"
+            android:fontFamily="@font/opensans_medium"
+            android:paddingVertical="10dp"
+            android:text="¿Volver al Login?"
+            android:textColorLink="@color/letra_fondooscuro"
+            android:textSize="16sp"
+            android:textColor="@color/fondo_oscuro" />
+
 
 
     </LinearLayout>

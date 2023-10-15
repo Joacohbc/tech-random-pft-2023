@@ -9,20 +9,24 @@ import androidx.appcompat.app.AppCompatActivity
 
 class Login : AppCompatActivity() {
 
-    private lateinit var testLinkRegistro: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
 
-
-       /* testLinkRegistro.setOnClickListener {
-            var registro= Intent(this, Registro::class.java)
-            startActivity(registro)
+        var registro= findViewById<Button>(R.id.testLinkRegistro)
+        registro.setOnClickListener {
+            var i= Intent(this, Registro::class.java)
+            startActivity(i)
         }
 
-*/
+         var login= findViewById<Button>(R.id.loginBtn)
+        login.setOnClickListener {
+            var i= Intent(this, Home::class.java)
+            startActivity(i)
+        }
+
 
     }
 }

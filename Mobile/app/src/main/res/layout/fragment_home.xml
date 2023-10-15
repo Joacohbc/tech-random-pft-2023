@@ -3,12 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home">
+    android:paddingHorizontal="40dp"
+    android:paddingVertical="60dp"
+    tools:context="Home"
+    android:id="@+id/fragment_home">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/bienvenida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Bienvenido "
+        android:fontFamily="@font/opensans_bold"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/fondo_oscuro"
+
+        />
 
 </FrameLayout>
