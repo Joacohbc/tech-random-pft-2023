@@ -3,7 +3,6 @@ package com.utec.proyectofinaltecnicatura
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 
@@ -17,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var vista= Intent(this, Login::class.java)
+        val vista= Intent(this, Login::class.java)
         startActivity(vista)
 
 

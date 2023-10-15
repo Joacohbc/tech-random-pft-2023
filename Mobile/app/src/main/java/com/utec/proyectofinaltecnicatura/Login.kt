@@ -21,13 +21,13 @@ class Login : AppCompatActivity() {
             startActivity(i)
         }
 
-        /*
+
          var login= findViewById<Button>(R.id.loginBtn)
         login.setOnClickListener {
             var i= Intent(this, Home::class.java)
             startActivity(i)
         }
-*/
+
 
     }
 }

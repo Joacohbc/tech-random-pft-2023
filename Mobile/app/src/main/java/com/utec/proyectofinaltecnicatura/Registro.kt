@@ -27,7 +27,6 @@ class Registro : AppCompatActivity() {
         }
 
 
-
         val generos= resources.getStringArray(R.array.genero)
         val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_genero, generos)
         val autoCompletar: AutoCompleteTextView= findViewById(R.id.genero)
