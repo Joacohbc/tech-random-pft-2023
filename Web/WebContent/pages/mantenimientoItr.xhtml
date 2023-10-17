@@ -71,7 +71,7 @@
 				</c:if>
 
 				<p:column toggleable="false" resizable="false"
-					selectionMode="multiple" exportable="false"></p:column>
+					selectionMode="multiple" exportable="false" style="width:20px;text-align:center"/>
 
 				<p:column headerText="Nombre itr"
 					sortBy="#{itr.nombre}"
@@ -84,8 +84,6 @@
 					filterBy="#{itr.departamento}" filterMatchMode="contains">
 					<h:outputText value="#{itr.departamento.toString()}" />
 				</p:column>
-
-				
 
 				<p:column headerText="¿Eliminado?" toggleable="false"
 					resizable="false" sortBy="#{itr.estado}">

@@ -236,7 +236,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 		} 
 	}
  	
-	public List<Constancia> sacarConstanciaByIdEstudiante(Long id){
-		return dao.sacarConstanciaByIdEstudiante(id);
+	public List<Constancia> findByIdEstudiante(Long estudianteId){
+		return dao.findByIdEstudiante(estudianteId);
 	}
 }

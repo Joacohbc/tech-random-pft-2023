@@ -46,7 +46,7 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 	@PostConstruct
 	private void init() {
 		this.constancias = new ArrayList<>();
-		constancias.addAll(bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).toList());
+		constancias.addAll(bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).collect(Collectors.toList());
 	}
 	
 	public void toggleContanciasFinalizadas(AjaxBehaviorEvent event) {
@@ -55,7 +55,7 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 		if(mostrarContanciasFinalizadas) {
 			constancias = bean.findAll();
 		} else {
-			constancias = bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).toList();
+			constancias = bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).collect(Collectors.toList());
 		}
 		PrimeFaces.current().ajax().update("form:listaConstancias");
 	}

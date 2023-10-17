@@ -1,13 +1,14 @@
 package com.entities.enums;
 
 public enum Modalidad {
-	VIRTUAL("Presencial"),
-	PRESENCIAL("Virtual"),
-	SEMI_PRESENCIAL("Semipresencial");
+	VIRTUAL("Virtual"),
+	PRESENCIAL("Presencial"),
+	SEMI_PRESENCIAL("Semi-presencial");
 	
 	private String modalidad;
 
-	public String getModalidad() {
+	@Override
+	public String toString() {
 		return modalidad;
 	}
 
