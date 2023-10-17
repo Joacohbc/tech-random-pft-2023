@@ -71,7 +71,7 @@ public class ConstanciaDAO {
 	}
 	
 	
-	public List<Constancia> sacarConstanciaByIdEstudiante(Long id) {
+	public List<Constancia> findByIdEstudiante(Long id) {
 		return em.createQuery("Select c FROM Constancia c INNER JOIN c.tipoConstancia a where c.estudiante.idEstudiante = ?1", Constancia.class).setParameter(1, id).getResultList();
 	}
 	

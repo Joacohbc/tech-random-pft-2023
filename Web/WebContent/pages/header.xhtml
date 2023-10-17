@@ -17,7 +17,7 @@
 
 					<c:if test="#{authBean.esAnalista()}">
 						<p:submenu label="Constancias" icon="pi pi-fw pi-user">
-							<p:menuitem value="Listado" icon="pi pi-fw pi-search" outcome="listadoUsuarios.xhtml"/>
+							<p:menuitem value="Listado" icon="pi pi-fw pi-search" outcome="listadoConstancia.xhtml"/>
 						</p:submenu>
 						<p:submenu label="Mantenimiento" icon="pi pi-fw pi-cog">
 							<p:menuitem value="De ITR" icon="pi pi-fw pi-building" outcome="mantenimientoItr.xhtml"/>
@@ -30,8 +30,8 @@
 
 					<c:if test="#{authBean.esEstudiante()}">
 						<p:submenu label="Constancias" icon="pi pi-fw pi-file-pdf">
-							<p:menuitem value="Solicitar" icon="pi pi-fw pi-plus-circle" outcome="eventoEstudiante.xhtml"/>
-							<p:menuitem value="Visualizar" icon="pi pi-fw pi-search" disabled="true"/>
+							<p:menuitem value="Solicitar" icon="pi pi-fw pi-plus-circle" outcome="solicitarConstancia.xhtml"/>
+							<p:menuitem value="Descargar" icon="pi pi-fw pi-search" outcome="descargarContanciasEstudiante.xhtml"/>
 						</p:submenu>
 					</c:if>
 					

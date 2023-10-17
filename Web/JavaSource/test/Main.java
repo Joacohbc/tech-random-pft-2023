@@ -15,13 +15,20 @@ public class Main {
 	public static void main(String[] args) {
 		
 		JWTUtils jwtUtils = new JWTUtils();
+//		
+//		UserDetails details = new UserDetails();
+//		details.setIdRol(0l);
+//		details.setIdUsuario(0l);
+//		details.setNombreUsuario("");
+//		details.setRol(Rol.TUTOR);
+//		System.out.println(jwtUtils.generateToken(details));
+//		System.out.println(jwtUtils.generateToken(details));
+//		System.out.println(jwtUtils.generateToken(details));
+//		System.out.println(jwtUtils.generateToken(details));
+//		System.out.println(jwtUtils.generateToken(details));
+//		System.out.println(jwtUtils.generateToken(details));
 		
-		UserDetails details = new UserDetails();
-		details.setIdRol(2l);
-		details.setIdUsuario(5l);
-		details.setNombreUsuario("joaquin.genova");
-		details.setRol(Rol.TUTOR);
-		System.out.print(jwtUtils.generateToken(details));
+		System.out.println(jwtUtils.isTokenExpired("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiMWVlYzJkZS0zNjMyLTRkZWYtODQzNi01MDQ2OWFjNjFjODQiLCJleHAiOjE2OTcyMDU5MTIsImlhdCI6MTY5NzIwNTYxMn0.vP8cR7flqbYgXkPfT5plNHKsKh4PgyRjodihgoM2Xxe6Ww4p3LaTvVQObTCvvEnvKyNP8qj9BaFJIYNpV71r7g"));
 		
 //		System.out.println(jwtUtils.getUserDetails("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKb2FxdWluIiwiaWRSb2wiOjEsImlkVXN1YXJpbyI6MSwiZXhwIjoxNjg4NTE1MTUxLCJpYXQiOjE2ODg1MTE1NTEsInJvbCI6IlRVVE9SIn0.e5rjNlMRVHmK-jldVJzdR3xHinhtrD2mA2WI44-OjlewBvT3VIvQAmXX4Q3_Xf-ruFpifD4kpjsFLzsi1Fsbqw"));
 		
