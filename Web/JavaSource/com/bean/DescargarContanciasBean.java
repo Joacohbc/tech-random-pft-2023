@@ -6,14 +6,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,7 +41,6 @@ public class DescargarContanciasBean implements Serializable, AuthRenderedContro
 	
 	private List<ConstanciaJSF> constancias;
 	private ConstanciaJSF constanciaSeleccionada;
-	
 
 	public void eliminar( ) {
 		try {
@@ -59,21 +56,21 @@ public class DescargarContanciasBean implements Serializable, AuthRenderedContro
 	
 	public void editar() {
 		try {
-			bean.eliminarConstancia(constanciaSeleccionada.getIdConstancia());
-			constancias.remove(constanciaSeleccionada);
 			
-			PrimeFaces.current().ajax().update("form:listaTipoConstancias");
-			PrimeFaces.current().ajax().update("PF('editarTipoConstanciaDialog').hide()");
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizo el tipo de constancia con exito");
+			
+			bean.update(constanciaSeleccionada.toEntity());
+			PrimeFaces.current().ajax().update("form:listaConstancias");
+			PrimeFaces.current().ajax().update("PF('editarConstanciaDialog').hide()");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizo la constancia con exito");
 		} catch (Exception e) {
-		 	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, e.getMessage());
+		 	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
 		}
 	}
 	
 	@PostConstruct
 	private void init() {
 		this.constancias = new ArrayList<>();
-		constancias = bean.findByIdEstudiante(auth.getIdRol()).stream().map(c -> new ConstanciaJSF(c)).collect(Collectors.collect(Collectors.toList());
+		constancias = bean.findByIdEstudiante(auth.getIdRol()).stream().map(c -> new ConstanciaJSF(c)).collect(Collectors.toList());
 	}
 	
 	@Override

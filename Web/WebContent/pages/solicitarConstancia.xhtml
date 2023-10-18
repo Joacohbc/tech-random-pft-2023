@@ -31,7 +31,6 @@
 						</p:selectOneMenu>
 					</f:facet>
 
-
 					<p:column headerText="Titulo" sortBy="#{evento.titulo}"
 						filterBy="#{evento.titulo}" filterMatchMode="contains">
 						<h:outputText value="#{evento.titulo}" />
@@ -51,13 +50,13 @@
 
 					<p:column headerText="Modalidad" sortBy="#{evento.modalidad}"
 						filterBy="#{evento.modalidad}" filterMatchMode="contains">
-						<h:outputText value="#{evento.modalidad}" />
+						<h:outputText value="#{evento.modalidad.toString()}" />
 					</p:column>
 
 
 					<p:column headerText="Localizacion" sortBy="#{evento.localizacion}"
 						filterBy="#{evento.localizacion}" filterMatchMode="contains">
-						<h:outputText value="#{evento.localizacion}" />
+						<h:outputText value="#{evento.localizacion.toString()}" />
 					</p:column>
 
 					<p:column headerText="Acciones">				

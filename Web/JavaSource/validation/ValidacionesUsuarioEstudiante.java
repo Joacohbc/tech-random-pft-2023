@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 import com.entities.Estudiante;
 
 import validation.ValidacionesUsuario.TipoUsuarioDocumento;
-import validation.ValidacionesUsuario.TipoUsuarioEmail;
 
 /**
  * Session Bean implementation class ValidacionesUsuarioEstudiante
@@ -24,6 +23,10 @@ public class ValidacionesUsuarioEstudiante {
 		ValidationObject valid = ValidacionesUsuario.ValidarUsuario(estudiante, tipoDocumento);
 		if (!valid.isValid())
 			return valid;
+		
+		valid = validarEmailUtecEstudiante(estudiante.getEmailUtec());
+		if (!valid.isValid())
+			return valid;		
 
 		valid = validarGeneracion(String.valueOf(estudiante.getGeneracion()));
 		if (!valid.isValid())
@@ -32,6 +35,26 @@ public class ValidacionesUsuarioEstudiante {
 		return ValidationObject.VALID;
 	}
 
+	public static ValidationObject validarEmailUtecEstudiante(String email) {
+		
+		if (!Validaciones.ValidarMail(email)) {
+			return new ValidationObject("El email de UTEC tiene un formato invalido");
+		}
+
+		String[] partes = email.split("@");
+		
+		ValidationObject valid = ValidacionesUsuario.validarNombreUsuario(partes[0]);
+		if(!valid.isValid()) {
+			return new ValidationObject("El email de UTEC debe contener un nombre de usuario (delante del @) en el formato: \"nombre.apellido\"");
+		}
+		
+		if (!partes[1].equals("estudiantes.utec.edu.uy")) {
+			return new ValidationObject("El email de UTEC de un estudiante debe ser del dominio (después del @) \"estudiantes.utec.edu.uy\"");
+		}
+
+		return ValidationObject.VALID;
+	}
+	
 	public static ValidationObject validarEstudianteSinContrasenia(Estudiante estudiante, TipoUsuarioDocumento tipoDocumento) {
 		
 		if(estudiante == null)

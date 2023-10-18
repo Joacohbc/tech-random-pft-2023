@@ -25,7 +25,12 @@
 						</p:toolbarGroup>
 					</p:toolbar>
 				</f:facet>
-
+				
+				<p:column headerText="Tit. del Evento" sortBy="#{c.evento.titulo}"
+					filterBy="#{c.evento.titulo}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.titulo}" />
+				</p:column>				
+				
 				<p:column headerText="Mod. del Evento" sortBy="#{c.evento.modalidad}"
 					filterBy="#{c.evento.modalidad}" filterMatchMode="contains">
 					<h:outputText value="#{c.evento.modalidad.toString()}" />
@@ -41,6 +46,11 @@
 					<h:outputText value="#{c.evento.tipoEvento.tipo}" />
 				</p:column>
 		
+				<p:column headerText="Tipo de Contancia" sortBy="#{c.tipo.tipo}"
+					filterBy="#{c.tipoConstancia.tipo}" filterMatchMode="contains">
+					<h:outputText value="#{c.tipo.tipo}" />
+				</p:column>
+
 				<p:column headerText="Fecha y hora" sortBy="#{c.fechaHora}"
 					filterBy="#{c.fechaHora}" filterMatchMode="contains">
 					<h:outputText value="#{c.formattedDate}" />
@@ -69,12 +79,11 @@
 				<p:column headerText="Acciones">
 					<p:commandButton icon="pi pi-pencil"
 						update=":dialogs:alta-constancia-content"
-						oncomplete="PF('editarTipoConstanciaDialog').show()"
+						oncomplete="PF('editarConstanciaDialog').show()"
 						styleClass="edit-button rounded-button ui-button-success"
 						disabled='#{c.estado != "INGRESADO"}'
 						process="@this">
-						<f:setPropertyActionListener value="#{constancia}"
-							target="#{descargarContanciasBean.constanciaSeleccionada}" />
+			            	<f:setPropertyActionListener value="#{c}" target="#{descargarContanciasBean.constanciaSeleccionada}"/>
 						<p:resetInput target=":dialogs:alta-constancia-content" />
 					</p:commandButton>
 
@@ -95,24 +104,31 @@
         </p:confirmDialog>
         
 		<h:form id="dialogs">
-			<p:dialog header="Informacion del tipo de Constancia"
+			<p:dialog header="Informacion de la Constancia"
 				showEffect="fade" modal="true"
-				widgetVar="editarTipoConstanciaDialog" responsive="true">
+				widgetVar="editarConstanciaDialog" responsive="true">
 				<p:outputPanel id="alta-constancia-content"
 					class="ui-fluid grid">
 					<p:outputPanel
 						rendered="#{not empty descargarContanciasBean.constanciaSeleccionada}">
 						<p:panelGrid columns="2" styleClass="ui-noborder">
 
-							<h:outputLabel value="Tipo:" />
-							<p:inputText
-								value="#{descargarContanciasBean.constanciaSeleccionada.tipo}" />
-
-							<h:outputLabel value="Nueva Plantilla:" />
-							<p:fileUpload mode="simple" skinSimple="true" auto="true"
-								process="@this" allowTypes="/(\.|\/)(pdf)$/" accept=".pdf"
-								listener="#{descargarContanciasBean.handleFileUpload}" />
-
+						<h:outputLabel value="Tipo de Constancia:" />
+						<p:selectOneMenu
+							value="#{descargarContanciasBean.constanciaSeleccionada.tipo.idTipoConstancia}">
+							<f:selectItems value="#{listadoEventosBean.tiposDeConstancias}"
+								var="tipoConstancia" itemLabel="#{tipoConstancia.tipo}"
+								itemValue="#{tipoConstancia.idTipoConstancia}" />
+						</p:selectOneMenu>
+						
+						<h:outputLabel value="Evento:" />
+						<p:selectOneMenu
+							value="#{descargarContanciasBean.constanciaSeleccionada.evento.idEvento}">
+							<f:selectItems value="#{listadoEventosBean.eventos}"
+								var="evento" itemLabel="#{evento.titulo}"
+								itemValue="#{evento.idEvento}" />
+						</p:selectOneMenu>
+						
 						</p:panelGrid>
 					</p:outputPanel>
 				</p:outputPanel>
@@ -124,7 +140,7 @@
 						process="alta-constancia-content @this" />
 
 					<p:commandButton value="Cancel" icon="pi pi-times"
-						onclick="PF('editarTipoConstanciaDialog').hide()"
+						onclick="PF('editarConstanciaDialog').hide()"
 						class="ui-button-secondary" type="button" />
 				</f:facet>
 			</p:dialog>

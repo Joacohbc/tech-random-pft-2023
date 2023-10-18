@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
@@ -46,7 +46,7 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 	@PostConstruct
 	private void init() {
 		this.constancias = new ArrayList<>();
-		constancias.addAll(bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).collect(Collectors.toList());
+		constancias.addAll(bean.findAll().stream().filter(c -> c.getEstado() != EstadoSolicitudes.FINALIZADO).collect(Collectors.toList()));
 	}
 	
 	public void toggleContanciasFinalizadas(AjaxBehaviorEvent event) {
