@@ -50,7 +50,7 @@ public class ReclamoDAO {
     	return em.createQuery("SELECT c FROM Reclamo c WHERE c.evento.idEvento = ?1",Reclamo.class).setParameter(1, idEvento).getResultList();
     }
     public List<Reclamo> findByEstudiante(Long idEstudiante){
-    	return em.createQuery("Select c FROM Reclamo c.estudiante.idEstudiante = ?1",Reclamo.class).setParameter(1, idEstudiante).getResultList();
+    	return em.createQuery("Select c FROM Reclamo c WHERE c.estudiante.idEstudiante = ?1",Reclamo.class).setParameter(1, idEstudiante).getResultList();
     }
     public Reclamo findUnique(Reclamo reclamo) {
     	try {

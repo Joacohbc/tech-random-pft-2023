@@ -4,14 +4,25 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.entities.enums.Modalidad;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 public class EventoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long idEvento;
     private String titulo;
+    
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate fechaInicio;
-    private LocalDate fechaFin;
+    
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonSerialize(using = LocalDateSerializer.class)
+	private LocalDate fechaFin;
+	
     private Boolean estado;
     private String localizacion;
     private Modalidad modalidad;

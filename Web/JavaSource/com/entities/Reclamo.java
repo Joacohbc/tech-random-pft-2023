@@ -2,13 +2,23 @@ package com.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.entities.enums.EstadoReclamo;
-
-import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -27,9 +37,9 @@ public class Reclamo implements Serializable {
 
 	private String detalle;
 
+	@Enumerated(EnumType.STRING)
 	private EstadoReclamo estado;
-
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	@Column(name="FECHA_HORA")
 	private LocalDateTime fechaHora;
 
