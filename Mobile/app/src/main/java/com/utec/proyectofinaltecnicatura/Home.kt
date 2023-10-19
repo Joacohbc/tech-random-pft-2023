@@ -27,12 +27,10 @@ class Home : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
+      //  val view = inflater.inflate(R.layout.fragment_home, container, false)
+       // startActivity(Intent(activity, MainActivity::class.java))
 
-      /*  view.findViewById<TextView>(R.id.bienvenida)
-        startActivity(Intent(activity, MainActivity::class.java))
-      */
-        return view
+       return view
     }
 }
 
