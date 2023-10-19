@@ -29,10 +29,9 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        view.findViewById<TextView>(R.id.bienvenida)
+      /*  view.findViewById<TextView>(R.id.bienvenida)
         startActivity(Intent(activity, MainActivity::class.java))
-
-
+      */
         return view
     }
 }

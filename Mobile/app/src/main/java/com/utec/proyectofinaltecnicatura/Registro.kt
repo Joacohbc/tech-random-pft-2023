@@ -24,6 +24,7 @@ class Registro : AppCompatActivity() {
         volver.setOnClickListener {
            var i= Intent(this, Login::class.java)
             startActivity(i)
+
         }
 
 
@@ -39,13 +40,12 @@ class Registro : AppCompatActivity() {
         }
 
 
-
         fun onClickFechaNacimiento(v: View?){
             val fechnac= findViewById<EditText>(R.id.fechanac)
             val d= selecteCalendar.get(Calendar.DAY_OF_MONTH)
             val mes=selecteCalendar.get(Calendar.MONTH)
             val anio=selecteCalendar.get(Calendar.YEAR)
-            val listener= DatePickerDialog.OnDateSetListener{datePicker, d, m, a ->
+            val listener= DatePickerDialog.OnDateSetListener{DatePicker, d, m, a ->
             selecteCalendar.set(d, m, a)
             fechnac.setText("$d/ $m/ $a")
             }

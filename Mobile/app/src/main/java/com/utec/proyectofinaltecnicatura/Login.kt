@@ -15,19 +15,17 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
 
-        var registro= findViewById<Button>(R.id.testLinkRegistro)
-        registro.setOnClickListener {
-            var i= Intent(this, Registro::class.java)
-            startActivity(i)
-        }
-
 
          var login= findViewById<Button>(R.id.loginBtn)
         login.setOnClickListener {
             var i= Intent(this, Home::class.java)
-            startActivity(i)
+            startActivity(i)}
+
+
+        var registro= findViewById<Button>(R.id.testLinkRegistro)
+        registro.setOnClickListener {
+            var a= Intent(this, Registro::class.java)
+            startActivity(a)
         }
-
-
-    }
+   }
 }
