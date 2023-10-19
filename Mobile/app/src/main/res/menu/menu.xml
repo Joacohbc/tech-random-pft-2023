@@ -18,4 +18,9 @@
         android:title="Constancias"
         android:icon="@drawable/ico_constancia" />
 
+    <item
+        android:id="@+id/reclamos"
+        android:title="Reclamos"
+        android:icon="@drawable/ico_reclamos" />
+
 </menu>
