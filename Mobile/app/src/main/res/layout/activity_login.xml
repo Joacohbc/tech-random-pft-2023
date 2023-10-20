@@ -9,7 +9,7 @@
     android:background="@drawable/utec_foto"
     android:paddingHorizontal="20dp"
     android:paddingVertical="20dp"
-    tools:context=".Login">
+    tools:context=".LoginActivity">
 
 
 

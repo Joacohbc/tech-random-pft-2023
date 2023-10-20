@@ -13,10 +13,13 @@
         android:theme="@style/Theme.ProyectoFinalTecnicatura"
         tools:targetApi="31">
         <activity
-            android:name=".Registro"
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".RegistroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

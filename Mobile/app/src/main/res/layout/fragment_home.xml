@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="40dp"
     android:paddingVertical="60dp"
-    tools:context="Home"
+    tools:context=".menufragments.BienvenidaFragment"
     android:id="@+id/fragment_home">
 
     <!-- TODO: Update blank fragment layout -->

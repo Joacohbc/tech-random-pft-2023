@@ -6,27 +6,4 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-
-
-
-    <FrameLayout
-        android:id="@+id/contenedor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-
-    </FrameLayout>
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/menu"
-        />
-
-
 </LinearLayout>
