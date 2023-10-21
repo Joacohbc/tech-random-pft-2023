@@ -12,15 +12,13 @@
         android:title="Perfil"
         android:icon="@drawable/ico_perfil"/>
 
-
-    <item
-        android:id="@+id/constancias"
-        android:title="Constancias"
-        android:icon="@drawable/ico_constancia" />
-
     <item
         android:id="@+id/reclamos"
         android:title="Reclamos"
         android:icon="@drawable/ico_reclamos" />
 
+    <item
+        android:id="@+id/constancias"
+        android:title="Constancias"
+        android:icon="@drawable/ico_constancia" />
 </menu>

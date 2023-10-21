@@ -8,18 +8,15 @@
     tools:context=".menufragments.BienvenidaFragment"
     android:id="@+id/fragment_home">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/bienvenida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Bienvenido "
+        android:text="Bienvenido"
+        android:textAlignment="center"
         android:fontFamily="@font/opensans_bold"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
-        android:textColor="@color/fondo_oscuro"
-
-        />
+        android:textColor="@color/fondo_oscuro" />
 
 </FrameLayout>

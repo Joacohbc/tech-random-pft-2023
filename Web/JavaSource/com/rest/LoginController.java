@@ -54,6 +54,7 @@ public class LoginController {
 	@Path("/login")
 	public Response login(Map<String, String> body) {	
 		try {
+			System.out.println(body);
 			String nombreUsuario = body.get("nombreUsuario");
 			String contrasenia = body.get("contrasenia");
 			Estudiante est = bean.login(nombreUsuario, contrasenia, Estudiante.class);

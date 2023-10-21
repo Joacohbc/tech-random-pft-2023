@@ -61,7 +61,6 @@ public class RestablecerContraseniaBean implements Serializable {
 			
 			id = Long.parseLong(tokenBean.getTokenValue(token).toString()); 
 			this.token = token;
-			System.err.println(token);
 		} catch (Exception e) {
 			JSFUtils.redirect("restablecerContraseniaFallida.xhtml");
 			return;
