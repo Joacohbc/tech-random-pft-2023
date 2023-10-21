@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.auth.TokenManagmentBean;
+import com.auth.UserDetails;
 import com.dto.EstudianteDTO;
 import com.dto.EstudianteMapper;
 import com.dto.JsonDTO;
@@ -54,16 +55,46 @@ public class LoginController {
 	@Path("/login")
 	public Response login(Map<String, String> body) {	
 		try {
-			System.out.println(body);
 			String nombreUsuario = body.get("nombreUsuario");
 			String contrasenia = body.get("contrasenia");
 			Estudiante est = bean.login(nombreUsuario, contrasenia, Estudiante.class);
+			
 			String token = jwt.generarToken(est.getIdUsuario(), est.getIdEstudiante(), nombreUsuario, Rol.ESTUDIANTE);
 			
 			return Response.ok(new JsonDTO()
 						.put("token", token)
 						.build())
 					.build();
+			
+		} catch (InvalidEntityException e) {
+			return RESTUtils.error(Status.BAD_REQUEST, e.getMessage());
+		} catch (Exception e) {
+			return RESTUtils.error(Status.INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+	}
+	
+	@POST
+	@Path("/refresh")
+	public Response refresh(Map<String, String> body) {	
+		try {
+			String oldToken = body.get("token");
+			
+			System.out.println(oldToken);
+			
+			if(jwt.isTokenExpired(oldToken)) {
+				return RESTUtils.error(Status.BAD_REQUEST, "Expired token");
+			}
+			
+			UserDetails ud = jwt.getTokenInfo(oldToken);
+			String token = jwt.generarToken(ud.getIdUsuario(), ud.getIdRol(), ud.getNombreUsuario(), Rol.ESTUDIANTE);
+			
+			
+			System.out.println("LLEGUE HASTA ACA: " + token);
+			return Response.ok(new JsonDTO()
+						.put("token", token)
+						.build())
+					.build();
+			
 		} catch (InvalidEntityException e) {
 			return RESTUtils.error(Status.BAD_REQUEST, e.getMessage());
 		} catch (Exception e) {

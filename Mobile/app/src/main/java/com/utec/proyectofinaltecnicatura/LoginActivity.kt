@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import com.utec.proyectofinaltecnicatura.dtos.LogintDTO
 import com.utec.proyectofinaltecnicatura.dtos.TokenDTO
 import com.utec.proyectofinaltecnicatura.services.authServices
+import com.utec.proyectofinaltecnicatura.services.validateToken
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -78,9 +79,12 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val token = response.body()
                         token?.let {
-                            getSharedPreferences("auth", MODE_PRIVATE).edit().putString("token", it.token).apply()
+                            val editor = getSharedPreferences("AUTHORIZATION", MODE_PRIVATE).edit()
+                            editor.putString("token", it.token)
+                            editor.apply()
                             startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                         }
+
                     } else {
                         val error = JSONObject(response.errorBody()?.string())
                         Toast.makeText(this@LoginActivity, error.getString("error"), Toast.LENGTH_SHORT).show()
