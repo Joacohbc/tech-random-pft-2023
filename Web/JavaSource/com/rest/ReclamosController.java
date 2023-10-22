@@ -73,7 +73,7 @@ public class ReclamosController {
 			
 			Reclamo r = reclamoBean.solicitar(ReclamoMapper.toReclamo(reclamo));
 			
-			return Response.ok(r).build();
+			return Response.ok(ReclamoMapper.toReclamoDTO(r)).build();
 			
 		} catch (InvalidEntityException | NotFoundEntityException e) {
 			return RESTUtils.error(Status.BAD_REQUEST, e.getMessage());
@@ -91,7 +91,7 @@ public class ReclamosController {
 			
 			Reclamo r = reclamoBean.update(ReclamoMapper.toReclamo(reclamo));
 			
-			return Response.ok(r).build();
+			return Response.ok(ReclamoMapper.toReclamoDTO(r)).build();
 		
 		} catch (InvalidEntityException | NotFoundEntityException e) {
 			return RESTUtils.error(Status.BAD_REQUEST, e.getMessage());
@@ -105,7 +105,7 @@ public class ReclamosController {
 	public Response borrarReclamo(@PathParam("id") Long id) {
 		try {
 			Reclamo r = reclamoBean.eliminar(id);
-			return Response.ok(r).build();
+			return Response.ok(ReclamoMapper.toReclamoDTO(r)).build();
 		
 		} catch (InvalidEntityException | NotFoundEntityException e) {
 			return RESTUtils.error(Status.BAD_REQUEST, e.getMessage());
