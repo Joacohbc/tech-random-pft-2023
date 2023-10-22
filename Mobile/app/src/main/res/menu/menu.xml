@@ -18,6 +18,11 @@
         android:icon="@drawable/ico_reclamos" />
 
     <item
+        android:id="@+id/eventos"
+        android:title="Eventos"
+        android:icon="@drawable/ico_evento"/>
+
+    <item
         android:id="@+id/constancias"
         android:title="Constancias"
         android:icon="@drawable/ico_constancia" />

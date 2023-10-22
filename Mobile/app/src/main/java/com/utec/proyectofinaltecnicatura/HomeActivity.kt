@@ -6,6 +6,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.utec.proyectofinaltecnicatura.menufragments.BienvenidaFragment
 import com.utec.proyectofinaltecnicatura.menufragments.ConstanciasFragment
+import com.utec.proyectofinaltecnicatura.menufragments.EventoFragment
 import com.utec.proyectofinaltecnicatura.menufragments.PerfilFragment
 import com.utec.proyectofinaltecnicatura.menufragments.ReclamoFragment
 
@@ -24,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.perfil -> supportFragmentManager.beginTransaction().replace(R.id.contenedor, PerfilFragment()).commit()
                 R.id.reclamos-> supportFragmentManager.beginTransaction().replace(R.id.contenedor, ReclamoFragment()).commit()
                 R.id.constancias -> supportFragmentManager.beginTransaction().replace(R.id.contenedor, ConstanciasFragment()).commit()
+                R.id.eventos -> supportFragmentManager.beginTransaction().replace(R.id.contenedor, EventoFragment()).commit()
             }
             true
         }

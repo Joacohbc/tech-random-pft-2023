@@ -32,6 +32,7 @@ public class EventoController {
 	private EventoBean eventoBean;
 	
 	@GET
+	@Path("/mios")
 	public Response getEventos() {
 		try {
 			TokenWrapper tokenWrapper = (TokenWrapper) httpRequest.getAttribute("token");

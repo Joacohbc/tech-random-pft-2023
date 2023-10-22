@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvReclamoId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID del Reclamo: #R123456"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvEventoTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Título del Evento: Nombre del Evento"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvEventoFechas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha del Evento: 01/01/2023 - 02/01/2023"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvEventoITR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ITR del Evento: Información del ITR"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/etDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Detalle del Reclamo"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>

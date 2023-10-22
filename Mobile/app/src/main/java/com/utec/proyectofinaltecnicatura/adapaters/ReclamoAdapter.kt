@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.utec.proyectofinaltecnicatura.R
 import com.utec.proyectofinaltecnicatura.dtos.ReclamoDTO
+import com.utec.proyectofinaltecnicatura.dtos.enums.EstadoReclamo
 import com.utec.proyectofinaltecnicatura.services.getToken
 import com.utec.proyectofinaltecnicatura.services.reclamoService
 import com.utec.proyectofinaltecnicatura.utils.showConfirmDialog
 import com.utec.proyectofinaltecnicatura.utils.showErrorToast
 import com.utec.proyectofinaltecnicatura.utils.showInfoToast
+import com.utec.proyectofinaltecnicatura.utils.showReclamoDialog
 import org.json.JSONObject
 
 class ReclamoAdapter(private val reclamos: ArrayList<ReclamoDTO>) : RecyclerView.Adapter<ReclamoAdapter.ReclamoViewHolder>() {
@@ -25,28 +26,59 @@ class ReclamoAdapter(private val reclamos: ArrayList<ReclamoDTO>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: ReclamoViewHolder, position: Int) {
-        val model: ReclamoDTO = reclamos[position]
+        val reclamo: ReclamoDTO = reclamos[position]
 
-        holder.tvReclamo.text = "Reclamo: #R${model.idReclamo}"
-        holder.tvDetalle.text = "Detalle: ${model.detalle}"
-        holder.tvEvento.text = "Evento: ${model.evento.titulo}"
-        holder.tvEstado.text = "Estado: ${model.estado}"
+        holder.tvReclamo.text = "Reclamo: #R${reclamo.idReclamo}"
+        holder.tvDetalle.text = "Detalle: ${reclamo.detalle}"
+        holder.tvEvento.text = "Evento: ${reclamo.evento.titulo}"
+        holder.tvEstado.text = "Estado: ${reclamo.estado}"
 
         holder.btnModificar.setOnClickListener {
+            if(reclamo.estado != EstadoReclamo.INGRESADO) {
+                showErrorToast(holder.itemView.context, "Solo se pueden modificar reclamos en estado Ingresado")
+                return@setOnClickListener
+            }
 
+            showReclamoDialog(holder.itemView.context, reclamo.evento, reclamo, "Modificar Reclamo") { success, detalle ->
+                if (!success) return@showReclamoDialog
+
+                if (detalle.isEmpty()) {
+                    showErrorToast(holder.itemView.context, "El Detalle del reclamo no puede estar vacio")
+                    return@showReclamoDialog
+                }
+
+                reclamo.detalle = detalle
+                reclamoService.modificarReclamo(getToken(), reclamo).enqueue(object : retrofit2.Callback<ReclamoDTO> {
+                    override fun onResponse(
+                        call: retrofit2.Call<ReclamoDTO>,
+                        response: retrofit2.Response<ReclamoDTO>
+                    ) {
+                        if (response.isSuccessful) {
+                            notifyDataSetChanged()
+                            showInfoToast(holder.itemView.context, "Reclamo creado correctamente")
+                            return
+                        }
+                        showErrorToast(holder.itemView.context, JSONObject(response.errorBody()!!.string()).getString("error"))
+                        Log.d("EventoAdapter onResponse", response.errorBody()!!.string())
+                    }
+                    override fun onFailure(call: retrofit2.Call<ReclamoDTO>, t: Throwable) {
+                        Log.d("EventoAdapter onFailure", t.message.toString())
+                    }
+                })
+            }
         }
 
         holder.btnBaja.setOnClickListener {
             showConfirmDialog(holder.itemView.context, "Eliminar reclamo", "¿Está seguro que desea eliminar el reclamo?") { result ->
                 if (!result) return@showConfirmDialog
 
-                reclamoService.deleteReclamo(getToken(), model.idReclamo).enqueue(object : retrofit2.Callback<ReclamoDTO> {
+                reclamoService.deleteReclamo(getToken(), reclamo.idReclamo).enqueue(object : retrofit2.Callback<ReclamoDTO> {
                     override fun onResponse(
                         call: retrofit2.Call<ReclamoDTO>,
                         response: retrofit2.Response<ReclamoDTO>
                     ) {
                         if (response.isSuccessful) {
-                            reclamos.remove(model)
+                            reclamos.remove(reclamo)
                             notifyDataSetChanged()
                             showInfoToast(holder.itemView.context, "Reclamo eliminado correctamente")
                             return
