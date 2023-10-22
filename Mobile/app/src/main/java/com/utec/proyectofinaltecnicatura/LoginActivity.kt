@@ -2,6 +2,7 @@ package com.utec.proyectofinaltecnicatura
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Button
@@ -11,14 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.utec.proyectofinaltecnicatura.dtos.LogintDTO
-import com.utec.proyectofinaltecnicatura.dtos.TokenDTO
-import com.utec.proyectofinaltecnicatura.services.authServices
-import com.utec.proyectofinaltecnicatura.services.validateToken
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
+import com.utec.proyectofinaltecnicatura.services.login
+import com.utec.proyectofinaltecnicatura.utils.showErrorToast
 
 class LoginActivity : AppCompatActivity() {
 
@@ -65,35 +60,24 @@ class LoginActivity : AppCompatActivity() {
             val contrania = editContrania.text.toString()
 
             if (nombre.isBlank()) {
-                Toast.makeText(this, "El nombre de usuario es requerido", Toast.LENGTH_SHORT).show()
+                showErrorToast(this, "El nombre de usuario es requerido")
                 return@setOnClickListener
             }
 
             if (contrania.isBlank()) {
-                Toast.makeText(this, "La contraseña es requerida", Toast.LENGTH_SHORT).show()
+                showErrorToast(this, "La contraseña es requerida")
                 return@setOnClickListener
             }
 
-            authServices.login(LogintDTO(nombre, contrania)).enqueue(object : Callback<TokenDTO> {
-                override fun onResponse(call: Call<TokenDTO>, response: Response<TokenDTO>) {
-                    if (response.isSuccessful) {
-                        val token = response.body()
-                        token?.let {
-                            val editor = getSharedPreferences("AUTHORIZATION", MODE_PRIVATE).edit()
-                            editor.putString("token", it.token)
-                            editor.apply()
-                            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                        }
-
-                    } else {
-                        val error = JSONObject(response.errorBody()?.string())
-                        Toast.makeText(this@LoginActivity, error.getString("error"), Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<TokenDTO>, t: Throwable) {
-                    println("Error: " + t.message)
-                }
+            val credencials = LogintDTO(nombre, contrania)
+            login(credencials,{
+                val editor = getSharedPreferences("AUTHORIZATION", MODE_PRIVATE).edit()
+                editor.putString("token", it.token)
+                editor.apply()
+                startActivity(Intent(this, HomeActivity::class.java))
+            }, {
+                showErrorToast(this, "Error al iniciar sesión: $it")
+                Log.d("ERROR", it)
             })
         }
     }

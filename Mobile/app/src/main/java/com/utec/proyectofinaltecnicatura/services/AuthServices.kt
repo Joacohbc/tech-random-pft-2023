@@ -1,12 +1,9 @@
 package com.utec.proyectofinaltecnicatura.services
 
-import android.content.Intent
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.utec.proyectofinaltecnicatura.HomeActivity
 import com.utec.proyectofinaltecnicatura.dtos.LogintDTO
 import com.utec.proyectofinaltecnicatura.dtos.TokenDTO
 import com.utec.proyectofinaltecnicatura.dtos.EstudianteDTO
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,24 +27,55 @@ interface AuthServices {
     fun refresh(@Body tokenDTO: TokenDTO): Call<TokenDTO>
 }
 
-private val retrofit = Retrofit.Builder()
+private lateinit var APP_SESSION_TOKEN : String
+fun setToken(token: String) {
+    APP_SESSION_TOKEN = token
+}
+
+fun getToken(): String {
+    return "Bearer $APP_SESSION_TOKEN"
+}
+
+val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl("http://10.0.2.2:8080/ProyectoInfra/api/")
     .addConverterFactory(JacksonConverterFactory.create())
     .build();
 
 val authServices: AuthServices = retrofit.create(AuthServices::class.java)
-inline fun validateToken(token: String, crossinline onSuccess: (t : TokenDTO) -> Unit, crossinline onFailure: (t: Throwable) -> Unit) {
+
+inline fun validateToken(token: String, crossinline onSuccess: (t : TokenDTO) -> Unit, crossinline onFailure: (e: String) -> Unit) {
     authServices.refresh(TokenDTO(token)).enqueue(object : Callback<TokenDTO> {
         override fun onResponse(call: Call<TokenDTO>, response: Response<TokenDTO>) {
             if (response.isSuccessful) {
-                response.body()?.let(onSuccess)
+                response.body()!!.let {
+                    setToken(it.token)
+                    onSuccess(it)
+                }
                 return
             }
-            onFailure(Throwable(response.errorBody()!!.string()))
+            onFailure(JSONObject(response.errorBody()!!.string()).getString("error"))
         }
 
         override fun onFailure(call: Call<TokenDTO>, t: Throwable) {
-            onFailure(t)
+            onFailure(t.message!!)
+        }
+    })
+}
+inline fun login(logintDTO: LogintDTO, crossinline onSuccess: (t : TokenDTO) -> Unit, crossinline onFailure: (e : String) -> Unit) {
+    authServices.login(logintDTO).enqueue(object : Callback<TokenDTO> {
+        override fun onResponse(call: Call<TokenDTO>, response: Response<TokenDTO>) {
+            if (response.isSuccessful) {
+                response.body()!!.let {
+                    setToken(it.token)
+                    onSuccess(it)
+                }
+                return
+            }
+            onFailure(JSONObject(response.errorBody()!!.string()).getString("error"))
+        }
+
+        override fun onFailure(call: Call<TokenDTO>, t: Throwable) {
+            onFailure(t.message!!)
         }
     })
 }
