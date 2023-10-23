@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="40dp"
-    android:paddingVertical="60dp"
-    tools:context=".menufragments.BienvenidaFragment"
-    android:id="@+id/fragment_home">
+    android:background="@color/blanco"> <!-- Cambia el color de fondo según tus preferencias -->
 
-    <TextView
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/utec_app_logo" /> <!-- Reemplaza "app_logo" con el logotipo de tu aplicación -->
+
+    <Button
+        android:id="@+id/singOutBtn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Bienvenido"
-        android:textAlignment="center"
-        android:fontFamily="@font/opensans_bold"
-        android:textSize="20dp"
-        android:textStyle="bold"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="@color/fondo_oscuro" />
-
-</FrameLayout>
+        android:backgroundTint="@color/celeste_utec"
+        android:fontFamily="@font/opensans_semibold"
+        android:gravity="center"
+        android:paddingVertical="10dp"
+        android:text="Cerrar sesión"
+        android:textColor="@color/letra_fondooscuro"
+        android:textSize="20sp"
+        android:layout_alignParentTop="true"/>
+</RelativeLayout>

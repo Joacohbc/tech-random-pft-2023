@@ -31,7 +31,6 @@ interface ReclamoService {
     @Headers("Content-Type: application/json")
     @PUT("auth/reclamos")
     fun modificarReclamo(@Header("Authorization") token : String, @Body reclamoDTO: ReclamoDTO) : Call<ReclamoDTO>
-
 }
 
 val reclamoService: ReclamoService = retrofit.create(ReclamoService::class.java)

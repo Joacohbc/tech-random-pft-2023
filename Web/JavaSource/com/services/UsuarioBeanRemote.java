@@ -40,7 +40,7 @@ public interface UsuarioBeanRemote {
 
 	void updateEstadoUsuario(Long id, EstadoUsuario estadoUsuario) throws ServiceException, NotFoundEntityException;
 	
-	void updateEstudiante(Estudiante estudiante) throws ServiceException, NotFoundEntityException, InvalidEntityException;
+	Estudiante updateEstudiante(Estudiante estudiante) throws ServiceException, NotFoundEntityException, InvalidEntityException;
 	
 	void updateAnalista(Analista analista) throws ServiceException, NotFoundEntityException, InvalidEntityException;
 	

@@ -191,7 +191,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	}
 
 	private void validarUpdate(Usuario newUsu, Usuario actual) throws DAOException, InvalidEntityException {
-
+				
 		if (!newUsu.getDocumento().equals(actual.getDocumento())) {
 			if (dao.findByDocumento(Usuario.class, newUsu.getDocumento()) != null)
 				throw new InvalidEntityException("Ya existe un Usuario con el Documento: " + newUsu.getDocumento());
@@ -222,7 +222,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	}
 
 	@Override
-	public void updateEstudiante(Estudiante estudiante)
+	public Estudiante updateEstudiante(Estudiante estudiante)
 			throws ServiceException, NotFoundEntityException, InvalidEntityException {
 		try {
 
@@ -231,14 +231,14 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			Estudiante estActual = dao.findById(Estudiante.class, estudiante.getIdUsuario());
 			if (estActual == null)
 				throw new NotFoundEntityException("No existe un usuario con el ID: " + estudiante.getIdUsuario());
-
+			
 			estudiante.setIdEstudiante(estActual.getIdEstudiante());
 			validarUpdate(estudiante, estActual);
 			
 			if(estudiante.getEstadoUsuario() == EstadoUsuario.ELIMINADO) 
 				estudiante.setEstado(false);
 			
-			dao.update(estudiante);
+			return dao.update(estudiante);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

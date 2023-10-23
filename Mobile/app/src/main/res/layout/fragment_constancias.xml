@@ -8,12 +8,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Constancias "
+        android:text="WORK IN PROGRESS"
         android:textAlignment="center"
         android:fontFamily="@font/opensans_bold"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
-        android:textColor="@color/fondo_oscuro" />
+        android:textColor="@color/fondo_oscuro"
+        android:gravity="center"/>
 
 </FrameLayout>
