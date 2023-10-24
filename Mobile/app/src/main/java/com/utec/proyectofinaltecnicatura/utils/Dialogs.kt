@@ -68,12 +68,12 @@ fun showReclamoDialog(context: Context, eventoDTO: EventoDTO, reclamoDTO: Reclam
 
     alertDialogBuilder.setView(view)
 
-    alertDialogBuilder.setPositiveButton("Sí") { dialog, _ ->
+    alertDialogBuilder.setPositiveButton("Enviar") { dialog, _ ->
         onClick(true, etDetalle.text.toString())
         dialog.dismiss()
     }
 
-    alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+    alertDialogBuilder.setNegativeButton("Cancelar") { dialog, _ ->
         onClick(false, "")
         dialog.dismiss()
     }
