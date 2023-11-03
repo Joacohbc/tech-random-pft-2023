@@ -1,0 +1,85 @@
+<ui:composition template="/layouts/default.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+		<f:event type="preRenderView"
+			listener="#{listadoReclamoBean.checkUser}" />
+
+		<div class="card">
+			<h:form id="form">
+				<p:dataTable var="evento" value="#{listadoReclamoBean.eventos}"
+					resizableColumns="true" liveResize="true" showGridlines="true"
+					emptyMessage="No se encontro ninguno evento con este criterio"
+					selection="#{listadoReclamoBean.eventoSeleccionado}"
+					rowSelectMode="add" paginatorPosition="bottom"
+					rowKey="#{evento.idEvento}" paginator="true" rows="20"
+					selectionMode="single">
+
+
+					<p:column headerText="Titulo" sortBy="#{evento.titulo}"
+						filterBy="#{evento.titulo}" filterMatchMode="contains">
+						<h:outputText value="#{evento.titulo}" />
+					</p:column>
+
+
+					<p:column headerText="Fecha de Inicio"
+						sortBy="#{evento.fechaInicio}" filterBy="#{evento.fechaInicio}"
+						filterMatchMode="contains">
+						<h:outputText value="#{evento.fechaInicio}" />
+					</p:column>
+
+					<p:column headerText="Fecha De Fin" sortBy="#{evento.fechaFin}"
+						filterBy="#{evento.fechaFin}" filterMatchMode="contains">
+						<h:outputText value="#{evento.fechaFin}" />
+					</p:column>
+
+					<p:column headerText="Modalidad" sortBy="#{evento.modalidad}"
+						filterBy="#{evento.modalidad}" filterMatchMode="contains">
+						<h:outputText value="#{evento.modalidad.toString()}" />
+					</p:column>
+
+
+					<p:column headerText="Localizacion" sortBy="#{evento.localizacion}"
+						filterBy="#{evento.localizacion}" filterMatchMode="contains">
+						<h:outputText value="#{evento.localizacion.toString()}" />
+					</p:column>
+					<p:column headerText="Detalle">			
+						<p:inputText id="detalle" value="#{listadoReclamoBean.detalle}" />
+					</p:column>
+
+					<p:column headerText="Acciones">				
+						<p:commandButton value="Ingresar Reclamo"
+						    oncomplete="PF('ingresoReclamoDialog').show()">
+						    <f:setPropertyActionListener value="#{evento}"
+						        target="#{listadoReclamoBean.eventoSeleccionado}"/>
+						    
+						    <f:setPropertyActionListener value="#{detalle}" 
+						    	target="#{listadoReclamoBean.detalle}" />      
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+		        
+				<p:confirmDialog widgetVar="ingresoReclamoDialog" showEffect="fade"
+					width="300"
+					message="¿Quieres ingresar un reclamo para el evento?"
+					header="Confirm" severity="warn">
+					
+					<p:commandButton value="Si" icon="pi pi-check"
+						actionListener="#{listadoReclamoBean.ingresarReclamo}"
+						oncomplete="PF('ingresoReclamoDialog').hide()" />
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('ingresoReclamoDialog').hide()" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+
+
+	</ui:define>
+</ui:composition>
