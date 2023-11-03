@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.auth.AuthRenderedControl;
+import com.bean.DescargarContanciasBean.ConstanciaJSF;
 import com.entities.Estudiante;
 import com.entities.Evento;
 import com.entities.Reclamo;
@@ -52,6 +53,7 @@ public class ListadoReclamoBean implements Serializable, AuthRenderedControl {
     private List<Evento> eventos;
 	private Evento eventoSeleccionado;
 	private String detalle;
+	
 	
 	@PostConstruct
 	public void init() {
