@@ -47,9 +47,10 @@
 						filterBy="#{evento.localizacion}" filterMatchMode="contains">
 						<h:outputText value="#{evento.localizacion.toString()}" />
 					</p:column>
-					<p:column headerText="Detalle">			
+					
+<!-- 					<p:column headerText="Detalle">			
 						<p:inputText id="detalle" value="#{listadoReclamoBean.detalle}" />
-					</p:column>
+					</p:column> -->
 
 					<p:column headerText="Acciones">				
 						<p:commandButton value="Ingresar Reclamo"
@@ -57,7 +58,7 @@
 						    <f:setPropertyActionListener value="#{evento}"
 						        target="#{listadoReclamoBean.eventoSeleccionado}"/>
 						    
-						    <f:setPropertyActionListener value="#{detalle}" 
+						    <f:setPropertyActionListener value="#{listadoReclamoBean.detalle}" 
 						    	target="#{listadoReclamoBean.detalle}" />      
 						</p:commandButton>
 					</p:column>
@@ -65,17 +66,25 @@
 				</p:dataTable>
 		        
 				<p:confirmDialog widgetVar="ingresoReclamoDialog" showEffect="fade"
-					width="300"
+					width="500"
 					message="¿Quieres ingresar un reclamo para el evento?"
 					header="Confirm" severity="warn">
 					
-					<p:commandButton value="Si" icon="pi pi-check"
-						actionListener="#{listadoReclamoBean.ingresarReclamo}"
-						oncomplete="PF('ingresoReclamoDialog').hide()" />
-
-					<p:commandButton value="No" type="button"
-						styleClass="ui-button-secondary" icon="pi pi-times"
-						onclick="PF('ingresoReclamoDialog').hide()" />
+					<p:panelGrid columns="2" styleClass="ui-noborder">
+					
+						<p:outputLabel value="Ingrese detalle:" />
+						<p:inputText id="detalle" value="#{listadoReclamoBean.detalle}" />
+						
+						
+						<p:commandButton value="Si" icon="pi pi-check"
+							actionListener="#{listadoReclamoBean.ingresarReclamo}"
+							oncomplete="PF('ingresoReclamoDialog').hide()" />
+	
+						<p:commandButton value="No" type="button"
+							styleClass="ui-button-secondary" icon="pi pi-times"
+							onclick="PF('ingresoReclamoDialog').hide()" />
+					</p:panelGrid>
+						
 				</p:confirmDialog>
 			</h:form>
 		</div>

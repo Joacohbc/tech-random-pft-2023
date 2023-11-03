@@ -25,6 +25,10 @@
 						</p:toolbarGroup>
 					</p:toolbar>
 				</f:facet>
+				<p:column headerText="Detalle Reclamo" sortBy="#{c.detalle}"
+					filterBy="#{c.detalle}" filterMatchMode="contains">
+					<h:outputText value="#{c.detalle}" />
+				</p:column>			
 				
 				<p:column headerText="Tit. del Evento" sortBy="#{c.evento.titulo}"
 					filterBy="#{c.evento.titulo}" filterMatchMode="contains">
@@ -98,15 +102,20 @@
 					class="ui-fluid grid">
 					<p:outputPanel
 						rendered="#{not empty listadoReclamoCompletoBean.reclamoSeleccionado}">
+						
 						<p:panelGrid columns="2" styleClass="ui-noborder">
+						<h:outputLabel value="Detalle:" />
+						<p:inputText value="#{listadoReclamoCompletoBean.reclamoSeleccionado.detalle}" />
 						
 						<h:outputLabel value="Evento:" />
+
 						<p:selectOneMenu
 							value="#{listadoReclamoCompletoBean.reclamoSeleccionado.evento.idEvento}">
 							<f:selectItems value="#{listadoEventosBean.eventos}"
 								var="evento" itemLabel="#{evento.titulo}"
 								itemValue="#{evento.idEvento}" />
 						</p:selectOneMenu>
+						
 						
 						</p:panelGrid>
 					</p:outputPanel>
