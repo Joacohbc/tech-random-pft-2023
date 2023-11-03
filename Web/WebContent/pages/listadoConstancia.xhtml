@@ -7,24 +7,24 @@
 
 	<ui:define name="content">
 		<f:event type="preRenderView"
-			listener="#{listadoReclamoBean.checkUser}" />
+			listener="#{emitirConstanciasBean.checkUser}" />
 
 		<h:form id="form">
-			<p:dataTable var="c" value="#{listadoReclamoBean.constancias}"
+			<p:dataTable var="c" value="#{emitirConstanciasBean.constancias}"
 				id="listaConstancias"
 				emptyMessage="No se encontro ninguna constancia con este criterio"
 				resizableColumns="true" liveResize="true" showGridlines="true"
 				rowKey="#{constancias.idConstancia}" paginator="true" rows="20"
 				rowSelectMode="add" paginatorPosition="bottom"
 				tableStyle="width:full"
-				selection="#{listadoReclamoBean.constanciasSeleccionadas}">
+				selection="#{emitirConstanciasBean.constanciasSeleccionadas}">
 
 				<f:facet name="header">
 					<p:toolbar>
 						<p:toolbarGroup>
 							<p:outputLabel value="Mostrar contancias ya finalizadas" styleClass="mr-2"/>
-					        <p:toggleSwitch value="#{listadoReclamoBean.mostrarContanciasFinalizadas}">
-								<p:ajax listener="#{listadoReclamoBean.toggleContanciasFinalizadas}"/>
+					        <p:toggleSwitch value="#{emitirConstanciasBean.mostrarContanciasFinalizadas}">
+								<p:ajax listener="#{emitirConstanciasBean.toggleContanciasFinalizadas}"/>
 					        </p:toggleSwitch>
 						</p:toolbarGroup>
 						
@@ -90,20 +90,20 @@
 														
 				<p:column headerText="Acciones" toggleable="false">
 			        <p:commandButton value='#{c.estado == "INGRESADO" ? "En Proceso" : "Finalizado"}' 
-			        	action="#{listadoReclamoBean.cambiarEstado}" 
+			        	action="#{emitirConstanciasBean.cambiarEstado}" 
 			        	icon="pi pi-sync" 
 			        	class="rounded-button mr-2"
 			        	rendered='#{c.estado != "FINALIZADO"}'>
 			            <p:confirm header="Confirmacion" message="¿Esta seguro que quiere actualizar esta contancia?" icon="pi pi-exclamation-triangle"/>
-			            <f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.constanciaSeleccionada}"/>
+			            <f:setPropertyActionListener value="#{c}" target="#{emitirConstanciasBean.constanciaSeleccionada}"/>
 			        </p:commandButton>
 			        
     				<p:commandButton class="ui-button-warning rounded-button"
 						icon='pi pi-trash'
-						action="#{listadoReclamoBean.eliminarConstancia}"
+						action="#{emitirConstanciasBean.eliminarConstancia}"
 						disabled='#{c.estado != "INGRESADO"}'>
 		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar esta contancia?" icon="pi pi-exclamation-triangle"/>
-			            	<f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.constanciaSeleccionada}"/>
+			            	<f:setPropertyActionListener value="#{c}" target="#{emitirConstanciasBean.constanciaSeleccionada}"/>
 					</p:commandButton>
 				</p:column>
 			</p:dataTable>
