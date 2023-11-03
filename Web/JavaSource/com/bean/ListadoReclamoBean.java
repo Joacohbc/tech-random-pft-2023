@@ -5,21 +5,26 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIInput;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.auth.AuthRenderedControl;
-import com.bean.DescargarContanciasBean.ConstanciaJSF;
-import com.entities.Estudiante;
-import com.entities.Evento;
-import com.entities.Reclamo;
+import org.primefaces.PrimeFaces;
 
+import com.auth.AuthRenderedControl;
+import com.entities.AccionReclamo;
+import com.entities.Analista;
+import com.entities.Reclamo;
+import com.entities.enums.EstadoReclamo;
+import com.entities.enums.EstadoReclamo;
 import com.entities.enums.Rol;
 import com.services.EventoBean;
 import com.services.ReclamoBean;
@@ -50,61 +55,95 @@ public class ListadoReclamoBean implements Serializable, AuthRenderedControl {
     @Inject
 	private AuthJWTBean auth;
     
-    private List<Evento> eventos;
-	private Evento eventoSeleccionado;
 	private String detalle;
+    private List<Reclamo> reclamos;
+	private Reclamo reclamoSeleccionado;
+	private List<Reclamo> reclamosSeleccionados = new ArrayList<>();
+	private Boolean mostrarReclamosFinalizados = false;
+	
+
 	
 	
 	@PostConstruct
 	public void init() {
-		this.eventos = new ArrayList<>();
-		eventos.addAll(eventoBean.findByEstudianteId(auth.getIdRol()));
+		this.reclamos = new ArrayList<>();
+		reclamos.addAll(reclamoBean.findAll().stream().filter(c -> c.getEstado() != EstadoReclamo.FINALIZADO).collect(Collectors.toList()));
 	}
-	
-	public void ingresarReclamo() {
-		if (!auth.esEstudiante())
-			return;
-		
-        if (eventoSeleccionado == null) {
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Ningún evento fue seleccionado.");
-            return;
-        }
+	public void toggleReclamosFinalizados(AjaxBehaviorEvent event) {
+        if (!(event.getComponent() instanceof UIInput)) return;
         
-        try {
-        	Reclamo r = new Reclamo();
-        	Estudiante est = usuarioBean.findById(Estudiante.class,auth.getIdUsuario());
-        	r.setEstudiante(est);
-        	r.setEvento(eventoSeleccionado);
-        	r.setDetalle(detalle);
-        	reclamoBean.solicitar(r);   	
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se ingresó correctamente el reclamo");
-        } catch (Exception e) {
-			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error: " + e.getMessage());
+		if(mostrarReclamosFinalizados) {
+			reclamos = reclamoBean.findAll();
+		} else {
+			reclamos = reclamoBean.findAll().stream().filter(c -> c.getEstado() != EstadoReclamo.FINALIZADO).collect(Collectors.toList());
 		}
+		PrimeFaces.current().ajax().update("form:listaReclamos");
 	}
 
+	public void cambiarEstado() {
+		try {
+			if(reclamoSeleccionado.getEstado() == EstadoReclamo.INGRESADO) {
+				updateEstado(reclamoSeleccionado, EstadoReclamo.EN_PROCESO);
+				PrimeFaces.current().ajax().update("form:listaReclamos");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se cambio el estado del reclamo exitosamente");
+				return;
+			}
+		
+			if(reclamoSeleccionado.getEstado() == EstadoReclamo.EN_PROCESO) {
+				updateEstado(reclamoSeleccionado, EstadoReclamo.FINALIZADO);
+				PrimeFaces.current().ajax().update("form:listaReclamos");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se finalizó el reclamo con éxito");
+				return;
+			}
+		} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
+	}
+	public void eliminarReclamo() {
+		try {
+			reclamoBean.eliminar(reclamoSeleccionado.getIdReclamo());
+			reclamos.remove(reclamoSeleccionado);
+			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó el reclamo con éxito");
+			
+			PrimeFaces.current().ajax().update("form:listaReclamos");
+		} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
+	}
+	private void updateEstado(Reclamo c, EstadoReclamo estado) {
+		updateEstado(c, estado, "Se actualizo el estado a: " + estado.toString());
+		c.setEstado(estado);
+	}
+	private void updateEstado(Reclamo c, EstadoReclamo estado, String detalle) {
+		AccionReclamo ar = new AccionReclamo();
+		ar.setReclamo(c);
+		ar.setAnalista(usuarioBean.findById(Analista.class, auth.getIdRol()));
+		ar.setDetalle(detalle);
+		reclamoBean.updateEstado(c.getIdReclamo(), estado, ar);
+	}
+	public String getBotonAltaMensaje() {
+		if (!reclamosSeleccionados.isEmpty()) {
+			int size = this.reclamosSeleccionados.size();
+			return size > 1 ? size + " Reclamos Seleccionados" : "1 Reclamo Seleccionado";
+		}
+
+		return "Alta";
+	}
+	public String getBotonBajaMensaje() {
+		System.out.println(reclamosSeleccionados.size() + " DEBUG");
+		if (!reclamosSeleccionados.isEmpty()) {
+			int size = this.reclamosSeleccionados.size();
+			return size > 1 ? size + " Reclamos Seleccionados" : "1 Reclamo Seleccionado";
+		}
+
+		return "Borrar";
+	}
 	@Override
 	public void checkUser() throws IOException {
-		if (!auth.es(Rol.ESTUDIANTE)) {
+		if (!auth.es(Rol.ANALISTA)) {
 			JSFUtils.redirect("/noAuth.xhtml");
 		}
 		
-	}
-
-	public List<Evento> getEventos() {
-		return eventos;
-	}
-
-	public void setEventos(List<Evento> eventos) {
-		this.eventos = eventos;
-	}
-
-	public Evento getEventoSeleccionado() {
-		return eventoSeleccionado;
-	}
-
-	public void setEventoSeleccionado(Evento eventoSeleccionado) {
-		this.eventoSeleccionado = eventoSeleccionado;
 	}
 
 	public String getDetalle() {
@@ -114,6 +153,31 @@ public class ListadoReclamoBean implements Serializable, AuthRenderedControl {
 	public void setDetalle(String detalle) {
 		this.detalle = detalle;
 	}
+	public List<Reclamo> getReclamos() {
+		return reclamos;
+	}
+	public void setReclamos(List<Reclamo> reclamos) {
+		this.reclamos = reclamos;
+	}
+	public Reclamo getReclamoSeleccionado() {
+		return reclamoSeleccionado;
+	}
+	public void setReclamoSeleccionado(Reclamo reclamoSeleccionado) {
+		this.reclamoSeleccionado = reclamoSeleccionado;
+	}
+	public List<Reclamo> getReclamosSeleccionados() {
+		return reclamosSeleccionados;
+	}
+	public void setReclamosSeleccionados(List<Reclamo> reclamosSeleccionados) {
+		this.reclamosSeleccionados = reclamosSeleccionados;
+	}
+	public Boolean getMostrarReclamosFinalizados() {
+		return mostrarReclamosFinalizados;
+	}
+	public void setMostrarReclamosFinalizados(Boolean mostrarReclamosFinalizadas) {
+		this.mostrarReclamosFinalizados = mostrarReclamosFinalizadas;
+	}
+	
 	
 	
     

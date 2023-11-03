@@ -7,14 +7,14 @@
 
 	<ui:define name="content">
 		<f:event type="preRenderView"
-			listener="#{listadoReclamoBean.checkUser}" />
+			listener="#{listadoReclamoCompletoBean.checkUser}" />
 
 		<div class="card">
 			<h:form id="form">
-				<p:dataTable var="evento" value="#{listadoReclamoBean.eventos}"
+				<p:dataTable var="evento" value="#{listadoReclamoCompletoBean.eventos}"
 					resizableColumns="true" liveResize="true" showGridlines="true"
 					emptyMessage="No se encontro ninguno evento con este criterio"
-					selection="#{listadoReclamoBean.eventoSeleccionado}"
+					selection="#{listadoReclamoCompletoBean.eventoSeleccionado}"
 					rowSelectMode="add" paginatorPosition="bottom"
 					rowKey="#{evento.idEvento}" paginator="true" rows="20"
 					selectionMode="single">
@@ -49,17 +49,17 @@
 					</p:column>
 					
 <!-- 					<p:column headerText="Detalle">			
-						<p:inputText id="detalle" value="#{listadoReclamoBean.detalle}" />
+						<p:inputText id="detalle" value="#{listadoReclamoCompletoBean.detalle}" />
 					</p:column> -->
 
 					<p:column headerText="Acciones">				
 						<p:commandButton value="Ingresar Reclamo"
 						    oncomplete="PF('ingresoReclamoDialog').show()">
 						    <f:setPropertyActionListener value="#{evento}"
-						        target="#{listadoReclamoBean.eventoSeleccionado}"/>
+						        target="#{listadoReclamoCompletoBean.eventoSeleccionado}"/>
 						    
-						    <f:setPropertyActionListener value="#{listadoReclamoBean.detalle}" 
-						    	target="#{listadoReclamoBean.detalle}" />      
+						    <f:setPropertyActionListener value="#{listadoReclamoCompletoBean.detalle}" 
+						    	target="#{listadoReclamoCompletoBean.detalle}" />      
 						</p:commandButton>
 					</p:column>
 
@@ -73,11 +73,11 @@
 					<p:panelGrid columns="2" styleClass="ui-noborder">
 					
 						<p:outputLabel value="Ingrese detalle:" />
-						<p:inputText id="detalle" value="#{listadoReclamoBean.detalle}" />
+						<p:inputText id="detalle" value="#{listadoReclamoCompletoBean.detalle}" />
 						
 						
 						<p:commandButton value="Si" icon="pi pi-check"
-							actionListener="#{listadoReclamoBean.ingresarReclamo}"
+							actionListener="#{listadoReclamoCompletoBean.ingresarReclamo}"
 							oncomplete="PF('ingresoReclamoDialog').hide()" />
 	
 						<p:commandButton value="No" type="button"

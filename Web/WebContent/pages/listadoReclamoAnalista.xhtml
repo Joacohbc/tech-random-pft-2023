@@ -10,21 +10,21 @@
 			listener="#{listadoReclamoBean.checkUser}" />
 
 		<h:form id="form">
-			<p:dataTable var="c" value="#{listadoReclamoBean.constancias}"
-				id="listaConstancias"
-				emptyMessage="No se encontro ninguna constancia con este criterio"
+			<p:dataTable var="c" value="#{listadoReclamoBean.reclamos}"
+				id="listaReclamos"
+				emptyMessage="No se encontro ningun reclamo con este criterio"
 				resizableColumns="true" liveResize="true" showGridlines="true"
-				rowKey="#{constancias.idConstancia}" paginator="true" rows="20"
+				rowKey="#{reclamos.idReclamo}" paginator="true" rows="20"
 				rowSelectMode="add" paginatorPosition="bottom"
 				tableStyle="width:full"
-				selection="#{listadoReclamoBean.constanciasSeleccionadas}">
+				selection="#{listadoReclamoBean.reclamosSeleccionados}">
 
 				<f:facet name="header">
 					<p:toolbar>
 						<p:toolbarGroup>
-							<p:outputLabel value="Mostrar contancias ya finalizadas" styleClass="mr-2"/>
-					        <p:toggleSwitch value="#{listadoReclamoBean.mostrarContanciasFinalizadas}">
-								<p:ajax listener="#{listadoReclamoBean.toggleContanciasFinalizadas}"/>
+							<p:outputLabel value="Mostrar reclamos ya finalizados" styleClass="mr-2"/>
+					        <p:toggleSwitch value="#{listadoReclamoBean.mostrarReclamosFinalizados}">
+								<p:ajax listener="#{listadoReclamoBean.toggleReclamosFinalizados}"/>
 					        </p:toggleSwitch>
 						</p:toolbarGroup>
 						
@@ -32,7 +32,7 @@
 							<div>
 								<p:commandButton id="toggler" type="button" value="Columns"
 									icon="pi pi-align-justify" />
-								<p:columnToggler datasource="listaConstancias" trigger="toggler">
+								<p:columnToggler datasource="listaReclamos" trigger="toggler">
 									<p:ajax />
 								</p:columnToggler>
 							</div>
@@ -41,6 +41,11 @@
 				</f:facet>
 				
 				<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
+				
+				<p:column headerText="Detalle" sortBy="#{c.detalle}"
+					filterBy="#{c.detalle}" filterMatchMode="contains">
+					<h:outputText value="#{c.detalle}" />
+				</p:column>
 
 				<p:column headerText="Doc. del Estudiante" sortBy="#{c.estudiante.documento}"
 					filterBy="#{c.estudiante.documento}" filterMatchMode="contains">
@@ -94,16 +99,16 @@
 			        	icon="pi pi-sync" 
 			        	class="rounded-button mr-2"
 			        	rendered='#{c.estado != "FINALIZADO"}'>
-			            <p:confirm header="Confirmacion" message="¿Esta seguro que quiere actualizar esta contancia?" icon="pi pi-exclamation-triangle"/>
-			            <f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.constanciaSeleccionada}"/>
+			            <p:confirm header="Confirmacion" message="¿Esta seguro que quiere actualizar este reclamo?" icon="pi pi-exclamation-triangle"/>
+			            <f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.reclamoSeleccionado}"/>
 			        </p:commandButton>
 			        
     				<p:commandButton class="ui-button-warning rounded-button"
 						icon='pi pi-trash'
-						action="#{listadoReclamoBean.eliminarConstancia}"
+						action="#{listadoReclamoBean.eliminarReclamo}"
 						disabled='#{c.estado != "INGRESADO"}'>
-		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar esta contancia?" icon="pi pi-exclamation-triangle"/>
-			            	<f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.constanciaSeleccionada}"/>
+		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar este reclamo?" icon="pi pi-exclamation-triangle"/>
+			            	<f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.reclamoSeleccionado}"/>
 					</p:commandButton>
 				</p:column>
 			</p:dataTable>
