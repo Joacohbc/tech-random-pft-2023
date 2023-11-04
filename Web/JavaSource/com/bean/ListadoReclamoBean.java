@@ -99,17 +99,6 @@ public class ListadoReclamoBean implements Serializable, AuthRenderedControl {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
 		}
 	}
-	public void eliminarReclamo() {
-		try {
-			reclamoBean.eliminar(reclamoSeleccionado.getIdReclamo());
-			reclamos.remove(reclamoSeleccionado);
-			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó el reclamo con éxito");
-			
-			PrimeFaces.current().ajax().update("form:listaReclamos");
-		} catch (Exception e) {
-			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
-		}
-	}
 	private void updateEstado(Reclamo c, EstadoReclamo estado) {
 		updateEstado(c, estado, "Se actualizo el estado a: " + estado.toString());
 		c.setEstado(estado);
@@ -121,6 +110,19 @@ public class ListadoReclamoBean implements Serializable, AuthRenderedControl {
 		ar.setDetalle(detalle);
 		reclamoBean.updateEstado(c.getIdReclamo(), estado, ar);
 	}
+	
+	public void eliminarReclamo() {
+		try {
+			reclamoBean.eliminar(reclamoSeleccionado.getIdReclamo());
+			reclamos.remove(reclamoSeleccionado);
+			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó el reclamo con éxito");
+			
+			PrimeFaces.current().ajax().update("form:listaReclamos");
+		} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
+	}
+
 	public String getBotonAltaMensaje() {
 		if (!reclamosSeleccionados.isEmpty()) {
 			int size = this.reclamosSeleccionados.size();

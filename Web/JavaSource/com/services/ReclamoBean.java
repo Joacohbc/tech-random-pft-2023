@@ -124,10 +124,6 @@ public class ReclamoBean implements ReclamoBeanRemote {
 			
 			arBean.addAccionReclamo(accion, actual);
 
-			// Cambio el estado del reclamo
-			if(estadoNuevo == EstadoReclamo.FINALIZADO) 
-				throw new InvalidEntityException("Cuando se actualiza el estado del reclamo Finalizado se debe agregar el archivo descargable para el estudiante");
-			
 			// Si se finaliza el reclamo agrego la constnacia ya firmada para que el estudiante pueda generarla
 			if(estadoNuevo == EstadoReclamo.FINALIZADO) {
 				//actual.setArchivo(cargarPlantilla(id));
