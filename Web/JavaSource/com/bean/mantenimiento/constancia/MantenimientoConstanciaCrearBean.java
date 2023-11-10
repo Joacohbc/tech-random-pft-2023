@@ -75,7 +75,7 @@ public class MantenimientoConstanciaCrearBean implements Serializable, AuthRende
     		
     		plantillaDeConstancia = bean.generarPlantilla(titulo, parrafo1, parrafo2, 1, plantillaBase.clone());
         	fileDownloaded = JSFUtils.crearPDF(plantillaDeConstancia, titulo);
-        	
+
         	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Ya se genero la plantilla, puede dar de la alta o previsualizarla");
     	} catch (Exception e) {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al generar la plantilla: " + e.getMessage());
