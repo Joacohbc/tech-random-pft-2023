@@ -22,6 +22,7 @@ import com.entities.Estudiante;
 import com.entities.Itr;
 import com.entities.Tutor;
 import com.entities.Usuario;
+import com.entities.enums.Departamento;
 import com.entities.enums.Rol;
 import com.services.ItrBean;
 
@@ -43,11 +44,32 @@ public class MantenimientoItr implements Serializable, AuthRenderedControl {
 	private List<Itr> itrs;
 	private List<Itr> itrSeleccionados = new ArrayList<>();
 	private Itr itrSeleccionado;
+	private Itr nuevoItr = new Itr();
 	
 	@PostConstruct
 	public void init() {
 		this.itrs = new ArrayList<>();
 		itrs.addAll(bean.findAll());
+	}
+	
+	public void nuevoItr() {
+		if (!auth.esAnalista())
+			return;
+		
+		try {
+			ValidationObject valid = ValidacionesItr.validarItr(nuevoItr);
+			if(!valid.isValid()) {
+				JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, valid.getErrorMessage(), null);
+				return;
+			}
+			
+			bean.save(nuevoItr);
+			itrs.add(nuevoItr);
+			PrimeFaces.current().executeScript("PF('nuevoItrDialog').hide()");
+			PrimeFaces.current().ajax().update("form:listaItrs");
+		} catch (Exception e) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
+		}
 	}
 	
 	private void updateEstado(Itr itr, Boolean estado) {
@@ -100,7 +122,7 @@ public class MantenimientoItr implements Serializable, AuthRenderedControl {
 			return size > 1 ? size + " Itrs Seleccionados" : "1 Itr Seleccionado";
 		}
 
-		return "Borrar";
+		return "Desactivar";
 	}
 	
 	public void altaItrs() {
@@ -127,7 +149,7 @@ public class MantenimientoItr implements Serializable, AuthRenderedControl {
 			return size > 1 ? size + " Itrs Seleccionados" : "1 Itr Seleccionado";
 		}
 
-		return "Alta";
+		return "Activar";
 	}
 	
 	public void altaitr() {
@@ -207,7 +229,12 @@ public class MantenimientoItr implements Serializable, AuthRenderedControl {
 	        JSFUtils.redirect("/noAuth.xhtml");
 		}
 	}
-	
-	
 
+	public Itr getNuevoItr() {
+		return nuevoItr;
+	}
+
+	public void setNuevoItr(Itr nuevoItr) {
+		this.nuevoItr = nuevoItr;
+	}
 }

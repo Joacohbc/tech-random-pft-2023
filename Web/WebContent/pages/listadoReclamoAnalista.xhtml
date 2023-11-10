@@ -1,0 +1,123 @@
+<ui:composition template="/layouts/default.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+		<f:event type="preRenderView"
+			listener="#{listadoReclamoBean.checkUser}" />
+
+		<h:form id="form">
+			<p:dataTable var="c" value="#{listadoReclamoBean.reclamos}"
+				id="listaReclamos"
+				emptyMessage="No se encontro ningun reclamo con este criterio"
+				resizableColumns="true" liveResize="true" showGridlines="true"
+				rowKey="#{reclamos.idReclamo}" paginator="true" rows="20"
+				rowSelectMode="add" paginatorPosition="bottom"
+				tableStyle="width:full"
+				selection="#{listadoReclamoBean.reclamosSeleccionados}">
+
+				<f:facet name="header">
+					<p:toolbar>
+						<p:toolbarGroup>
+							<p:outputLabel value="Mostrar reclamos ya finalizados" styleClass="mr-2"/>
+					        <p:toggleSwitch value="#{listadoReclamoBean.mostrarReclamosFinalizados}">
+								<p:ajax listener="#{listadoReclamoBean.toggleReclamosFinalizados}"/>
+					        </p:toggleSwitch>
+						</p:toolbarGroup>
+						
+						<p:toolbarGroup>
+							<div>
+								<p:commandButton id="toggler" type="button" value="Columns"
+									icon="pi pi-align-justify" />
+								<p:columnToggler datasource="listaReclamos" trigger="toggler">
+									<p:ajax />
+								</p:columnToggler>
+							</div>
+						</p:toolbarGroup>
+					</p:toolbar>
+				</f:facet>
+				
+				<p:column selectionMode="multiple" style="width:20px;text-align:center"/>
+				
+				<p:column headerText="Detalle" sortBy="#{c.detalle}"
+					filterBy="#{c.detalle}" filterMatchMode="contains">
+					<h:outputText value="#{c.detalle}" />
+				</p:column>
+
+				<p:column headerText="Doc. del Estudiante" sortBy="#{c.estudiante.documento}"
+					filterBy="#{c.estudiante.documento}" filterMatchMode="contains">
+					<h:outputText value="#{c.estudiante.documento}" />
+				</p:column>
+
+				<p:column headerText="Nomb. del Estudiante" sortBy="#{c.estudiante.nombres}"
+					filterBy="#{c.estudiante.nombres}" filterMatchMode="contains">
+					<h:outputText value="#{c.estudiante.nombres}" />
+				</p:column>
+				
+				<p:column headerText="Apell. del Estudiante" sortBy="#{c.estudiante.apellidos}"
+					filterBy="#{c.estudiante.apellidos}" filterMatchMode="contains">
+					<h:outputText value="#{c.estudiante.apellidos}" />
+				</p:column>
+				
+				<p:column headerText="Nomb. del Evento" sortBy="#{c.evento.titulo}"
+					filterBy="#{c.evento.titulo}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.titulo}" />
+				</p:column>
+				
+				<p:column headerText="Mod. del Evento" sortBy="#{c.evento.modalidad}"
+					filterBy="#{c.evento.modalidad}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.modalidad}" />
+				</p:column>
+				
+				<p:column headerText="ITR del Evento" sortBy="#{c.evento.itr.nombre}"
+					filterBy="#{c.evento.itr.nombre}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.itr.nombre}" />
+				</p:column>
+
+				<p:column headerText="Tipo de Evento" sortBy="#{c.evento.tipoEvento.tipo}"
+					filterBy="#{c.evento.tipoEvento.tipo}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.tipoEvento.tipo}" />
+				</p:column>
+
+				<p:column headerText="Estado" toggleable="false" sortBy="#{c.estado}"
+					filterBy="#{c.estado}" filterMatchMode="contains">
+						<div class="flex justify-content-center">
+							<p:badge value='#{c.estado.toString()}'
+								severity='#{c.estado == "INGRESADO" ? "success" : 
+											 c.estado == "EN_PROCESO" ? "warning" 
+											 : "danger"}'
+								styleClass="mr-2 text-base"/>
+						</div>
+				</p:column>
+														
+				<p:column headerText="Acciones" toggleable="false">
+			        <p:commandButton value='#{c.estado == "INGRESADO" ? "En Proceso" : "Finalizado"}' 
+			        	action="#{listadoReclamoBean.cambiarEstado}" 
+			        	icon="pi pi-sync" 
+			        	class="rounded-button mr-2"
+			        	rendered='#{c.estado != "FINALIZADO"}'>
+			            <p:confirm header="Confirmacion" message="¿Esta seguro que quiere actualizar este reclamo?" icon="pi pi-exclamation-triangle"/>
+			            <f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.reclamoSeleccionado}"/>
+			        </p:commandButton>
+			        
+    				<p:commandButton class="ui-button-warning rounded-button"
+						icon='pi pi-trash'
+						action="#{listadoReclamoBean.eliminarReclamo}"
+						disabled='#{c.estado != "INGRESADO"}'>
+		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar este reclamo?" icon="pi pi-exclamation-triangle"/>
+			            	<f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.reclamoSeleccionado}"/>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+        
+	</ui:define>
+</ui:composition>

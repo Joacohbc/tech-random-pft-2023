@@ -30,7 +30,7 @@
 									value="#{mantenimientoItr.botonBajaMensaje}"
 									icon="pi pi-trash"
 									actionListener="#{mantenimientoItr.bajaItrs}"
-									styleClass="ui-button-danger"
+									styleClass="ui-button-danger mr-1"
 									disabled="#{mantenimientoItr.itrSeleccionados.isEmpty()}"
 									update="@this">
 								</p:commandButton>
@@ -39,16 +39,25 @@
 									value="#{mantenimientoItr.botonAltaMensaje}"
 									icon="pi pi-plus"
 									actionListener="#{mantenimientoItr.altaItrs}"
-									styleClass="ui-button-success"
+									styleClass="ui-button-success mr-1"
 									disabled="#{mantenimientoItr.itrSeleccionados.isEmpty()}"
+									update="@this">
+								</p:commandButton>
+								
+								<p:commandButton
+									value="Nuevo ITR"
+									icon="pi pi-plus"
+									actionListener="#{mantenimientoItr.altaItrs}"
+									styleClass="ui-button-success mr-1"
+									onclick="PF('nuevoItrDialog').show()"
 									update="@this">
 								</p:commandButton>
 							</c:if>
 							
 							<div>
 								<p:commandButton id="toggler" type="button" value="Columns"
-									icon="pi pi-align-justify" />
-								<p:columnToggler datasource="listaItrs" trigger="toggler">
+									icon="pi pi-align-justify ml-1" />
+									<p:columnToggler datasource="listaItrs" trigger="toggler">
 									<p:ajax />
 								</p:columnToggler>
 							</div>
@@ -149,6 +158,39 @@
 							
 						<p:commandButton value="Cancel" icon="pi pi-times"
 							onclick="PF('editarItrDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:dialog header="Nuevo de Itr" showEffect="fade"
+					modal="true" widgetVar="nuevoItrDialog" responsive="true">
+					<p:outputPanel id="nuevo-itr-content" class="ui-fluid grid">
+						<p:outputPanel>
+							<p:panelGrid columns="4" styleClass="ui-noborder">
+								<h:outputLabel value="Nombre:" />
+								
+								<p:inputText value="#{mantenimientoItr.nuevoItr.nombre}" />
+								
+								<p:outputLabel value="Departamento:"></p:outputLabel>
+								<p:selectOneMenu value="#{mantenimientoItr.nuevoItr.departamento}">
+									<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true"/>					
+									<f:selectItems value="#{enumBean.departamentos}"
+										var="departamentos" itemValue="#{departamentos}"
+										itemLabel="#{departamentos}"></f:selectItems>
+								</p:selectOneMenu>
+																																			
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Guardar" icon="pi pi-check"
+							actionListener="#{mantenimientoItr.nuevoItr}"
+							update="nuevo-itr-content"
+							process="nuevo-itr-content @this"/>
+							
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('nuevoItrDialog').hide()"
 							class="ui-button-secondary" type="button" />
 					</f:facet>
 				</p:dialog>

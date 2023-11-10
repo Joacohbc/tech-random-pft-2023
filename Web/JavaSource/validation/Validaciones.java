@@ -36,6 +36,10 @@ public final class Validaciones {
 		
 		return s.length() <= largoMax && s.length() >= largoMin;
 	}
+	
+	public static boolean ValidarRegex(String s, String regex) {
+		return ValidarNoVacio(s) && Pattern.matches(regex, s);
+	}
 
 	public static boolean ValidarSoloLetras(String s, boolean espacios) {
 		if (!ValidarNoVacio(s))
@@ -44,7 +48,6 @@ public final class Validaciones {
 			return Pattern.matches("[a-zA-ZáéíóúýÁÉÍÓÚÝñÑ ]+", s);
 		} else {
 			return Pattern.matches("[a-zA-ZáéíóúýÁÉÍÓÚÝñÑ]+", s);
-
 		}
 	}
 

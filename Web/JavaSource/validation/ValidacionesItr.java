@@ -25,8 +25,8 @@ public class ValidacionesItr {
 	}
 	
 	public static ValidationObject validarNombre(String nombre) {
-		return Validaciones.ValidarLargo(nombre, 4, 50) ? ValidationObject.VALID 
-				: new ValidationObject("El nombre del ITR no puede estar vacio y debe tener entre 4 y 50 caracteres");
+		return Validaciones.ValidarLargo(nombre, 4, 50) && Validaciones.ValidarRegex(nombre, "[a-zA-ZáéíóúýÁÉÍÓÚÝñÑ\\- ]+") ? ValidationObject.VALID
+				: new ValidationObject("El nombre del ITR debe tener entre 4 y 50 caracteres y solo debe contener letras o guiones");
 	}
 	
 	public static ValidationObject validarDepartamento(Departamento departamento) {

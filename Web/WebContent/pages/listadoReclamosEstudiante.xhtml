@@ -1,0 +1,137 @@
+<ui:composition template="/layouts/default.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+		<f:event type="preRenderView"
+			listener="#{listadoReclamoCompletoBean.checkUser}" />
+
+		<h:form id="form">
+			<p:dataTable var="c" value="#{listadoReclamoCompletoBean.reclamos}"
+				id="listaReclamos"
+				emptyMessage="No se encontro ningun reclamo con este criterio"
+				resizableColumns="true" liveResize="true" showGridlines="true"
+				rowKey="#{reclamos.idReclamo}" paginator="true" rows="20"
+				rowSelectMode="add" paginatorPosition="bottom"
+				tableStyle="width:full">
+
+				<f:facet name="header">
+					<p:toolbar>
+						<p:toolbarGroup>
+							<span style="font-weight: bold">Lista de Reclamos Ingresados</span>
+						</p:toolbarGroup>
+					</p:toolbar>
+				</f:facet>
+				<p:column headerText="Detalle Reclamo" sortBy="#{c.detalle}"
+					filterBy="#{c.detalle}" filterMatchMode="contains">
+					<h:outputText value="#{c.detalle}" />
+				</p:column>			
+				
+				<p:column headerText="Tit. del Evento" sortBy="#{c.evento.titulo}"
+					filterBy="#{c.evento.titulo}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.titulo}" />
+				</p:column>				
+				
+				<p:column headerText="Mod. del Evento" sortBy="#{c.evento.modalidad}"
+					filterBy="#{c.evento.modalidad}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.modalidad.toString()}" />
+				</p:column>
+				
+				<p:column headerText="ITR del Evento" sortBy="#{c.evento.itr.nombre}"
+					filterBy="#{c.evento.itr.nombre}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.itr.nombre}" />
+				</p:column>
+
+				<p:column headerText="Tipo de Evento" sortBy="#{c.evento.tipoEvento.tipo}"
+					filterBy="#{c.evento.tipoEvento.tipo}" filterMatchMode="contains">
+					<h:outputText value="#{c.evento.tipoEvento.tipo}" />
+				</p:column>
+		
+
+				<p:column headerText="Fecha y hora" sortBy="#{c.fechaHora}"
+					filterBy="#{c.fechaHora}" filterMatchMode="contains">
+					<h:outputText value="#{c.formattedDate}" />
+				</p:column>
+						
+				<p:column headerText="Estado" toggleable="false" sortBy="#{c.estado}"
+					filterBy="#{c.estado}" filterMatchMode="contains">
+						<div class="flex justify-content-center">
+							<p:badge value='#{c.estado.toString()}'
+								severity='#{c.estado == "INGRESADO" ? "success" : 
+											 c.estado == "EN_PROCESO" ? "warning" 
+											 : "danger"}'
+								styleClass="mr-2 text-base"/>
+						</div>
+				</p:column>
+				
+				<p:column headerText="Acciones">
+					<p:commandButton icon="pi pi-pencil"
+						update=":dialogs:alta-reclamo-content"
+						oncomplete="PF('editarReclamoDialog').show()"
+						styleClass="edit-button rounded-button ui-button-success"
+						disabled='#{c.estado != "INGRESADO"}'
+						process="@this">
+			            	<f:setPropertyActionListener value="#{c}" target="#{listadoReclamoCompletoBean.reclamoSeleccionado}"/>
+						<p:resetInput target=":dialogs:alta-reclamo-content" />
+					</p:commandButton>
+
+    				<p:commandButton class="ui-button-warning rounded-button"
+						icon='pi pi-trash'
+						action="#{listadoReclamoCompletoBean.eliminar}"
+						disabled='#{c.estado != "INGRESADO"}'>
+		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar este reclamo?" icon="pi pi-exclamation-triangle"/>
+			            	<f:setPropertyActionListener value="#{c}" target="#{listadoReclamoCompletoBean.reclamoSeleccionado}"/>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+        
+		<h:form id="dialogs">
+			<p:dialog header="Informacion del Reclamo"
+				showEffect="fade" modal="true"
+				widgetVar="editarReclamoDialog" responsive="true">
+				<p:outputPanel id="alta-reclamo-content"
+					class="ui-fluid grid">
+					<p:outputPanel
+						rendered="#{not empty listadoReclamoCompletoBean.reclamoSeleccionado}">
+						
+						<p:panelGrid columns="2" styleClass="ui-noborder">
+						<h:outputLabel value="Detalle:" />
+						<p:inputText value="#{listadoReclamoCompletoBean.reclamoSeleccionado.detalle}" />
+						
+						<h:outputLabel value="Evento:" />
+
+						<p:selectOneMenu
+							value="#{listadoReclamoCompletoBean.reclamoSeleccionado.evento.idEvento}">
+							<f:selectItems value="#{listadoEventosBean.eventos}"
+								var="evento" itemLabel="#{evento.titulo}"
+								itemValue="#{evento.idEvento}" />
+						</p:selectOneMenu>
+						
+						
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:outputPanel>
+
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-check"
+						actionListener="#{listadoReclamoCompletoBean.editar}"
+						update="alta-reclamo-content"
+						process="alta-reclamo-content @this" />
+
+					<p:commandButton value="Cancel" icon="pi pi-times"
+						onclick="PF('editarReclamoDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
