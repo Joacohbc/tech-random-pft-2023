@@ -7,7 +7,6 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -40,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         editNombreUsuario = findViewById(R.id.editNombreUsuario)
-        editContrania = findViewById(R.id.editTextContraseña)
+        editContrania = findViewById(R.id.editTextContrasenia)
 
         var registro = findViewById<Button>(R.id.testLinkRegistro)
         registro.setOnClickListener {

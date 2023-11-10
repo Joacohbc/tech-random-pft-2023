@@ -31,7 +31,8 @@ public class TokenWebFilter implements Filter {
 		
 		if(httpRequest.getRequestURI().endsWith("/api/auth/login") 
 				|| httpRequest.getRequestURI().endsWith("/api/auth/register")
-				|| httpRequest.getRequestURI().endsWith("/api/auth/refresh")) {
+				|| httpRequest.getRequestURI().endsWith("/api/auth/refresh")
+				|| httpRequest.getRequestURI().endsWith("/api/auth/itrs")) {
 			chain.doFilter(request, response);
 			return;
 		}

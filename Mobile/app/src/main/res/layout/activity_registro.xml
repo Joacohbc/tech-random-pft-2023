@@ -62,7 +62,7 @@
         android:textSize="15dp"
         android:hint="Apellidos" />
     <EditText
-        android:id="@+id/emailper"
+        android:id="@+id/emailPersonal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
@@ -75,7 +75,7 @@
         android:drawableStart="@drawable/ico_arroba"
         />
     <EditText
-        android:id="@+id/emailutec"
+        android:id="@+id/emailUtec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/opensans_medium"
@@ -103,25 +103,23 @@
     />
 
     <EditText
-        android:id="@+id/fechanac"
-        android:onClick="onClickFechaNacimiento"
+        android:id="@+id/fechaNacimientoacimiento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:fontFamily="@font/opensans_medium"
         android:layout_marginVertical="10dp"
         android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:drawableStart="@drawable/ico_calendar"
+        android:focusable="false"
+        android:fontFamily="@font/opensans_medium"
         android:hint="Fecha de Nacimiento"
         android:inputType="date"
-        android:focusable="false"
-        android:clickable="true"
-        android:textSize="15dp"
         android:maxLines="1"
-        android:drawableStart="@drawable/ico_calendar"
-    />
+        android:textSize="15dp" />
 
     <EditText
-        android:id="@+id/editTextContraseña"
+        android:id="@+id/editTextContrasenia"
         android:layout_width="match_parent"
         android:fontFamily="@font/opensans_medium"
         android:layout_height="wrap_content"
@@ -188,22 +186,19 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-
-        <AutoCompleteTextView
-            android:id="@+id/itr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensans_medium"
-            android:layout_marginVertical="10dp"
-            android:layout_gravity="center"
-            android:hint="ITR"
-            android:textSize="15dp"
+            <AutoCompleteTextView
+                android:id="@+id/itr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_medium"
+                android:layout_marginVertical="10dp"
+                android:layout_gravity="center"
+                android:hint="ITR"
+                android:textSize="15dp"
             />
-
-
         </com.google.android.material.textfield.TextInputLayout>
         <Button
-        android:id="@+id/loginregistro"
+        android:id="@+id/btnRegistro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -226,8 +221,5 @@
             android:textColorLink="@color/letra_fondooscuro"
             android:textSize="16sp"
             android:textColor="@color/fondo_oscuro" />
-
-
-
     </LinearLayout>
 </ScrollView>

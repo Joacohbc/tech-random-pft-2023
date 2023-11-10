@@ -1,12 +1,13 @@
 package com.utec.proyectofinaltecnicatura.dtos;
 
+import androidx.annotation.NonNull;
+
 import com.utec.proyectofinaltecnicatura.dtos.enums.Departamento;
 
 import java.io.Serializable;
 
 public class ItrDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	private Long idItr;
 	private Departamento departamento;
 	private Boolean estado;
@@ -45,5 +46,11 @@ public class ItrDTO implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	@NonNull
+	@Override
+	public String toString() {
+		return nombre;
 	}
 }
