@@ -275,6 +275,8 @@ public class ValidacionesUsuario {
 	}
 
 	public static ValidationObject validarFechaNacimiento(LocalDate fecNacimiento) {
+		if(fecNacimiento == null) return new ValidationObject("La fecha de nacimiento es un campo obligatorio");
+		
 		if (LocalDate.now().compareTo(fecNacimiento) < 17) {
 			return new ValidationObject("La fecha de nacimiento debe ser de mayoria de edad (o 17 años inclusive)");
 		}
@@ -341,18 +343,18 @@ public class ValidacionesUsuario {
 	}
 
 	public static ValidationObject validarGenero(Genero genero) {
-		return genero != null ? ValidationObject.VALID : new ValidationObject("El genero obligatorio");
+		return genero != null ? ValidationObject.VALID : new ValidationObject("El genero es obligatorio");
 	}
 
 	public static ValidationObject validarDepartamento(Departamento departamento) {
-		return departamento != null ? ValidationObject.VALID : new ValidationObject("El departamento obligatorio");
+		return departamento != null ? ValidationObject.VALID : new ValidationObject("El departamento es obligatorio");
 	}
 
 	public static ValidationObject validarEstadoUsuario(EstadoUsuario estado) {
-		return estado != null ? ValidationObject.VALID : new ValidationObject("El estado obligatorio");
+		return estado != null ? ValidationObject.VALID : new ValidationObject("El estado es obligatorio");
 	}
 
 	public static ValidationObject validarItr(Itr itr) {
-		return itr != null ? ValidationObject.VALID : new ValidationObject("El ITR obligatorio");
+		return itr != null ? ValidationObject.VALID : new ValidationObject("El ITR es obligatorio");
 	}
 }

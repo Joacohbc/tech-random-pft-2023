@@ -68,9 +68,13 @@ public class RestablecerContraseniaBean implements Serializable {
 	}
 	
 	public void restablecer() {
-		try {	
-			validate(token);
+		try {
+			if(!nuevaContrasenia.equals(confirmacionContrasenia)) {
+				JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Las contraseñas no coinciden");
+				return;
+			}
 			
+			validate(token);
 			usuarioBean.updateContrasenia(id, nuevaContrasenia);
 			tokenBean.removeToken(token);
 			JSFUtils.redirect("login.xhtml");

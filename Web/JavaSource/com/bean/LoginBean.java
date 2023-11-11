@@ -37,7 +37,17 @@ public class LoginBean implements Serializable {
 	public LoginBean() {}
 
 	public void restablecerContrasenia() {
-		user.olvideContrasenia(nombreUsuario);
+		
+		if(nombreUsuario.isBlank()) {
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el nombre de usuario");
+			return;
+		}
+		
+		JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Si existe un usuario con esa crendeciales se le enviara un e-mail para restrablecer la contraseña");
+		try {
+			user.olvideContrasenia(nombreUsuario);
+		} catch (Exception e) {
+		}
 	}
 	
 	public void login() {

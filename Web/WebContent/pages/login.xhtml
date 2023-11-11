@@ -17,31 +17,35 @@
 		</div>
 		<div>
 			<h:form>
-				<p:messages id="messages" showDetail="true" showIcon="false">
-					<p:autoUpdate />
-				</p:messages>
-
-				<p:panelGrid columns="2" styleClass="ui-noborder">
-					<p:outputLabel value="Nombre de Usuario:"></p:outputLabel>
-					<p:inputText value="#{loginBean.nombreUsuario}">
+				<p:panelGrid columns="1" layout="flex"
+                 	columnClasses="col-12"
+					contentStyleClass="ui-fluid"
+                 	styleClass="customPanelGrid ui-noborder border-round-3xl shadow-1 p-3 max-w-29rem">
+                 	
+          			<p:messages id="messages" showDetail="true" showIcon="false" closable="true">
+						<p:autoUpdate />
+					</p:messages>
+				
+					<p:inputText value="#{loginBean.nombreUsuario}" placeholder="Nombre de Usuario">
 						<p:ajax />
 					</p:inputText>
 
-					<p:outputLabel value="Contraseña:"></p:outputLabel>
-					<p:password value="#{loginBean.contrasenia}">
+					<p:password value="#{loginBean.contrasenia}" placeholder="Contraseña">
 						<p:ajax />
 					</p:password>
 
-					<p:outputLabel value="Rol"></p:outputLabel>
 					<p:selectOneMenu value="#{loginBean.rol}">
 						<f:selectItems value="#{enumBean.roles}" var="rol"
-							itemValue="#{rol}" itemLabel="#{rol}"></f:selectItems>
+							itemValue="#{rol}" itemLabel="#{rol}"/>
 					</p:selectOneMenu>
-
-					<p:commandButton action="#{loginBean.login()}" value="Login"></p:commandButton>
-					<p:commandButton action="#{loginBean.restablecerContrasenia()}" value="Restablecer Contraseña"></p:commandButton>				
+	                
+					<p:commandButton action="#{loginBean.login()}" value="Login"/>
+					
+					<div class="flex flex-column align-content-center">
+						<p:commandLink value="¿No estas registrado?" action="#{loginBean.register()}"/>
+						<p:commandLink value="¿Has olivdado tu contraseña?" action="#{loginBean.restablecerContrasenia()}"/>
+					</div>
 				</p:panelGrid>
-				<p:commandLink value="¿No estas registrado?" action="#{loginBean.register()}"/>
 			</h:form>
 		</div>
 	</div>

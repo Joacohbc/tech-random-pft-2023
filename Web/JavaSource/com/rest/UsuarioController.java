@@ -71,8 +71,6 @@ public class UsuarioController {
 			if (!error.isValid())
 				throw new InvalidEntityException(error.getErrorMessage());
 			
-			
-			System.out.println(">>>>>>>>>> AQUI LLEGUE");
 			EstudianteDTO dto = EstudianteMapper.toEstudianteDTO(usuarioBean.updateEstudiante(usuarioActual));
 			return Response.ok(dto).build();
 		} catch (InvalidEntityException | NotFoundEntityException e) {

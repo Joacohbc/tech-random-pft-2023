@@ -57,6 +57,11 @@
 					<h:outputText value="#{c.estudiante.apellidos}" />
 				</p:column>
 				
+				<p:column headerText="Tipo constancia" sortBy="#{c.tipoConstancia.tipo}"
+					filterBy="#{c.tipoConstancia.tipo}" filterMatchMode="contains">
+					<h:outputText value="#{c.tipoConstancia.tipo}" />
+				</p:column>
+				
 				<p:column headerText="Nomb. del Evento" sortBy="#{c.evento.titulo}"
 					filterBy="#{c.evento.titulo}" filterMatchMode="contains">
 					<h:outputText value="#{c.evento.titulo}" />

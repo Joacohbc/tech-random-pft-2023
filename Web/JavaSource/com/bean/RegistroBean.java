@@ -24,7 +24,12 @@ import com.exceptions.InvalidEntityException;
 import com.services.ItrBean;
 import com.services.UsuarioBean;
 
+import validation.Validaciones;
+import validation.ValidacionesAccionConstancia;
+import validation.ValidacionesUsuario;
 import validation.ValidacionesUsuario.TipoUsuarioDocumento;
+import validation.ValidacionesUsuarioEstudiante;
+import validation.ValidationObject;
 
 @Named("register")
 @ViewScoped
@@ -55,12 +60,29 @@ public class RegistroBean implements Serializable {
 			usuario = new Usuario();
 			this.listadoItr = new ArrayList<>();
 			listadoItr.addAll(itrBean.findAll());
-
 		}
 		
+		private Boolean validarInfoUsuarioBasica() {
 			
+			if(itrId == null) {
+				JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "El ITR es obligatorio");
+				return false;
+			}
+			
+			usuario.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
+			usuario.setItr(itrBean.findById(itrId));
+			ValidationObject valid = ValidacionesUsuario.ValidarUsuario(usuario, TipoUsuarioDocumento.URUGUAYO);
+			if(!valid.isValid()) {
+				JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, valid.getErrorMessage());
+				return false;
+			}
+			
+			return true;
+		}
 		
 		public void crearAnalista() {
+			if(!validarInfoUsuarioBasica()) return;
+			
 			Analista a = new Analista();
 			a.setDocumento(usuario.getDocumento());
 			a.setNombres(usuario.getNombres());
@@ -73,14 +95,11 @@ public class RegistroBean implements Serializable {
 			a.setContrasena(usuario.getContrasena());
 			a.setDepartamento(usuario.getDepartamento());
 			a.setGenero(usuario.getGenero());
-
+			a.setEstadoUsuario(usuario.getEstadoUsuario());
+			a.setItr(usuario.getItr());
+			
 			//Harcodeado
 			a.setEstado(true);
-			a.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
-
-			
-			a.setItr(itrBean.findById(itrId));
-			
 			
 			try {
 				bean.register(a, TipoUsuarioDocumento.URUGUAYO);				
@@ -89,13 +108,14 @@ public class RegistroBean implements Serializable {
 			} catch (InvalidEntityException e) {
 				JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error de ingreso:", e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "No fue posible volver al Login", "Recague la pagina");
 			}
 
 		}	
 		
 		public void crearEstudiante() {
+			if(!validarInfoUsuarioBasica()) return;
+			
 			Estudiante e = new Estudiante();
 			e.setDocumento(usuario.getDocumento());
 			e.setNombres(usuario.getNombres());
@@ -108,17 +128,15 @@ public class RegistroBean implements Serializable {
 			e.setContrasena(usuario.getContrasena());
 			e.setDepartamento(usuario.getDepartamento());
 			e.setGenero(usuario.getGenero());
- 
+			e.setEstadoUsuario(usuario.getEstadoUsuario());
+			e.setItr(usuario.getItr());
+			
 			// Datos de Estudiante
-			e.setGeneracion(generacion);
+			e.setGeneracion(generacion);			
+			e.setItr(itrBean.findById(itrId));
 			
 			// Harcodeado
 			e.setEstado(true);
-			e.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
-			
-			e.setItr(itrBean.findById(itrId));
-			
-			
 			
 			try {
 				bean.register(e, TipoUsuarioDocumento.URUGUAYO);
@@ -127,7 +145,6 @@ public class RegistroBean implements Serializable {
 			} catch (InvalidEntityException ex) {
 				JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error de ingreso:", ex.getMessage());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "No fue posible volver al Login", "Recague la pagina");
 			}
 			
@@ -135,6 +152,8 @@ public class RegistroBean implements Serializable {
 		
 		
 		public void crearTutor() {
+			if(!validarInfoUsuarioBasica()) return;
+			
 			Tutor t = new Tutor();
 			t.setDocumento(usuario.getDocumento());
 			t.setNombres(usuario.getNombres());
@@ -147,6 +166,8 @@ public class RegistroBean implements Serializable {
 			t.setContrasena(usuario.getContrasena());
 			t.setDepartamento(usuario.getDepartamento());
 			t.setGenero(usuario.getGenero());
+			t.setEstadoUsuario(usuario.getEstadoUsuario());
+			t.setItr(usuario.getItr());
 
 			// Datos de tutor
 			t.setArea(getArea());
@@ -154,10 +175,7 @@ public class RegistroBean implements Serializable {
 			
 			// Harcodeado
 			t.setEstado(true);
-			t.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
-			
-			t.setItr(itrBean.findById(itrId));
-			
+						
 			try {
 				bean.register(t, TipoUsuarioDocumento.URUGUAYO);
 				FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
@@ -165,7 +183,6 @@ public class RegistroBean implements Serializable {
 			} catch (InvalidEntityException e) {
 				JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error de ingreso:", e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "No fue posible volver al Login", "Recague la pagina");
 			}
 		}
