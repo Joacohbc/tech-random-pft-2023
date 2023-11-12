@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -59,7 +60,7 @@ public class RegistroBean implements Serializable {
 		public void init() {
 			usuario = new Usuario();
 			this.listadoItr = new ArrayList<>();
-			listadoItr.addAll(itrBean.findAll());
+			listadoItr.addAll(itrBean.findAll().stream().filter(i -> i.getEstado()).collect(Collectors.toList()));
 		}
 		
 		private Boolean validarInfoUsuarioBasica() {

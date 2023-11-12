@@ -27,6 +27,7 @@ public class ItrController {
 		try {
 			return Response.ok(itrBean.findAll()
 					.stream()
+					.filter(t -> t.getEstado())
 					.map(t -> ItrMapper.toItrDTO(t))
 					.collect(Collectors.toList()))
 					.build();
