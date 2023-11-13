@@ -1,6 +1,7 @@
 package com.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -8,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.mail.MessagingException;
 import javax.persistence.NoResultException;
 
+import com.auth.TokenManagmentBean;
 import com.daos.UsuariosDAO;
 import com.entities.Analista;
 import com.entities.Estudiante;
@@ -36,6 +38,9 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	@EJB
 	private UsuariosDAO dao;
 
+	@EJB
+	private TokenManagmentBean tokenBean;
+	
 	@EJB
 	private MailBean mail;
 	
@@ -128,21 +133,21 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			throw new InvalidEntityException("El nombre o la contraseña del usuario son incorrectos");
 		
 		if(usu.getEstadoUsuario() == EstadoUsuario.SIN_VALIDAR || usu.getEstadoUsuario() == EstadoUsuario.ELIMINADO)
-			throw new InvalidEntityException("Las crendenciales de usuario ingreasdas no tiene acceso al sistema, consulto con su Analista");
+			throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 		
 		if (usu instanceof Estudiante) {
 			Estudiante est = (Estudiante) usu;
 			if(!est.getEstado())
-				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tiene acceso al sistema, consulte con su Analista");
+				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 
 		} else if (usu instanceof Tutor) {
 			Tutor tut = (Tutor) usu;
 			if(!tut.getEstado())
-				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tiene acceso al sistema, consulte con su Analista");
+				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 		} else {
 			Analista ana = (Analista) usu;
 			if(!ana.getEstado())
-				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tiene acceso al sistema, consulte con su Analista");
+				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 		}
 		
 		return usu;
@@ -186,7 +191,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	}
 
 	private void validarUpdate(Usuario newUsu, Usuario actual) throws DAOException, InvalidEntityException {
-
+				
 		if (!newUsu.getDocumento().equals(actual.getDocumento())) {
 			if (dao.findByDocumento(Usuario.class, newUsu.getDocumento()) != null)
 				throw new InvalidEntityException("Ya existe un Usuario con el Documento: " + newUsu.getDocumento());
@@ -217,7 +222,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 	}
 
 	@Override
-	public void updateEstudiante(Estudiante estudiante)
+	public Estudiante updateEstudiante(Estudiante estudiante)
 			throws ServiceException, NotFoundEntityException, InvalidEntityException {
 		try {
 
@@ -226,14 +231,14 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			Estudiante estActual = dao.findById(Estudiante.class, estudiante.getIdUsuario());
 			if (estActual == null)
 				throw new NotFoundEntityException("No existe un usuario con el ID: " + estudiante.getIdUsuario());
-
+			
 			estudiante.setIdEstudiante(estActual.getIdEstudiante());
 			validarUpdate(estudiante, estActual);
 			
 			if(estudiante.getEstadoUsuario() == EstadoUsuario.ELIMINADO) 
 				estudiante.setEstado(false);
 			
-			dao.update(estudiante);
+			return dao.update(estudiante);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}
@@ -338,6 +343,29 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			return null;
 		}
 	}
+	
+	public void updateContrasenia(Long id, String nueva)
+			throws ServiceException, NotFoundEntityException, InvalidEntityException {
+		try {
+			ServicesUtils.checkNull(id, "Al actualizar un Usuario, su ID no puede ser nulo");
+
+			Usuario actual = dao.findById(Usuario.class, id);
+			if (actual == null)
+				throw new NotFoundEntityException("No existe un usuario con el ID: " + id);
+			
+			ValidationObject valid = ValidacionesUsuario.validarContrasena(nueva);
+			if(!valid.isValid())
+				throw new InvalidEntityException(valid.getErrorMessage());
+			
+			actual.setContrasena(encriptar(nueva));
+			
+			mail.enviarConGMail(actual.getEmailUtec(), "Importante! Cambio de Contraseña - UTEC", "Se modificó la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailPersonal(), "Importante! Cambio de Contraseña - UTEC", "Se modificó la contraseña de su Usuario");
+			dao.update(actual);
+		} catch (DAOException | MessagingException e) {
+			throw new ServiceException(e);
+		}
+	}
 
 	@Override
 	public void updateContrasenia(Long id, String antigua, String nueva)
@@ -350,7 +378,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 				throw new NotFoundEntityException("No existe un usuario con el ID: " + id);
 			
 			if(!verificar(actual.getContrasena(), encriptar(antigua))) {
-				throw new InvalidEntityException("La contraseña antigua ingresada no es igual a la actual");
+				throw new InvalidEntityException("Las contraseñas no coinciden. Verifique sus datos e intente nuevamente");
 			}
 			
 			ValidationObject valid = ValidacionesUsuario.validarContrasena(nueva);
@@ -359,8 +387,8 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			
 			actual.setContrasena(encriptar(nueva));
 			
-			mail.enviarConGMail(actual.getEmailUtec(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
-			mail.enviarConGMail(actual.getEmailPersonal(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailUtec(), "Cambio de Contraseña - UTEC", "Se modifico la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailPersonal(), "Cambio de Contraseña - UTEC", "Se modifico la contraseña de su Usuario");
 			dao.update(actual);
 		} catch (DAOException | MessagingException e) {
 			throw new ServiceException(e);
@@ -374,15 +402,20 @@ public class UsuarioBean implements UsuarioBeanRemote {
 		if(usuario == null) 
 			throw new NotFoundEntityException("No existe un usuario con el Nombre de Usuario: "+ nombreUsuario);
 		
-		try {
-			String password =  System.currentTimeMillis() + usuario.getContrasena().toLowerCase();
+		try {			
+//			Map<String, Object> claims = new HashMap<String, Object>();
+//			claims.put("id", usuario.getIdUsuario());
+//			claims.put("nombreUsuario", usuario.getNombreUsuario());
+//			claims.put("nombres", usuario.getNombres());
+//			claims.put("apellidos", usuario.getApellidos());
+				
+			String temporalToken = tokenBean.generarCustomToken(UUID.randomUUID().toString(), 1000l * 60l * 5l);
+			tokenBean.addToken(temporalToken, usuario.getIdUsuario());
 			
-			usuario.setContrasena(encriptar(password.trim()));
-			dao.update(usuario);
+			String link = "http://localhost:8080/ProyectoInfra/pages/restablecerContrasenia.xhtml?token=" + temporalToken;
 
-			mail.enviarConGMail(usuario.getEmailUtec(), "Contraseña Temporal - CETU" , password.trim());
-			mail.enviarConGMail(usuario.getEmailPersonal(), "Contraseña Temporal - CETU", password.trim());
-			
+			mail.enviarConGMail(usuario.getEmailUtec(), "Contraseña Temporal - UTEC" , "Ingrese a este link para restablecer la contraseña (vence en 10 minutos desde la llegada de este mensaje): " + link);
+			mail.enviarConGMail(usuario.getEmailPersonal(), "Contraseña Temporal - UTEC" , "Ingrese a este link para restablecer la contraseña: (vence en 10 minutos desde la llegada de este mensaje)" + link);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		} catch (MessagingException e) {
