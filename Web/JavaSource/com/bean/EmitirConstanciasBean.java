@@ -65,14 +65,14 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 			if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.INGRESADO) {
 				updateEstado(constanciaSeleccionada, EstadoSolicitudes.EN_PROCESO);
 				PrimeFaces.current().ajax().update("form:listaConstancias");
-				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se cambio el estado de la constancia exitosamente");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se cambió el estado de la constancia exitosamente");
 				return;
 			}
 		
 			if(constanciaSeleccionada.getEstado() == EstadoSolicitudes.EN_PROCESO) {
 				updateEstado(constanciaSeleccionada, EstadoSolicitudes.FINALIZADO);
 				PrimeFaces.current().ajax().update("form:listaConstancias");
-				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se finalizó la constancia con éxito y se generó la constancia para el estudiante exitosamente");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Finalizó la constancia con éxito y se generó la constancia para el estudiante");
 				return;
 			}
 		} catch (Exception e) {
@@ -84,7 +84,7 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 		try {
 			bean.eliminarConstancia(constanciaSeleccionada.getIdConstancia());
 			constancias.remove(constanciaSeleccionada);
-			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó la constancia con éxito exitosamente");
+			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó la constancia con éxito");
 			
 			PrimeFaces.current().ajax().update("form:listaConstancias");
 		} catch (Exception e) {
@@ -105,7 +105,7 @@ public class EmitirConstanciasBean implements Serializable, AuthRenderedControl 
 //	}
 	
 	private void updateEstado(Constancia c, EstadoSolicitudes estado) {
-		updateEstado(c, estado, "Se actualizo el estado a: " + estado.toString());
+		updateEstado(c, estado, "Se actualizó el estado a: " + estado.toString());
 		c.setEstado(estado);
 	}
 	

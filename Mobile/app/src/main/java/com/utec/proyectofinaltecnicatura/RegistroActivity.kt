@@ -55,14 +55,25 @@ class RegistroActivity : AppCompatActivity() {
             val emailInstitucional = findViewById<EditText>(R.id.emailUtec).text.toString()
             val telefono = findViewById<EditText>(R.id.telefono).text.toString()
             val contrasenia = findViewById<EditText>(R.id.editTextContrasenia).text.toString()
-            val fechaNacimiento = Formatos.ToLocalDate(findViewById<EditText>(R.id.fechaNacimientoacimiento).text.toString())
+            var fechaNacimiento= LocalDate.now()
+
+
+
+            try {
+                fechaNacimiento = Formatos.ToLocalDate(findViewById<EditText>(R.id.fechaNacimientoacimiento).text.toString())
+
+            }catch (e: Exception){
+                showErrorToast(this@RegistroActivity, "Debe seleccionar una fecha de nacimiento válida")
+                return@setOnClickListener
+            }
+
             val genero = findViewById<AutoCompleteTextView>(R.id.genero).text.toString()
             val departamento = findViewById<AutoCompleteTextView>(R.id.departamento).text.toString()
 
             val itrs = findViewById<AutoCompleteTextView>(R.id.itr).adapter as List<ItrDTO>
             val itr = itrs.find { itr -> itr.nombre == findViewById<AutoCompleteTextView>(R.id.itr).text.toString() }
             val localidad = findViewById<EditText>(R.id.localidad).text.toString()
-
+            val generacion = findViewById<EditText>(R.id.generacion).text.toString()
             val estudiante = EstudianteDTO()
             estudiante.documento = documento
             estudiante.nombres = nombres
@@ -76,6 +87,7 @@ class RegistroActivity : AppCompatActivity() {
             estudiante.departamento = Departamento.valueOf(departamento)
             estudiante.itr = itr
             estudiante.localidad = localidad
+            estudiante.generacion =generacion.toInt()
 
             authServices.register(estudiante).enqueue(object : Callback<EstudianteDTO> {
                 override fun onFailure(call: Call<EstudianteDTO>, t: Throwable) {

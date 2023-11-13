@@ -208,22 +208,22 @@ public class ValidacionesUsuario {
 
 	public static ValidationObject validarDocumentoUruguayo(String documento) {
 		return Validaciones.ValidarCedulaUruguaya(documento) ? ValidationObject.VALID
-				: new ValidationObject("La cedula uruguaya debe contener los puntos, guiones y el digito verificador valido");
+				: new ValidationObject("La cédula uruguaya debe contener los puntos, guiones y el dígito verificador válido");
 	}
 
 	public static ValidationObject validarDocumentoNoUruguayo(String documento) {
 		return Validaciones.ValidarLargo(documento, 20) ? ValidationObject.VALID
-				: new ValidationObject("El documento debe contener un maximo de 20 caracteres");
+				: new ValidationObject("El documento debe contener un máximo de 20 caracteres");
 	}
 
 	public static ValidationObject validarNombreUsuario(String nombreUsuario) {
 		if (!Validaciones.ValidarLargo(nombreUsuario, 6, 64)) {
-			return new ValidationObject("El nombre de usuario debe tener un minimo de 6 caracteres y un maximo de 64");
+			return new ValidationObject("El nombre de usuario debe tener un mínimo de 6 caracteres y un máximo de 64");
 		}
 
 		if (!Pattern.matches("[a-z]+(\\.)[a-z]+", nombreUsuario)
 				&& !Pattern.matches("[a-z]+(\\.)[a-z]+(\\.)[a-z]+", nombreUsuario)) {
-			return new ValidationObject("El nombre de usuario es invalido, debe tener el formato \"nombre.apellido\"");
+			return new ValidationObject("El nombre de usuario es inválido, debe tener el formato \"nombre.apellido\"");
 		}
 		
 		return ValidationObject.VALID;
@@ -231,16 +231,16 @@ public class ValidacionesUsuario {
 
 	public static ValidationObject validarContrasena(String contrasena) {
 		if (!Validaciones.ValidarLargo(contrasena, 8, 128)) 
-			return new ValidationObject("La contraseña debe tener un minimo de 8 caracteres y un maxaimo de 128 caracteres");
+			return new ValidationObject("La contraseña debe tener un mínimo de 8 caracteres y un máximo de 128 caracteres");
 		
 		// .* = Cualquier caracter zero o mas veces
 		
 		if(!Pattern.matches(".*[a-z]+.*", contrasena)) {
-			return new ValidationObject("La contraseña debe contener por lo menos una letra minúsculas");
+			return new ValidationObject("La contraseña debe contener por lo menos una letra minúscula");
 		}
 		
 		if(!Pattern.matches(".*[A-Z]+.*", contrasena)) {
-			return new ValidationObject("La contraseña debe contener por lo menos un número, una letra mayúscula y una letra minúsculas");
+			return new ValidationObject("La contraseña debe contener por lo menos un número, una letra mayúscula y una letra minúscula");
 		}
 		
 		if(!Pattern.matches(".*[1-9]+.*", contrasena)) {
@@ -256,7 +256,7 @@ public class ValidacionesUsuario {
 		}
 
 		if (!Validaciones.ValidarLargo(nombre, 100)) {
-			return new ValidationObject("Los nombres deben tener un maximo de 100 caracteres");
+			return new ValidationObject("Los nombres deben tener un máximo de 100 caracteres");
 		}
 
 		return ValidationObject.VALID;
@@ -268,7 +268,7 @@ public class ValidacionesUsuario {
 		}
 
 		if (!Validaciones.ValidarLargo(apellido, 100)) {
-			return new ValidationObject("Los apellidos deben tener un maximo de 100 caracteres");
+			return new ValidationObject("Los apellidos deben tener un máximo de 100 caracteres");
 		}
 
 		return ValidationObject.VALID;
@@ -278,7 +278,7 @@ public class ValidacionesUsuario {
 		if(fecNacimiento == null) return new ValidationObject("La fecha de nacimiento es un campo obligatorio");
 		
 		if (LocalDate.now().compareTo(fecNacimiento) < 17) {
-			return new ValidationObject("La fecha de nacimiento debe ser de mayoria de edad (o 17 años inclusive)");
+			return new ValidationObject("La fecha de nacimiento debe ser de mayoría de edad (o 17 años inclusive)");
 		}
 
 		return Validaciones.ValidarFechaMax(fecNacimiento, LocalDate.now(), ValidacionesFecha.NO_ESTRICTAMENTE)
@@ -291,17 +291,17 @@ public class ValidacionesUsuario {
 			LocalDate fecha = Formatos.ToLocalDate(fecNacimiento);
 			return validarFechaNacimiento(fecha);
 		} catch (DateTimeParseException e) {
-			return new ValidationObject("La fecha debe seguir el formato de \"dia-mes-año\"");
+			return new ValidationObject("La fecha debe seguir el formato de \"día-mes-año\"");
 		}
 	}
 
 	public static ValidationObject validarTelefono(String telefono) {
 		if (!Validaciones.ValidarLargo(telefono, 3, 20)) {
-			return new ValidationObject("El telefono debe tener un maximo de 20 caracteres");
+			return new ValidationObject("El teléfono debe tener un máximo de 20 caracteres");
 		}
 
 		if (!Pattern.matches("[+-]?[0-9]+", telefono)) {
-			return new ValidationObject("El telefono solo debe contener numeros y tambien simbolo de \'+\' o \'-\'");
+			return new ValidationObject("El teléfono solo debe contener números y tambien símbolo de \'+\' o \'-\'");
 		}
 
 		return ValidationObject.VALID;
@@ -309,7 +309,7 @@ public class ValidacionesUsuario {
 
 	public static ValidationObject validarEmailUTEC(String email) {
 		if (!Validaciones.ValidarMail(email)) {
-			return new ValidationObject("El email de UTEC tiene un formato invalido");
+			return new ValidationObject("El email de UTEC tiene un formato inválido");
 		}
 
 		String[] partes = email.split("@");
@@ -328,7 +328,7 @@ public class ValidacionesUsuario {
 
 	public static ValidationObject validarEmail(String email) {
 		if (!Validaciones.ValidarMail(email)) {
-			return new ValidationObject("El email personal tiene un formato invalido");
+			return new ValidationObject("El email personal tiene un formato inválido");
 		}
 
 		return ValidationObject.VALID;
@@ -336,14 +336,14 @@ public class ValidacionesUsuario {
 
 	public static ValidationObject validarLocalidad(String localidad) {
 		if (!Validaciones.ValidarLargo(localidad, 100)) {
-			return new ValidationObject("La localidad debe tener un maximo de 100 caracteres");
+			return new ValidationObject("La localidad debe tener un máximo de 100 caracteres");
 		}
 
 		return ValidationObject.VALID;
 	}
 
 	public static ValidationObject validarGenero(Genero genero) {
-		return genero != null ? ValidationObject.VALID : new ValidationObject("El genero es obligatorio");
+		return genero != null ? ValidationObject.VALID : new ValidationObject("El género es obligatorio");
 	}
 
 	public static ValidationObject validarDepartamento(Departamento departamento) {

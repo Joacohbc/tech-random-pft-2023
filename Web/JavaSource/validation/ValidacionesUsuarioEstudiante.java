@@ -38,7 +38,7 @@ public class ValidacionesUsuarioEstudiante {
 	public static ValidationObject validarEmailUtecEstudiante(String email) {
 		
 		if (!Validaciones.ValidarMail(email)) {
-			return new ValidationObject("El email de UTEC tiene un formato invalido");
+			return new ValidationObject("El email de UTEC tiene un formato inválido");
 		}
 
 		String[] partes = email.split("@");
@@ -73,16 +73,16 @@ public class ValidacionesUsuarioEstudiante {
 	
 	public static ValidationObject validarGeneracion(String generacion) {
 		if(!Validaciones.ValidarNoVacio(generacion)) {
-			return new ValidationObject("La generacion es obligatoria");
+			return new ValidationObject("La generación es obligatoria");
 		}
 		
 		if (!Validaciones.ValidarSoloNumeros(generacion, false)) {
-			return new ValidationObject("La generacion solo puede contener numeros positivos");
+			return new ValidationObject("La generación solo puede contener números positivos");
 
 		} 
 	
 		if (generacion.length() != 4) {
-			return new ValidationObject("La generacion debe tener 4 digitos");
+			return new ValidationObject("La generación debe tener 4 dígitos");
 		}
 		
 		return ValidationObject.VALID;

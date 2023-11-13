@@ -34,7 +34,7 @@ public class ReclamoDAO {
         	em.flush();
         	return entidad;
     	}catch(PersistenceException e) {
-			throw new DAOException("Ocurrió un error al dar de alta un Reclamo: " + e.getMessage());	
+			throw new DAOException("Ocurrió un error al dar de alta Reclamo: " + e.getMessage());	
     	}
     }
     public Reclamo findById(Long id) {
@@ -73,7 +73,7 @@ public class ReclamoDAO {
     		return entidad;
     		
     	}catch(Exception e) {
-			throw new DAOException("Ocurrio un error al hacer el update del Evento ", e);    	}
+			throw new DAOException("Ocurrió un error modificar Reclamo ", e);    	}
     }
     public void remove(Reclamo entidad)throws DAOException, NotFoundEntityException {
     	try {
@@ -81,7 +81,7 @@ public class ReclamoDAO {
     		em.flush();
     		
     	}catch(Exception e) {
-			throw new DAOException("Ocurrio un error al hacer al eliminar del Reclamo ", e);
+			throw new DAOException("Ocurrió un error al eliminar Reclamo ", e);
 
     	}
     }

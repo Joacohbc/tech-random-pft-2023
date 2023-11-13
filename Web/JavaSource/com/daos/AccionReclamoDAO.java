@@ -27,7 +27,7 @@ public class AccionReclamoDAO {
 			em.flush();
 			return accion;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrió un error al dar de alta una Alta de una Accion en reclamo: " + e.getMessage());
+			throw new DAOException("Ocurrió un error al dar Alta de una Acción en reclamo: " + e.getMessage());
 		}
 	}
 	

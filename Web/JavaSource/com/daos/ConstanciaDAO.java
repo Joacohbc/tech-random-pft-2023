@@ -102,7 +102,7 @@ public class ConstanciaDAO {
 			em.flush();
 			return entidad;
 		} catch (Exception e) {
-			throw new DAOException("Ocurrio un error al hacer el update de la Constancia ", e);
+			throw new DAOException("Ocurrió un error al modificar Constancia ", e);
 		}
 	}
 
@@ -111,7 +111,7 @@ public class ConstanciaDAO {
 			em.remove(entidad);
 			em.flush();
 		} catch (Exception e) {
-			throw new DAOException("Ocurrio un error al hacer al eliminar de la Constancia ", e);
+			throw new DAOException("OcurrIó un error al eliminar Constancia ", e);
 		}
 	}
 }

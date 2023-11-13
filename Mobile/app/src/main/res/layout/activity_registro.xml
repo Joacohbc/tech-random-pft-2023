@@ -197,6 +197,20 @@
                 android:textSize="15dp"
             />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/generacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:fontFamily="@font/opensans_medium"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="15dp"
+            android:inputType="number"
+            android:hint="Generación" />
+
+
         <Button
         android:id="@+id/btnRegistro"
         android:layout_width="match_parent"
@@ -209,6 +223,7 @@
         android:text="Registro"
         android:textSize="15dp"
         app:iconTint="@color/celeste_utec" />
+
 
         <Button
             android:id="@+id/linkvolver"

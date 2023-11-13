@@ -28,14 +28,14 @@ public class ValidacionesAccionConstancia {
 	
 	public static ValidationObject validarDetalle(String detalle) {
 		return Validaciones.ValidarLargo(detalle, 50) ? ValidationObject.VALID
-				: new ValidationObject("El detalle no puede estar vacio y debe tener un maximo de 50 caracteres");
+				: new ValidationObject("El detalle no puede estar vacío y debe tener un máximo de 50 caracteres");
 	}
 	
 	public static ValidationObject validarAnalista(Analista analista) {
-		return analista != null ? ValidationObject.VALID : new ValidationObject("El analista obligatorio");
+		return analista != null ? ValidationObject.VALID : new ValidationObject("El analista es  obligatorio");
 	}
 	
 	public static ValidationObject validarConstancia(Constancia constancia) {
-		return constancia != null ? ValidationObject.VALID : new ValidationObject("El constancia obligatorio");
+		return constancia != null ? ValidationObject.VALID : new ValidationObject("La constancia es  obligatoria");
 	}
 }

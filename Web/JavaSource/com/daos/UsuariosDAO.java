@@ -42,7 +42,7 @@ public class UsuariosDAO {
 			em.flush();
 			return usuario;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrió un error al dar de alta al Usuario: " + e.getMessage());
+			throw new DAOException("Ocurrió un error al dar de alta Usuario: " + e.getMessage());
 		}
 	}
 
@@ -149,7 +149,7 @@ public class UsuariosDAO {
 			em.flush();
 			return usuario;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrio un error al cambiar el estado del usuario:", e);
+			throw new DAOException("Ocurrió un error al cambiar estado del usuario:", e);
 		}
 	}
 	
@@ -159,7 +159,7 @@ public class UsuariosDAO {
 			em.flush();
 			return estudiante;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrio un error al cambiar el estado del usuario:", e);
+			throw new DAOException("Ocurrió un error al cambiar estado del usuario:", e);
 		}
 	}
 	
@@ -169,7 +169,7 @@ public class UsuariosDAO {
 			em.flush();
 			return analista;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrio un error al cambiar el estado del usuario:", e);
+			throw new DAOException("Ocurrió un error al cambiar estado del usuario:", e);
 		}
 	}
 	
@@ -179,7 +179,7 @@ public class UsuariosDAO {
 			em.flush();
 			return tutor;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrio un error al cambiar el estado del usuario:", e);
+			throw new DAOException("Ocurrió un error al cambiar estado del usuario:", e);
 		}
 	}
 

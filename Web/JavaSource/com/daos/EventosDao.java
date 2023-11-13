@@ -41,7 +41,7 @@ public class EventosDao {
 			em.flush();
 			return evento;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrió un error al dar de alta al Usuario: " + e.getMessage());
+			throw new DAOException("Ocurrió un error al dar de alta Usuario: " + e.getMessage());
 		}
 	}
     

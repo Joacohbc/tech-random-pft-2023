@@ -85,14 +85,14 @@ public class ListadoReclamoBean implements Serializable, AuthRenderedControl {
 			if(reclamoSeleccionado.getEstado() == EstadoReclamo.INGRESADO) {
 				updateEstado(reclamoSeleccionado, EstadoReclamo.EN_PROCESO);
 				PrimeFaces.current().ajax().update("form:listaReclamos");
-				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se cambio el estado del reclamo exitosamente");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Cambió el estado del reclamo exitosamente");
 				return;
 			}
 		
 			if(reclamoSeleccionado.getEstado() == EstadoReclamo.EN_PROCESO) {
 				updateEstado(reclamoSeleccionado, EstadoReclamo.FINALIZADO);
 				PrimeFaces.current().ajax().update("form:listaReclamos");
-				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se finalizó el reclamo con éxito");
+				JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Finalizó el reclamo con éxito");
 				return;
 			}
 		} catch (Exception e) {

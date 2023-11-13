@@ -54,7 +54,7 @@ public class MantenimientoConstanciaCrearBean implements Serializable, AuthRende
         	}
         	
         	plantillaBase = event.getFile().getContent();
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + event.getFile().getFileName() + " se subio con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + event.getFile().getFileName() + " se subió con éxito");
     	} catch (Exception e) {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al cargar el archivo: " + e.getMessage());
 		}
@@ -64,19 +64,19 @@ public class MantenimientoConstanciaCrearBean implements Serializable, AuthRende
     	try {
     		
     		if(titulo.trim().isBlank() && (parrafo1.trim().isBlank() || parrafo2.trim().isBlank())) {
-    			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Debe llenar todos los campos, de titulo o alguno de los parrafos");
+    			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Debe llenar todos los campos, de título o alguno de los párrafos");
     	    	return;		
     		}
     		
     		if(plantillaBase == null) {	
-    			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Debe cargar una la base antes de generar la plantilla");
+    			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Debe cargar una base antes de generar la plantilla");
     	    	return;		
     		}
     		
     		plantillaDeConstancia = bean.generarPlantilla(titulo, parrafo1, parrafo2, 1, plantillaBase.clone());
         	fileDownloaded = JSFUtils.crearPDF(plantillaDeConstancia, titulo);
 
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Ya se genero la plantilla, puede dar de la alta o previsualizarla");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Plantilla generada, puede dar de la alta o previsualizar");
     	} catch (Exception e) {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al generar la plantilla: " + e.getMessage());
 		}
@@ -96,7 +96,7 @@ public class MantenimientoConstanciaCrearBean implements Serializable, AuthRende
         	tp.setTipo(titulo);
         	bean.insert(tp);
         	
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se creo con exito la nueva plantilla de constancia: " + tp.getTipo()); 
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se creó con éxito la nueva plantilla de constancia: " + tp.getTipo()); 
     	} catch (Exception e) {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
 		}

@@ -72,10 +72,10 @@ public class ValidacionesUsuarioTutor {
 			if (area.length() <= 50) {
 				return ValidationObject.VALID;
 			} else {
-				return new ValidationObject("El Area deben tener un maximo de 50 caracteres");
+				return new ValidationObject("El Area debe tener un máximo de 50 caracteres");
 			}
 		} else {
-			return new ValidationObject("El Area solo puede contener letras y numeros");
+			return new ValidationObject("El Area sólo puede contener letras y números");
 		}
 
 	}

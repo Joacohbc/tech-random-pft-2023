@@ -43,7 +43,7 @@ class ReclamoAdapter(private val reclamos: ArrayList<ReclamoDTO>) : RecyclerView
                 if (!success) return@showReclamoDialog
 
                 if (detalle.isEmpty()) {
-                    showErrorToast(holder.itemView.context, "El Detalle del reclamo no puede estar vacio")
+                    showErrorToast(holder.itemView.context, "El Detalle del reclamo no puede estar vacío")
                     return@showReclamoDialog
                 }
 

@@ -43,7 +43,7 @@ public class LoginBean implements Serializable {
 			return;
 		}
 		
-		JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Si existe un usuario con esa crendeciales se le enviara un e-mail para restrablecer la contraseña");
+		JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Si existe un usuario con estas crendeciales, se le recibirá un e-mail para reestablecer la contraseña");
 		try {
 			user.olvideContrasenia(nombreUsuario);
 		} catch (Exception e) {
@@ -64,10 +64,10 @@ public class LoginBean implements Serializable {
 				auth.generar(usu.getIdUsuario(), usu.getIdTutor(), nombreUsuario, rol, usu);
 			}
 
-			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Incio de sesion exitoso", "");
+			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Incio de sesión exitoso", "");
 			FacesContext.getCurrentInstance().getExternalContext().redirect("inicio.xhtml");
 		} catch (Exception e) {
-			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al inicar sesion:", e.getMessage());
+			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al iniciar sesión:", e.getMessage());
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class LoginBean implements Serializable {
 	
 	public void info() {
 		if(!auth.yaGenerado()) return;
-		JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Informacion de Usuario:", auth.getRol().toString() + " " + auth.getNombreUsuario() + " " + auth.getIdUsuario() + " " + auth.getIdRol());
+		JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Información de Usuario:", auth.getRol().toString() + " " + auth.getNombreUsuario() + " " + auth.getIdUsuario() + " " + auth.getIdRol());
 	}
     
 	public String getNombreUsuario() {

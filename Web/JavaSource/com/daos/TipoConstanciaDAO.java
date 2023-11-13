@@ -37,7 +37,7 @@ public class TipoConstanciaDAO {
 			em.flush();
 			return entidad;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrió un error al dar de alta un Evento: " + e.getMessage());
+			throw new DAOException("Ocurrió un error al dar de alta Evento: " + e.getMessage());
 		}
 	}
 
@@ -65,7 +65,7 @@ public class TipoConstanciaDAO {
 			em.flush();
 			return entidad;
 		} catch (Exception e) {
-			throw new DAOException("Ocurrio un error al hacer el update del Tipo de la Constancia ", e);
+			throw new DAOException("Ocurrió un error al modificar Tipo de Constancia ", e);
 		}
 
 	}

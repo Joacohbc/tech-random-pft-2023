@@ -32,7 +32,7 @@ public class ValidacionesTipoConstancia {
 		}
 		
 		if(plantilla.length == 0) {
-			return new ValidationObject("La plantilla no puede estar vacia");
+			return new ValidationObject("La plantilla no puede estar vacía");
 		}
 		
 		return ValidationObject.VALID;

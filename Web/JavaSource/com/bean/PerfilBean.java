@@ -83,7 +83,7 @@ public class PerfilBean implements Serializable {
 				usuariobean.updateEstudiante((Estudiante) usuario);
 			}
 			
-			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Usuario modificado con exito", "");
+			JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Usuario modificado con éxito", "");
 		} catch (Exception e) {
 			JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
 		}

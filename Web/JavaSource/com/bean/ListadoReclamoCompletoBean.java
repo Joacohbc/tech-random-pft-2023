@@ -104,7 +104,7 @@ public class ListadoReclamoCompletoBean implements Serializable, AuthRenderedCon
 			reclamos = reclamos.stream().filter(c -> c.getIdReclamo() != reclamoSeleccionado.getIdReclamo()).collect(Collectors.toList());
 			
 			PrimeFaces.current().ajax().update("form:listaReclamos");
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminio el reclamo con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó el reclamo con éxito");
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
 		}
@@ -116,7 +116,7 @@ public class ListadoReclamoCompletoBean implements Serializable, AuthRenderedCon
 			reclamoBean.update(reclamoSeleccionado.toEntity());
 			PrimeFaces.current().ajax().update("form:listaReclamos");
 			PrimeFaces.current().ajax().update("PF('editarReclamoDialog').hide()");
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizo el reclamo con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizó el reclamo con éxito");
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
 		}

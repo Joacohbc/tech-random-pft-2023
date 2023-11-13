@@ -81,7 +81,7 @@
         android:background="?android:attr/panelBackground"
         android:fontFamily="@font/opensans_semibold"
         android:paddingVertical="10dp"
-        android:text="¿No estás registrado? Registrate aquí"
+        android:text="¿No estás registrado? Regístrate aquí"
         android:textSize="20sp"
         android:textColor="@color/blanco" />
 </LinearLayout>

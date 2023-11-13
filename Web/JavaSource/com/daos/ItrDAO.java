@@ -36,7 +36,7 @@ public class ItrDAO {
 			em.flush();
 			return itr;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrió un error al dar de alta un Itr: " + e.getMessage());
+			throw new DAOException("Ocurrió un error al dar de alta Itr: " + e.getMessage());
 		}
 	}
 

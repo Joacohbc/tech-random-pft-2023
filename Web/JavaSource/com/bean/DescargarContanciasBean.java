@@ -48,7 +48,7 @@ public class DescargarContanciasBean implements Serializable, AuthRenderedContro
 			constancias = constancias.stream().filter(c -> c.getIdConstancia() != constanciaSeleccionada.getIdConstancia()).collect(Collectors.toList());
 			
 			PrimeFaces.current().ajax().update("form:listaConstancias");
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminio la constancia con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se eliminó la constancia con éxito");
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
 		}
@@ -61,7 +61,7 @@ public class DescargarContanciasBean implements Serializable, AuthRenderedContro
 			bean.update(constanciaSeleccionada.toEntity());
 			PrimeFaces.current().ajax().update("form:listaConstancias");
 			PrimeFaces.current().ajax().update("PF('editarConstanciaDialog').hide()");
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizo la constancia con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizó la constancia con éxito");
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, e.getMessage());
 		}

@@ -32,7 +32,7 @@ public class AccionConstanciaDAO {
 			em.flush();
 			return accion;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrió un error al dar de alta una Alta de una Accion en Constancia: " + e.getMessage());
+			throw new DAOException("Ocurrió un error al dar de alta una Acción en Constancia: " + e.getMessage());
 		}
 	}
 	

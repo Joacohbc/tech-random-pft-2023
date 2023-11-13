@@ -53,7 +53,7 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 			PrimeFaces.current().executeScript("PF('altaTipoConstanciaDialog').hide()");
 			PrimeFaces.current().ajax().update("form:listaTipoConstancias");
 			
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se dio de alta el tipo de constancia con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Alta de tipo de constancia exitosa");
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, e.getMessage());
 		}
@@ -68,7 +68,7 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 			PrimeFaces.current().executeScript("PF('bajaTipoConstanciaDialog').hide()");
 			PrimeFaces.current().ajax().update("form:listaTipoConstancias");
 			
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se dio de baja el tipo de constancia con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Baja el tipo de constancia exitosa");
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, e.getMessage());
 		}
@@ -91,7 +91,7 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
 			
 			PrimeFaces.current().ajax().update("form:listaTipoConstancias");
 			PrimeFaces.current().ajax().update("PF('editarTipoConstanciaDialog').hide()");
-        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizo el tipo de constancia con exito");
+        	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "Se actualizé el tipo de constancia con éxito");
 		} catch (Exception e) {
 		 	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, e.getMessage());
 		}
@@ -108,7 +108,7 @@ public class MantenimientoConstanciaListadoBean implements Serializable, AuthRen
     	}
     	
         nuevaPlantilla = event.getFile().getContent();
-    	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + event.getFile().getFileName() + " se subio con exito");
+    	JSFUtils.addMessage(FacesMessage.SEVERITY_INFO, "El archivo " + event.getFile().getFileName() + " se subió con éxito");
     }
 	
 	@PostConstruct

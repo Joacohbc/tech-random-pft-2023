@@ -35,14 +35,14 @@ public class ValidacionesReclamo {
 
 	public static ValidationObject validarDetalle(String detalle) {
 		return Validaciones.ValidarLargo(detalle, 50) ? ValidationObject.VALID
-				: new ValidationObject("El detalle no puede estar vacio y debe tener un maximo de 50 caracteres");
+				: new ValidationObject("El detalle no puede estar vacío y debe tener un máximo de 50 caracteres");
 	}
 	public static ValidationObject validarEstadoUsuario(EstadoReclamo estado) {
-		return estado != null ? ValidationObject.VALID : new ValidationObject("El estado obligatorio");
+		return estado != null ? ValidationObject.VALID : new ValidationObject("El estado es obligatorio");
 	}
 	
 	public static ValidationObject validarEvento(Evento evento) {
-		return evento != null ? ValidationObject.VALID : new ValidationObject("El evento obligatorio");
+		return evento != null ? ValidationObject.VALID : new ValidationObject("El evento es obligatorio");
 	}
 
 }
