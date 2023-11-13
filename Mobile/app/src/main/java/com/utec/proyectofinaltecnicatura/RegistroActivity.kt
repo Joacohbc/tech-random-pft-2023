@@ -27,6 +27,8 @@ import java.util.Calendar
 
 class RegistroActivity : AppCompatActivity() {
 
+    lateinit var allItrs : List<ItrDTO>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
@@ -46,6 +48,10 @@ class RegistroActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
+        findViewById<Button>(R.id.linkvolver).setOnClickListener {
+            finish()
+        }
+
         val btnRegistrar = findViewById<Button>(R.id.btnRegistro)
         btnRegistrar.setOnClickListener {
             val documento = findViewById<EditText>(R.id.documento).text.toString()
@@ -55,25 +61,17 @@ class RegistroActivity : AppCompatActivity() {
             val emailInstitucional = findViewById<EditText>(R.id.emailUtec).text.toString()
             val telefono = findViewById<EditText>(R.id.telefono).text.toString()
             val contrasenia = findViewById<EditText>(R.id.editTextContrasenia).text.toString()
-            var fechaNacimiento= LocalDate.now()
-
-
-
-            try {
-                fechaNacimiento = Formatos.ToLocalDate(findViewById<EditText>(R.id.fechaNacimientoacimiento).text.toString())
-
-            }catch (e: Exception){
-                showErrorToast(this@RegistroActivity, "Debe seleccionar una fecha de nacimiento válida")
+            val fechaNacimiento = try { Formatos.ToLocalDate(fecNacimento.text.toString()) } catch (e: Exception) {
+                showErrorToast(this, "Fecha de nacimiento invalida")
                 return@setOnClickListener
             }
 
-            val genero = findViewById<AutoCompleteTextView>(R.id.genero).text.toString()
-            val departamento = findViewById<AutoCompleteTextView>(R.id.departamento).text.toString()
-
-            val itrs = findViewById<AutoCompleteTextView>(R.id.itr).adapter as List<ItrDTO>
-            val itr = itrs.find { itr -> itr.nombre == findViewById<AutoCompleteTextView>(R.id.itr).text.toString() }
+            val genero = Genero.values().find { genero -> genero.toString() == findViewById<AutoCompleteTextView>(R.id.genero).text.toString() }
+            val departamento = Departamento.values().find { departamento -> departamento.toString() == findViewById<AutoCompleteTextView>(R.id.departamento).text.toString() }
+            val itr = allItrs.find { itr -> itr.nombre == findViewById<AutoCompleteTextView>(R.id.itr).text.toString() } ?: ItrDTO()
             val localidad = findViewById<EditText>(R.id.localidad).text.toString()
-            val generacion = findViewById<EditText>(R.id.generacion).text.toString()
+            val generacion = try { findViewById<EditText>(R.id.editTextGeneracion).text.toString().toInt() } catch (e: Exception) { -1 }
+
             val estudiante = EstudianteDTO()
             estudiante.documento = documento
             estudiante.nombres = nombres
@@ -83,11 +81,11 @@ class RegistroActivity : AppCompatActivity() {
             estudiante.telefono = telefono
             estudiante.contrasenia = contrasenia
             estudiante.fecNacimiento = fechaNacimiento
-            estudiante.genero = Genero.valueOf(genero)
-            estudiante.departamento = Departamento.valueOf(departamento)
+            estudiante.genero = genero
+            estudiante.departamento = departamento
             estudiante.itr = itr
             estudiante.localidad = localidad
-            estudiante.generacion =generacion.toInt()
+            estudiante.generacion = generacion
 
             authServices.register(estudiante).enqueue(object : Callback<EstudianteDTO> {
                 override fun onFailure(call: Call<EstudianteDTO>, t: Throwable) {
@@ -129,8 +127,8 @@ class RegistroActivity : AppCompatActivity() {
                     return
                 }
 
-                val itrAdapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_dropdown_item, response.body()!!)
-                itrs.setAdapter(itrAdapter)
+                allItrs = response.body()!!
+                itrs.setAdapter(ArrayAdapter(baseContext, android.R.layout.simple_spinner_dropdown_item, allItrs))
             }
         })
 
