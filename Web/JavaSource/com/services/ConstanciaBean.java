@@ -87,7 +87,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 				throw new NotFoundEntityException("No existe una constancia con el ID: " + entity.getIdConstancia());
 
 			if (actual.getEstado() != EstadoSolicitudes.INGRESADO)
-				throw new InvalidEntityException("No se puede modificar una constancia que ya esta en proceso o finalizada");
+				throw new InvalidEntityException("No se puede modificar una constancia con estado EnProceso o Finalizada");
 
 			// La Fecha y Hora de emision y el Estado de la constancia no debe cambiado
 			entity.setFechaHora(actual.getFechaHora());
@@ -133,7 +133,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 				throw new NotFoundEntityException("No existe una constancia con el ID: " + id);
 
 			if (actual.getEstado() == EstadoSolicitudes.FINALIZADO)
-				throw new InvalidEntityException("No se puede modificar una constancia que ya esta finalizada");
+				throw new InvalidEntityException("No se puede modificar una constancia con estado Finalizado");
 
 			// Agrego la accion constancia a la Constancia
 			acBean.addAccionConstancia(accion, actual);
@@ -146,34 +146,34 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 			actual.setEstado(estadoNuevo);
 			actual = dao.update(actual);
 
-			String cuerpo = String.format("La Constancia de tipo \"%s\" al evento \"%s\" fue modificada de \"%s\" a \"%s\". Visite la aplicacion para mas informacion", 
+			String cuerpo = String.format("La Constancia de tipo \"%s\" al evento \"%s\" fue modificada de \"%s\" a \"%s\". Visite la aplicación para obtener más información", 
 					actual.getTipoConstancia().getTipo(), 
 					actual.getEvento().getTitulo(),
 					actual.getEstado().toString(),
 					estadoNuevo.toString());
 				         
-			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estando en su Constancia", cuerpo);
+			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estado en su Constancia", cuerpo);
 			return actual;
 			
 			// Se cacha ServiceException porque se utiliza el acBean.addAccionConstancia()
 		} catch (DAOException | ServiceException e) {
 			throw new ServiceException(e);
 		} catch (MessagingException e) {
-			throw new ServiceException("La constancia se actualizo exitosamente pero no se pudo notificar al estudiante");
+			throw new ServiceException("La constancia se actualizó exitosamente pero no se pudo notificar al estudiante");
 		}
 	}
 
 	
 	@Override
 	public byte[] descargarConstancia(Long id) throws ServiceException, NotFoundEntityException, InvalidEntityException {
-		ServicesUtils.checkNull(id, "Al registra una Constancia el ID no puede ser nulo");
+		ServicesUtils.checkNull(id, "Al registrar una Constancia el ID no puede ser nulo");
 		
 		Constancia actual = dao.findById(id);
 		if(actual == null)
 			throw new NotFoundEntityException("No existe una Constancia con el ID: " + id);
 
 		if(actual.getEstado() != EstadoSolicitudes.FINALIZADO) 
-			throw new InvalidEntityException("La solicitud de constancia no se puede descargar hasta que este finalizada");
+			throw new InvalidEntityException("La solicitud de constancia no se puede descargar hasta que esté finalizada");
 		
 		return actual.getArchivo();
 	}
@@ -181,14 +181,14 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 	@Override
 	public Constancia eliminarConstancia(Long id) throws ServiceException, NotFoundEntityException {
 		try {
-			ServicesUtils.checkNull(id, "Al registra una Constancia el ID no puede ser nulo");
+			ServicesUtils.checkNull(id, "Al registrar una Constancia el ID no puede ser nulo");
 			
 			Constancia actual = dao.findById(id);
 			if(actual == null)
 				throw new NotFoundEntityException("No existe una Constancia con el ID: " + id);
 			
 			if(!actual.getAccionConstancias().isEmpty()) {
-				throw new ServiceException("No puede dar de baja una Constancia que ya se le aplicaron acciones");
+				throw new ServiceException("No puede dar de baja una Constancia con Estado EnProceso y/o Finalzado");
 			}
 			
 			dao.remove(actual);

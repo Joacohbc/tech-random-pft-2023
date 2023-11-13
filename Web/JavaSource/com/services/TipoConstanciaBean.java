@@ -99,7 +99,7 @@ public class TipoConstanciaBean implements TipoConstanciaBeanRemote {
 	@Override
 	public TipoConstancia eliminar(Long id) throws ServiceException, NotFoundEntityException {
 		try {
-			ServicesUtils.checkNull(id, "Al registra un TipoConstancia el ID no puede ser nulo");
+			ServicesUtils.checkNull(id, "Al registrar un TipoConstancia el ID no puede ser nulo");
 		
 			TipoConstancia actual = dao.findById(id);
 			if(actual == null)
@@ -116,7 +116,7 @@ public class TipoConstanciaBean implements TipoConstanciaBeanRemote {
 	@Override
 	public TipoConstancia reactivar(Long id) throws ServiceException, NotFoundEntityException {
 		try {
-			ServicesUtils.checkNull(id, "Al registra un TipoConstancia el ID no puede ser nulo");
+			ServicesUtils.checkNull(id, "Al registrar un TipoConstancia el ID no puede ser nulo");
 		
 			TipoConstancia actual = dao.findById(id);
 			if(actual == null)

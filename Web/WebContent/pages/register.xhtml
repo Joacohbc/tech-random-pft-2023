@@ -44,7 +44,7 @@
 					<p:ajax />
 				</p:inputText>
 
-				<p:outputLabel for="@next">Telefono:</p:outputLabel>
+				<p:outputLabel for="@next">Teléfono:</p:outputLabel>
 				<p:inputText placeholder="" value="#{register.usuario.telefono}">
 					<p:ajax />
 				</p:inputText>
@@ -75,7 +75,7 @@
 					<p:ajax />
 				</p:inputText>
 
-				<p:outputLabel for="@next">Genero:</p:outputLabel>
+				<p:outputLabel for="@next">Género:</p:outputLabel>
 				<p:selectOneMenu value="#{register.usuario.genero}">
 					<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true" />
 					<f:selectItems value="#{enumBean.generos}" var="genero"
@@ -112,7 +112,7 @@
 
 			<p:tab title="Estudiante">
 				<p:panelGrid columns="2" styleClass="ui-noborder">
-					<p:outputLabel>Generacion</p:outputLabel>
+					<p:outputLabel>Generación</p:outputLabel>
 					<p:inputNumber placeholder="2023" decimalPlaces="0" decimalSeparator="" thousandSeparator=""
 						value="#{register.generacion}">
 						<p:ajax />

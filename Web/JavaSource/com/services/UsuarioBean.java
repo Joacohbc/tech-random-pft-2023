@@ -133,21 +133,21 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			throw new InvalidEntityException("El nombre o la contraseña del usuario son incorrectos");
 		
 		if(usu.getEstadoUsuario() == EstadoUsuario.SIN_VALIDAR || usu.getEstadoUsuario() == EstadoUsuario.ELIMINADO)
-			throw new InvalidEntityException("Las crendenciales de usuario ingreasdas no tiene acceso al sistema, consulto con su Analista");
+			throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 		
 		if (usu instanceof Estudiante) {
 			Estudiante est = (Estudiante) usu;
 			if(!est.getEstado())
-				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tiene acceso al sistema, consulte con su Analista");
+				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 
 		} else if (usu instanceof Tutor) {
 			Tutor tut = (Tutor) usu;
 			if(!tut.getEstado())
-				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tiene acceso al sistema, consulte con su Analista");
+				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 		} else {
 			Analista ana = (Analista) usu;
 			if(!ana.getEstado())
-				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tiene acceso al sistema, consulte con su Analista");
+				throw new InvalidEntityException("Las crendenciales de usuario ingresadas no tienen acceso al sistema, consulte con su Analista");
 		}
 		
 		return usu;
@@ -359,8 +359,8 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			
 			actual.setContrasena(encriptar(nueva));
 			
-			mail.enviarConGMail(actual.getEmailUtec(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
-			mail.enviarConGMail(actual.getEmailPersonal(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailUtec(), "Importante! Cambio de Contraseña - UTEC", "Se modificó la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailPersonal(), "Importante! Cambio de Contraseña - UTEC", "Se modificó la contraseña de su Usuario");
 			dao.update(actual);
 		} catch (DAOException | MessagingException e) {
 			throw new ServiceException(e);
@@ -378,7 +378,7 @@ public class UsuarioBean implements UsuarioBeanRemote {
 				throw new NotFoundEntityException("No existe un usuario con el ID: " + id);
 			
 			if(!verificar(actual.getContrasena(), encriptar(antigua))) {
-				throw new InvalidEntityException("La contraseña antigua ingresada no es igual a la actual");
+				throw new InvalidEntityException("Las contraseñas no coinciden. Verifique sus datos e intente nuevamente");
 			}
 			
 			ValidationObject valid = ValidacionesUsuario.validarContrasena(nueva);
@@ -387,8 +387,8 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			
 			actual.setContrasena(encriptar(nueva));
 			
-			mail.enviarConGMail(actual.getEmailUtec(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
-			mail.enviarConGMail(actual.getEmailPersonal(), "Cambio de Contraseña - CETU", "Se modifico la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailUtec(), "Cambio de Contraseña - UTEC", "Se modifico la contraseña de su Usuario");
+			mail.enviarConGMail(actual.getEmailPersonal(), "Cambio de Contraseña - UTEC", "Se modifico la contraseña de su Usuario");
 			dao.update(actual);
 		} catch (DAOException | MessagingException e) {
 			throw new ServiceException(e);
@@ -414,8 +414,8 @@ public class UsuarioBean implements UsuarioBeanRemote {
 			
 			String link = "http://localhost:8080/ProyectoInfra/pages/restablecerContrasenia.xhtml?token=" + temporalToken;
 
-			mail.enviarConGMail(usuario.getEmailUtec(), "Contraseña Temporal - CETU" , "Ingrese a este link para restablecer la contraseña (vence en 10 minutos desde la llegada de este mensaje): " + link);
-			mail.enviarConGMail(usuario.getEmailPersonal(), "Contraseña Temporal - CETU" , "Ingrese a este link para restablecer la contraseña: (vence en 10 minutos desde la llegada de este mensaje)" + link);
+			mail.enviarConGMail(usuario.getEmailUtec(), "Contraseña Temporal - UTEC" , "Ingrese a este link para restablecer la contraseña (vence en 10 minutos desde la llegada de este mensaje): " + link);
+			mail.enviarConGMail(usuario.getEmailPersonal(), "Contraseña Temporal - UTEC" , "Ingrese a este link para restablecer la contraseña: (vence en 10 minutos desde la llegada de este mensaje)" + link);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		} catch (MessagingException e) {

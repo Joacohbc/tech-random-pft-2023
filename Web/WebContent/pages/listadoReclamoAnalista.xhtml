@@ -12,7 +12,7 @@
 		<h:form id="form">
 			<p:dataTable var="c" value="#{listadoReclamoBean.reclamos}"
 				id="listaReclamos"
-				emptyMessage="No se encontro ningun reclamo con este criterio"
+				emptyMessage="No se encontrá ningún reclamo con este criterio"
 				resizableColumns="true" liveResize="true" showGridlines="true"
 				rowKey="#{reclamos.idReclamo}" paginator="true" rows="20"
 				rowSelectMode="add" paginatorPosition="bottom"
@@ -99,7 +99,7 @@
 			        	icon="pi pi-sync" 
 			        	class="rounded-button mr-2"
 			        	rendered='#{c.estado != "FINALIZADO"}'>
-			            <p:confirm header="Confirmacion" message="¿Esta seguro que quiere actualizar este reclamo?" icon="pi pi-exclamation-triangle"/>
+			            <p:confirm header="Confirmacion" message="¿Estás seguro que quieres actualizar este reclamo?" icon="pi pi-exclamation-triangle"/>
 			            <f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.reclamoSeleccionado}"/>
 			        </p:commandButton>
 			        
@@ -107,7 +107,7 @@
 						icon='pi pi-trash'
 						action="#{listadoReclamoBean.eliminarReclamo}"
 						disabled='#{c.estado != "INGRESADO"}'>
-		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar este reclamo?" icon="pi pi-exclamation-triangle"/>
+		           			<p:confirm header="Confirmacion" message="¿Estás seguro que quieres eliminar este reclamo?" icon="pi pi-exclamation-triangle"/>
 			            	<f:setPropertyActionListener value="#{c}" target="#{listadoReclamoBean.reclamoSeleccionado}"/>
 					</p:commandButton>
 				</p:column>

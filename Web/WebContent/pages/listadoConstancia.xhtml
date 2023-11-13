@@ -99,7 +99,7 @@
 			        	icon="pi pi-sync" 
 			        	class="rounded-button mr-2"
 			        	rendered='#{c.estado != "FINALIZADO"}'>
-			            <p:confirm header="Confirmacion" message="¿Esta seguro que quiere actualizar esta contancia?" icon="pi pi-exclamation-triangle"/>
+			            <p:confirm header="Confirmacion" message="¿Estás seguro que quieres actualizar esta contancia?" icon="pi pi-exclamation-triangle"/>
 			            <f:setPropertyActionListener value="#{c}" target="#{emitirConstanciasBean.constanciaSeleccionada}"/>
 			        </p:commandButton>
 			        
@@ -107,7 +107,7 @@
 						icon='pi pi-trash'
 						action="#{emitirConstanciasBean.eliminarConstancia}"
 						disabled='#{c.estado != "INGRESADO"}'>
-		           			<p:confirm header="Confirmacion" message="¿Esta seguro que quiere eliminar esta contancia?" icon="pi pi-exclamation-triangle"/>
+		           			<p:confirm header="Confirmacion" message="¿Estás seguro que quieres eliminar esta contancia?" icon="pi pi-exclamation-triangle"/>
 			            	<f:setPropertyActionListener value="#{c}" target="#{emitirConstanciasBean.constanciaSeleccionada}"/>
 					</p:commandButton>
 				</p:column>

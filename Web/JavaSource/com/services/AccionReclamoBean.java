@@ -37,11 +37,11 @@ public class AccionReclamoBean {
 	}
 	public AccionReclamo addAccionReclamo(AccionReclamo entity, Reclamo reclamo) throws ServiceException, InvalidEntityException {
 		try {
-			ServicesUtils.checkNull(entity, "Al agregar una Accion a una Reclamo, ninguna de estas puede ser nula");
-			ServicesUtils.checkNull(reclamo, "Al agregar una Accion a una Reclamo, ninguna de estas puede ser nula");
+			ServicesUtils.checkNull(entity, "Al agregar una Acción a Reclamo, ninguna de estas puede ser nula");
+			ServicesUtils.checkNull(reclamo, "Al agregar una Acción a Reclamo, ninguna de estas puede ser nula");
 
 			if (entity.getIdAccionReclamo() != null)
-				throw new InvalidEntityException("Al solictar una Accion Reclamo, esta no puede tener un ID asignado");
+				throw new InvalidEntityException("Al solictar una Acción Reclamo, esta no puede tener un ID asignado");
 			
 			// Setteo la fecha de creacion y el reclamoal a que pertenece
 			// Convierto LocalDate a Date ya que ese es el tipo de dato que se utiliza en AccionReclamo

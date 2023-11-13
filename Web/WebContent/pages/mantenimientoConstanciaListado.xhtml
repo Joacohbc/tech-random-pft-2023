@@ -13,7 +13,7 @@
 			<p:dataTable var="tipoConstancia"
 				value="#{mantenimientoConstanciaListadoBean.tipoConstancias}"
 				id="listaTipoConstancias"
-				emptyMessage="No se encontro ninguna plantilla de constancia con este criterio"
+				emptyMessage="No se encontró ninguna plantilla de constancia con este criterio"
 				resizableColumns="true" liveResize="true" showGridlines="true"
 				rowKey="#{tipoConstancias.tipo}" paginator="true" rows="20"
 				rowSelectMode="add" paginatorPosition="bottom"
@@ -23,7 +23,7 @@
 				<f:facet name="header">
 					<p:toolbar>
 						<p:toolbarGroup>
-							<span style="font-weight: bold">Lista de Plantilla de constancias</span>
+							<span style="font-weight: bold">Lista de Plantillas de constancias</span>
 						</p:toolbarGroup>
 					</p:toolbar>
 				</f:facet>
@@ -72,7 +72,7 @@
 		</h:form>
 
 		<h:form id="dialogs">
-			<p:dialog header="Informacion del tipo de Constancia"
+			<p:dialog header="Información del tipo de Constancia"
 				showEffect="fade" modal="true"
 				widgetVar="editarTipoConstanciaDialog" responsive="true">
 				<p:outputPanel id="alta-tipoConstancia-content"

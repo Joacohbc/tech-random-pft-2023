@@ -33,11 +33,11 @@ public class AccionConstanciaBean {
 	
 	public AccionConstancia addAccionConstancia(AccionConstancia entity, Constancia constancia) throws ServiceException, InvalidEntityException {
 		try {
-			ServicesUtils.checkNull(entity, "Al agregar una Accion a una Constancia, ninguna de estas puede ser nula");
-			ServicesUtils.checkNull(constancia, "Al agregar una Accion a una Constancia, ninguna de estas puede ser nula");
+			ServicesUtils.checkNull(entity, "Al agregar una Acción a Constancia, ninguna de estas puede ser nula");
+			ServicesUtils.checkNull(constancia, "Al agregar una Acció a una Constancia, ninguna de estas puede ser nula");
 
 			if (entity.getIdAccionConstancia() != null)
-				throw new InvalidEntityException("Al solictar una Accion Constancia, esta no puede tener un ID asignado");
+				throw new InvalidEntityException("Al solictar una Acción Constancia, esta no puede tener un ID asignado");
 			
 			// Setteo la fecha de creacion y la constancia al a que pertenece
 			entity.setFechaHora(LocalDateTime.now());

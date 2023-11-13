@@ -75,7 +75,7 @@ public class ReclamoBean implements ReclamoBeanRemote {
 	@Override
 	public Reclamo update(Reclamo entity) throws ServiceException, NotFoundEntityException, InvalidEntityException {
 		try {
-			ServicesUtils.checkNull(entity, "Al actualizar un Reclamo, esta no puede ser nula");
+			ServicesUtils.checkNull(entity, "Al actualizar un Reclamo, este no puede ser nulo");
 			ServicesUtils.checkNull(entity.getIdReclamo(), "Al actualizar un Reclamo, esta debe tener un ID asignado");
 
 			Reclamo actual = findById(entity.getIdReclamo());
@@ -83,7 +83,7 @@ public class ReclamoBean implements ReclamoBeanRemote {
 				throw new NotFoundEntityException("No existe un reclamo con el ID: " + entity.getIdReclamo());
 
 			if (actual.getEstado() != EstadoReclamo.INGRESADO)
-				throw new InvalidEntityException("No se puede modificar un reclamo que ya esta en proceso o finalizada");
+				throw new InvalidEntityException("No se puede modificar un reclamo con estado EnProceso o Finalizado");
 
 			// La Fecha y Hora de emision y el Estado del reclamo no debe cambiado
 			entity.setFechaHora(actual.getFechaHora());
@@ -111,14 +111,14 @@ public class ReclamoBean implements ReclamoBeanRemote {
 	public Reclamo updateEstado(Long id, EstadoReclamo estadoNuevo, AccionReclamo accion)
 			throws ServiceException, NotFoundEntityException, InvalidEntityException {
 		try {
-			ServicesUtils.checkNull(id, "Al actualizar un reclamo, esta debe tener un ID asignado");
+			ServicesUtils.checkNull(id, "Al actualizar un reclamo, este debe tener un ID asignado");
 
 			Reclamo actual = findById(id);
 			if (actual == null)
 				throw new NotFoundEntityException("No existe un reclamo con el ID: " + id);
 
 			if (actual.getEstado() == EstadoReclamo.FINALIZADO)
-				throw new InvalidEntityException("No se puede modificar un reclamo que ya esta finalizada");
+				throw new InvalidEntityException("No se puede modificar un reclamo que ya está Finalizado");
 
 			// Agrego la accion reclamo al reclamo
 			
@@ -131,33 +131,33 @@ public class ReclamoBean implements ReclamoBeanRemote {
 			actual.setEstado(estadoNuevo);
 			actual = dao.update(actual);
 
-			String cuerpo = String.format("El reclamo al evento \"%s\" fue modificada de \"%s\" a \"%s\". Visite la aplicacion para mas informacion", 
+			String cuerpo = String.format("El reclamo al evento \"%s\" fue modificado de \"%s\" a \"%s\". Visite la aplicación para obtener más información", 
 					actual.getEvento().getTitulo(),
 					actual.getEstado().toString(),
 					estadoNuevo.toString());
 				         
-			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estando en su reclamo", cuerpo);
+			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estado en su reclamo", cuerpo);
 			return actual;
 			
 			// Se cacha ServiceException porque se utiliza el arBean.addAccionReclamo()
 		} catch (DAOException | ServiceException e) {
 			throw new ServiceException(e);
 		} catch (MessagingException e) {
-			throw new ServiceException("El reclamo se actualizo exitosamente pero no se pudo notificar al estudiante");
+			throw new ServiceException("El reclamo se actualizó exitosamente pero no se pudo notificar al estudiante");
 		}
 	}
 
 	@Override
 	public Reclamo eliminar(Long id) throws ServiceException, NotFoundEntityException {
 		try {
-			ServicesUtils.checkNull(id, "Al registra un reclamo el ID no puede ser nulo");
+			ServicesUtils.checkNull(id, "Al registrar un reclamo el ID no puede ser nulo");
 			
 			Reclamo actual = dao.findById(id);
 			if(actual == null)
 				throw new NotFoundEntityException("No existe un reclamo con el ID: " + id);
 			
 			if(!actual.getAccionReclamos().isEmpty()) {
-				throw new ServiceException("No puede dar de baja un reclamo que ya se le aplicaron acciones");
+				throw new ServiceException("No puede dar de baja un reclamo con Estado EnProceso y/o Finalzado");
 			}
 			
 			dao.remove(actual);
