@@ -115,4 +115,6 @@ public class Itr implements Serializable {
 		Itr other = (Itr) obj;
 		return Objects.equals(idItr, other.idItr) && Objects.equals(nombre, other.nombre);
 	}
+	
+	
 }

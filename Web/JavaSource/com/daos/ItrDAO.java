@@ -46,8 +46,16 @@ public class ItrDAO {
 	 * @param El ID debe ser
 	 * @return Si existe el ID retorna el ITR. Sino existe retorna null
 	 */
-	public Itr findById(Long id) {
-		return em.find(Itr.class, id);
+	public Itr findById(Long id) throws DAOException {
+		
+		try {
+			return em.find(Itr.class, id);
+		} catch (PersistenceException e) {
+			throw new DAOException("Ocurrió un error al buscar el Itr, este campo no puede ser nulo ", e);
+		}
+		
+		
+		
 	}
 
 	/*
@@ -70,7 +78,7 @@ public class ItrDAO {
 			em.flush();
 			return itr;
 		} catch (PersistenceException e) {
-			throw new DAOException("Ocurrio un error al hacer el update del Itr ", e);
+			throw new DAOException("Ocurrió un error al hacer el update del Itr ", e);
 		}
 	}
 
