@@ -1,5 +1,13 @@
 package test;
 
+import java.util.Properties;
+
+import javax.naming.AuthenticationException;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+
 import com.auth.JWTUtils;
 import com.auth.UserDetails;
 import com.entities.Tutor;
@@ -11,9 +19,10 @@ import com.password4j.types.Argon2;
 import com.services.UsuarioBean;
 
 public class Main {
+	
+	
 
 	public static void main(String[] args) {
-		
 		JWTUtils jwtUtils = new JWTUtils();
 //		
 //		UserDetails details = new UserDetails();
