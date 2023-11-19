@@ -128,12 +128,14 @@ public class ReclamoBean implements ReclamoBeanRemote {
 			if(estadoNuevo == EstadoReclamo.FINALIZADO) {
 				//actual.setArchivo(cargarPlantilla(id));
 			}
+			
+			String estadoOriginal=actual.getEstado().toString();
 			actual.setEstado(estadoNuevo);
 			actual = dao.update(actual);
 
 			String cuerpo = String.format("El reclamo al evento \"%s\" fue modificado de \"%s\" a \"%s\". Visite la aplicación para obtener más información", 
 					actual.getEvento().getTitulo(),
-					actual.getEstado().toString(),
+					estadoOriginal,
 					estadoNuevo.toString());
 				         
 			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estado en su reclamo", cuerpo);

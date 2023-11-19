@@ -16,13 +16,15 @@
 				resizableColumns="true" liveResize="true" showGridlines="true"
 				rowKey="#{constancias.idConstancia}" paginator="true" rows="20"
 				rowSelectMode="add" paginatorPosition="bottom"
-				tableStyle="width:full">
+				tableStyle="width:full"
+				selection="#{emitirConstanciasBean.constanciasSeleccionadas}">
 
 				<f:facet name="header">
 					<p:toolbar>
 						<p:toolbarGroup>
 							<span style="font-weight: bold">Lista de Constancias Solicitadas</span>
 						</p:toolbarGroup>
+						
 					</p:toolbar>
 				</f:facet>
 				
@@ -47,7 +49,7 @@
 				</p:column>
 		
 				<p:column headerText="Tipo de Contancia" sortBy="#{c.tipo.tipo}"
-					filterBy="#{c.tipoConstancia.tipo}" filterMatchMode="contains">
+					filterBy="#{c.tipo.tipo}" filterMatchMode="contains">
 					<h:outputText value="#{c.tipo.tipo}" />
 				</p:column>
 

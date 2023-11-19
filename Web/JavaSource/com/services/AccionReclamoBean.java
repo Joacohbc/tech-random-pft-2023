@@ -43,7 +43,7 @@ public class AccionReclamoBean {
 			if (entity.getIdAccionReclamo() != null)
 				throw new InvalidEntityException("Al solictar una Acción Reclamo, esta no puede tener un ID asignado");
 			
-			// Setteo la fecha de creacion y el reclamoal a que pertenece
+			// Setteo la fecha de creacion y el reclamo l a que pertenece
 			// Convierto LocalDate a Date ya que ese es el tipo de dato que se utiliza en AccionReclamo
 			entity.setFechaHora(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 			entity.setReclamo(reclamo);

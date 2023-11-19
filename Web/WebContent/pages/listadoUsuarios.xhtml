@@ -108,8 +108,8 @@
 					<h:outputText value="#{usuario.departamento.toString()}" />
 				</p:column>
 				
-				<p:column headerText="ITR" sortBy="#{usuario.itr}"
-					filterBy="#{usuario.departamento}" filterMatchMode="contains">
+				<p:column headerText="ITR" sortBy="#{usuario.itr.nombre}"
+					filterBy="#{usuario.itr.nombre}" filterMatchMode="contains">
 					<h:outputText value="#{usuario.itr.nombre}" />
 				</p:column>
 				

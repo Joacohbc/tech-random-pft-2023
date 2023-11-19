@@ -30,12 +30,13 @@ public class PerfilBean implements Serializable {
 	}
 
 	private Usuario usuario;
-
 	@EJB
 	private UsuarioBean usuariobean;
 
 	@Inject
 	private AuthJWTBean auth;
+	
+
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -75,11 +76,14 @@ public class PerfilBean implements Serializable {
 				}
 				usuariobean.updateTutor((Tutor) usuario);
 			} else {
+				
+			
 				ValidationObject validation = ValidacionesUsuarioEstudiante.validarEstudianteSinContrasenia((Estudiante) usuario,TipoUsuarioDocumento.URUGUAYO);
 				if (!validation.isValid()) {
 					JSFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Error", validation.getErrorMessage());
 					return;
 				}
+					
 				usuariobean.updateEstudiante((Estudiante) usuario);
 			}
 			

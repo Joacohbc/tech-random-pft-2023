@@ -127,7 +127,7 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 			throws ServiceException, NotFoundEntityException, InvalidEntityException {
 		try {
 			ServicesUtils.checkNull(id, "Al actualizar una Constancia, esta debe tener un ID asignado");
-
+		
 			Constancia actual = findById(id);
 			if (actual == null)
 				throw new NotFoundEntityException("No existe una constancia con el ID: " + id);
@@ -143,13 +143,15 @@ public class ConstanciaBean implements ConstanciaBeanRemote {
 				actual.setArchivo(cargarPlantilla(id));
 			}
 			
+			String estadoOriginal= actual.getEstado().toString();
+			
 			actual.setEstado(estadoNuevo);
 			actual = dao.update(actual);
 
 			String cuerpo = String.format("La Constancia de tipo \"%s\" al evento \"%s\" fue modificada de \"%s\" a \"%s\". Visite la aplicación para obtener más información", 
 					actual.getTipoConstancia().getTipo(), 
 					actual.getEvento().getTitulo(),
-					actual.getEstado().toString(),
+					estadoOriginal,
 					estadoNuevo.toString());
 				         
 			mail.enviarConGMail(actual.getEstudiante().getEmailUtec(), "Cambio de estado en su Constancia", cuerpo);
