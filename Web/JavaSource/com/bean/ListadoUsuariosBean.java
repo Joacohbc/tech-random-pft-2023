@@ -53,8 +53,10 @@ public class ListadoUsuariosBean implements Serializable, AuthRenderedControl {
 	public void init() {
 		this.usuarios = new ArrayList<>();
 		usuarios.addAll(bean.findAll(Estudiante.class));
-		usuarios.addAll(bean.findAll(Analista.class));
-		usuarios.addAll(bean.findAll(Tutor.class));
+		if(auth.esAnalista()) {
+			usuarios.addAll(bean.findAll(Analista.class));
+			usuarios.addAll(bean.findAll(Tutor.class));
+		}
 
 		this.listadoItr = itrBean.findAll();
 	}
