@@ -223,7 +223,6 @@
 								
 								<p:outputLabel value="ITR:"></p:outputLabel>
 								<p:selectOneMenu value="#{listadoUsuariosBean.usuarioSeleccionado.itr.idItr}">
-									<f:selectItem itemLabel="Seleccione uno" noSelectionOption="true" />
 									<f:selectItems value="#{listadoUsuariosBean.listadoItr}" var="itr"
 										itemValue="#{itr.idItr}" itemLabel="#{itr.nombre}"></f:selectItems>
 								</p:selectOneMenu>
