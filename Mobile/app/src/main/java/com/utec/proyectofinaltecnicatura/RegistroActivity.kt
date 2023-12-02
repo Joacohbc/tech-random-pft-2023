@@ -68,7 +68,7 @@ class RegistroActivity : AppCompatActivity() {
 
             val genero = Genero.values().find { genero -> genero.toString() == findViewById<AutoCompleteTextView>(R.id.genero).text.toString() }
             val departamento = Departamento.values().find { departamento -> departamento.toString() == findViewById<AutoCompleteTextView>(R.id.departamento).text.toString() }
-            val itr = allItrs.find { itr -> itr.nombre == findViewById<AutoCompleteTextView>(R.id.itr).text.toString() } ?: ItrDTO()
+            val itr = allItrs.find { itr -> itr.nombre == findViewById<AutoCompleteTextView>(R.id.itr).text.toString() } ?: null
             val localidad = findViewById<EditText>(R.id.localidad).text.toString()
             val generacion = try { findViewById<EditText>(R.id.editTextGeneracion).text.toString().toInt() } catch (e: Exception) { -1 }
 

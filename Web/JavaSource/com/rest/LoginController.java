@@ -22,7 +22,9 @@ import com.entities.enums.Rol;
 import com.exceptions.InvalidEntityException;
 import com.services.UsuarioBean;
 
+import validation.ValidacionesUsuario;
 import validation.ValidacionesUsuario.TipoUsuarioDocumento;
+import validation.ValidacionesUsuarioEstudiante;
 
 @Path("")
 @Produces({ MediaType.APPLICATION_JSON })
@@ -41,6 +43,10 @@ public class LoginController {
 		try {
 			dto.setEstado(true);
 			dto.setEstadoUsuario(EstadoUsuario.SIN_VALIDAR);
+			
+			if(dto.getItr() == null) {
+				return RESTUtils.error(Status.BAD_REQUEST, "El ITR es obligatorio");
+			}
 			
 			Estudiante est = bean.register(EstudianteMapper.toEstudiante(dto), TipoUsuarioDocumento.URUGUAYO);
 			return Response.ok(est, MediaType.APPLICATION_JSON).build();
