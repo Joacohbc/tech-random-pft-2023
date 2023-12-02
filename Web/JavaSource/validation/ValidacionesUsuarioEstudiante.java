@@ -1,5 +1,7 @@
 package validation;
 
+import java.time.LocalDate;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -84,6 +86,13 @@ public class ValidacionesUsuarioEstudiante {
 		if (generacion.length() != 4) {
 			return new ValidationObject("La generación debe tener 4 dígitos");
 		}
+		
+		try {
+			Integer gen = Integer.parseInt(generacion);
+			if(gen < 2012 || gen > LocalDate.now().getYear()) {
+				return new ValidationObject("La generación debe ser mayor al año 2012 y el año actual");
+			}
+		} catch (Exception e) {}
 		
 		return ValidationObject.VALID;
 	}
