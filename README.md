@@ -7,8 +7,10 @@ Proyecto grupal para la Tecnicatura de UTEC. Es una aplicación Cliente-Servidor
 - Una aplicación Mobile desarollada con Kotlin
 
 ## Grupo
+El equipo a cargo fue Tech Random Solutions:
 - Joaquin Genova
 - Daiana Silvera
 - Cristopher Fontes
 - William Machado
+- Bruno Gonzalez
 - Daiana Silvera
